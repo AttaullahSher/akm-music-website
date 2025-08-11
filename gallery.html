@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallery | AKM Music</title>
+  <meta name="description" content="Gallery of AKM Music showroom, instruments, studio and events.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="images/favicon.ico">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="images/logo.png" alt="AKM Music Logo" class="logo">
+        <div class="sub-title">
+          <span class="akm-main-title">AKM MUSIC</span>
+          <span class="akm-sub-title">Ajmal Khan Mohammed Music Centre</span>
+        </div>
+      </div>
+      <nav class="nav"><a href="index.html">Home</a><a href="gallery.html">Gallery</a><a href="contact.html">Contact</a></nav>
+    </div>
+  </header>
+
+  <main class="container gallery-page">
+    <h2>Gallery</h2>
+    <p class="lead">Click image to enlarge. Use pagination to load more images.</p>
+
+    <div id="galleryGrid" class="gallery-grid"></div>
+
+    <div class="pagination" id="pagination"></div>
+  </main>
+
+  <footer class="site-footer container">© AKM Music</footer>
+
+  <script src="script.js"></script>
+  <script>
+    // List of gallery images (now using 1.jpg, 2.jpg, 3.jpg, ...)
+    const GALLERY_IMAGES = [
+      '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg'
+      // Add more as needed
+    ];
+    // initialize gallery pagination (script.js contains gallery renderer function)
+    window.addEventListener('DOMContentLoaded', ()=> {
+      if (window.renderGallery) renderGallery(GALLERY_IMAGES, 15); // 15 images per page
+    });
+  </script>
+</body>
+</html>
