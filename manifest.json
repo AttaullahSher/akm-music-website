@@ -1,0 +1,68 @@
+{
+  "name": "AKM Music Abu Dhabi",
+  "short_name": "AKM Music",
+  "description": "Premier music store in Abu Dhabi offering musical instruments, services, and education since 1984",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "scope": ".",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["music", "shopping", "education"],
+  "icons": [
+    {
+      "src": "assets/Logo & Icons/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/Logo & Icons/logo.png",
+      "sizes": "512x512", 
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Products",
+      "short_name": "Products",
+      "description": "Browse our musical instruments",
+      "url": "/products.html",
+      "icons": [
+        {
+          "src": "assets/Logo & Icons/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Music Tools",
+      "short_name": "Tools", 
+      "description": "Professional music tools",
+      "url": "/tools.html",
+      "icons": [
+        {
+          "src": "assets/Logo & Icons/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "description": "Get in touch with us",
+      "url": "/contact.html",
+      "icons": [
+        {
+          "src": "assets/Logo & Icons/logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

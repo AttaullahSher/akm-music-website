@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Tools & Utilities | AKM Music Abu Dhabi</title>
+    <meta name="description" content="🎵 Professional music tools including tuner, metronome, chord charts, scale finder, and practice utilities. Free online music tools by AKM Music Abu Dhabi.">
+    <meta name="keywords" content="music tools, guitar tuner, metronome, chord charts, music theory, practice tools, scale finder, abu dhabi">
+    <link rel="canonical" href="https://www.akm-music.com/tools.html">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    </noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    </noscript>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="modern-styles.css">
+    <link rel="stylesheet" href="tools-styles.css">
+    <link rel="stylesheet" href="blue-theme.css">
+    
+    <!-- Icons -->
+    <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <script src="google-analytics.js?v=20251025"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="brand">
+                <img src="assets/Logo & Icons/logo.png" alt="AKM Music Logo" class="logo">
+                <div class="brand-text">
+                    <span class="brand-title">AKM MUSIC</span>
+                </div>
+            </a>
+              <nav class="nav">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="products.html" class="nav-link">🎵 Products</a>
+                <a href="tools.html" class="nav-link">🛠️ Tools</a>
+                <a href="blog.html" class="nav-link">📝 Blog</a>
+                <a href="about.html" class="nav-link">📖 About</a>
+                <a href="contact.html" class="nav-link">📞 Contact</a>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="cart-icon" onclick="toggleCart()">
+                    <img src="assets/Logo & Icons/Cart_icon.png" alt="Cart" class="custom-icon">
+                    <span class="cart-badge" id="cartCount">0</span>
+                </div>
+                <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
+
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                  <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tools Hero -->
+    <section class="tools-hero">
+        <div class="hero-bg"></div>
+        <div class="tools-hero-content">
+            <div class="tools-hero-text">
+                <h1 class="tools-hero-title">🎵 Professional Music Tools</h1>
+                <p class="tools-hero-description">
+                    Everything you need to practice, learn, and create music. Professional-grade tools 
+                    developed by musicians, for musicians.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <section class="tools-section">
+        <div class="tools-container">
+            <div class="tools-grid">
+                
+                <!-- Guitar Tuner -->
+                <div class="tool-card glass-container" id="tuner-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                        <h3>Guitar Tuner</h3>
+                        <p>Clip-on style chromatic tuner</p>
+                    </div>
+                    <div class="tool-body">
+                        <!-- Compact LCD Tuner -->
+                        <div class="tuner-lcd">
+                            <div class="lcd-screen-sm" id="tunerLCD">
+                                <div class="lcd-header">
+                                    <span class="scale-num">-20</span>
+                                    <div class="lcd-pointer-wrap">
+                                        <div class="lcd-center-mark">0</div>
+                                        <div class="lcd-pointer" id="lcdNeedle"></div>
+                                    </div>
+                                    <span class="scale-num">+20</span>
+                                </div>
+                                <div class="lcd-note-row">
+                                    <div class="lcd-big-note" id="noteDisplay">--</div>
+                                    <div class="lcd-instrument" id="instrumentLabel">Guitar</div>
+                                </div>
+                            </div>
+                            <button class="tuner-start" id="startTuner" aria-label="Start/Stop Tuner">
+                                <i class="fas fa-microphone"></i>
+                                <span class="tuner-start-label">Start Tuner</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metronome -->
+                <div class="tool-card glass-container" id="metronome-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Metronome</h3>
+                        <p>Keep perfect time while practicing</p>
+                    </div>
+                    <div class="tool-body">
+                        <div class="metronome-display">
+                            <div class="bpm-display">
+                                <span id="bpmValue">120</span>
+                                <small>BPM</small>
+                            </div>
+                            <div class="metronome-visual" id="metronomeVisual">
+                                <div class="beat-indicator"></div>
+                            </div>
+                        </div>
+                        <div class="metronome-controls">
+                            <input type="range" id="bpmSlider" min="60" max="200" value="120" class="bpm-slider">
+                            <div class="tempo-labels">
+                                <span>Largo</span>
+                                <span>Andante</span>
+                                <span>Allegro</span>
+                                <span>Presto</span>
+                            </div>
+                        </div>
+                        <div class="metronome-actions">
+                            <button class="btn-3d btn-primary-3d" id="playMetronome">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn-3d btn-secondary-3d" id="tapTempo">
+                                <i class="fas fa-hand-pointer"></i> Tap Tempo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chord Chart -->
+                <div class="tool-card glass-container" id="chord-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h3>Chord Charts</h3>
+                        <p>Interactive guitar and piano chords</p>
+                    </div>
+                    <div class="tool-body">
+                        <div class="chord-selector">
+                            <select id="chordRoot" class="chord-select">
+                                <option value="C">C</option>
+                                <option value="C#">C#/Db</option>
+                                <option value="D">D</option>
+                                <option value="D#">D#/Eb</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="F#">F#/Gb</option>
+                                <option value="G">G</option>
+                                <option value="G#">G#/Ab</option>
+                                <option value="A">A</option>
+                                <option value="A#">A#/Bb</option>
+                                <option value="B">B</option>
+                            </select>
+                            <select id="chordType" class="chord-select">
+                                <option value="major">Major</option>
+                                <option value="minor">Minor</option>
+                                <option value="7">7th</option>
+                                <option value="m7">Minor 7th</option>
+                                <option value="maj7">Major 7th</option>
+                                <option value="dim">Diminished</option>
+                                <option value="aug">Augmented</option>
+                                <option value="sus2">Sus2</option>
+                                <option value="sus4">Sus4</option>
+                            </select>
+                        </div>
+                        <div class="chord-display">
+                            <div class="guitar-fretboard" id="guitarFretboard">
+                                <!-- Generated dynamically -->
+                            </div>
+                            <div class="piano-keyboard" id="pianoKeyboard">
+                                <!-- Generated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scale Finder -->
+                <div class="tool-card glass-container" id="scale-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>Scale Finder</h3>
+                        <p>Explore scales and modes</p>
+                    </div>
+                    <div class="tool-body">
+                        <div class="scale-selector">
+                            <select id="scaleRoot" class="scale-select">
+                                <option value="C">C</option>
+                                <option value="C#">C#/Db</option>
+                                <option value="D">D</option>
+                                <option value="D#">D#/Eb</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="F#">F#/Gb</option>
+                                <option value="G">G</option>
+                                <option value="G#">G#/Ab</option>
+                                <option value="A">A</option>
+                                <option value="A#">A#/Bb</option>
+                                <option value="B">B</option>
+                            </select>
+                            <select id="scaleType" class="scale-select">
+                                <option value="major">Major (Ionian)</option>
+                                <option value="minor">Natural Minor (Aeolian)</option>
+                                <option value="dorian">Dorian</option>
+                                <option value="phrygian">Phrygian</option>
+                                <option value="lydian">Lydian</option>
+                                <option value="mixolydian">Mixolydian</option>
+                                <option value="locrian">Locrian</option>
+                                <option value="harmonic">Harmonic Minor</option>
+                                <option value="melodic">Melodic Minor</option>
+                                <option value="pentatonic">Major Pentatonic</option>
+                                <option value="blues">Blues</option>
+                            </select>
+                        </div>
+                        <div class="scale-display">
+                            <div class="scale-notes" id="scaleNotes">
+                                <!-- Generated dynamically -->
+                            </div>
+                            <div class="scale-pattern" id="scalePattern">
+                                <!-- Generated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Circle of Fifths -->
+                <div class="tool-card glass-container" id="circle-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-circle-notch"></i>
+                        </div>
+                        <h3>Circle of Fifths</h3>
+                        <p>Interactive music theory wheel</p>
+                    </div>
+                    <div class="tool-body">
+                        <div class="circle-container">
+                            <svg class="circle-of-fifths" id="circleOfFifths" width="300" height="300">
+                                <!-- Generated dynamically -->
+                            </svg>
+                        </div>
+                        <div class="circle-info" id="circleInfo">
+                            <h4>Select a key</h4>
+                            <p>Click on the circle to explore key signatures and related keys</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BPM Calculator -->
+                <div class="tool-card glass-container" id="bpm-tool">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>BPM Calculator</h3>
+                        <p>Calculate tempo from song length</p>
+                    </div>
+                    <div class="tool-body">
+                        <div class="bpm-calculator">
+                            <div class="input-group">
+                                <label>Song Length (mm:ss)</label>
+                                <input type="text" id="songLength" placeholder="4:30" class="bpm-input">
+                            </div>
+                            <div class="input-group">
+                                <label>Number of Beats</label>
+                                <input type="number" id="numBeats" placeholder="256" class="bpm-input">
+                            </div>
+                            <button class="btn-3d btn-primary-3d" onclick="calculateBPM()">
+                                Calculate BPM
+                            </button>
+                            <div class="bpm-result" id="bpmResult"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div class="footer-section">
+          <h4>AKM Music</h4>
+          <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <p>📍 Abu Dhabi, UAE</p>
+          <p>📞 +971 2 621 9929</p>
+          <p>📧 Sales@akm-music.com</p>
+        </div>
+      </div>
+      <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2024 AKM Music Abu Dhabi. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->    
+    <script src="script.js"></script>
+    <script src="cart.js"></script>    
+    <script src="analytics.js"></script>
+    <script src="tools.js"></script>
+    <script src="pwa.js"></script>
+</body>
+</html>

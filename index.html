@@ -3,51 +3,294 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AKM Music Abu Dhabi - Premium Music Instruments & Services UAE</title>
-  <meta name="description" content="Leading music store in Abu Dhabi offering instruments, repairs, rentals, and classes. Piano, guitar, drums sales and services in UAE.">
-  <meta name="keywords" content="music, instruments, abu dhabi, piano, guitar, drums, repair, rental, classes, UAE, music store">
-  <meta name="author" content="AKM Music Abu Dhabi">
-  <meta name="canonical" href="https://akmmusic.ae">
+  <title>AKM Music Abu Dhabi - Premium Musical Instruments & Professional Services UAE</title>
+  <meta name="description" content="🎵 Leading music store in Abu Dhabi since 1984. Premium instruments, professional repairs, music classes, studio rentals. Guitars, pianos, drums & more. Shop online with WhatsApp ordering!">
+  <meta name="keywords" content="music store abu dhabi, musical instruments uae, piano lessons abu dhabi, guitar classes, drum sets, violin shop, music equipment, instrument repair, studio rental, music tools, online music store uae">
+  <meta name="author" content="AKM Music Abu Dhabi - Ajmal Khan Mohammed">
+  <link rel="canonical" href="https://www.akm-music.com/">
+  
+  <!-- Enhanced SEO Meta Tags -->
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="language" content="English">
+  <meta name="geo.region" content="AE-AZ">
+  <meta name="geo.placename" content="Abu Dhabi">
+  <meta name="geo.position" content="24.495314;54.370049">
+  <meta name="ICBM" content="24.495314, 54.370049">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="AKM Music — Ajmal Khan Mohammed Music Centre">
-  <meta property="og:description" content="Sales, rentals, repairs, music classes and studio hire in Abu Dhabi. Contact +971 2 621 9929.">
-  <meta property="og:image" content="images/banner-hero.jpg">
+  <!-- Enhanced Open Graph -->
+  <meta property="og:title" content="AKM Music Abu Dhabi - Premium Musical Instruments Since 1984">
+  <meta property="og:description" content="🎵 Discover premium musical instruments, professional services, and music education at AKM Music Abu Dhabi. Shop online with WhatsApp ordering!">
+  <meta property="og:image" content="assets/Banners_images/3D274.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.akm-music.com/">
+  <meta property="og:site_name" content="AKM Music Abu Dhabi">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="images/favicon.ico">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AKM Music Abu Dhabi - Premium Musical Instruments">
+  <meta name="twitter:description" content="🎵 Leading music store in Abu Dhabi since 1984. Premium instruments & professional services.">
+  <meta name="twitter:image" content="assets/Banners_images/3D274.png">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css?v=20251025">
+  <link rel="stylesheet" href="modern-styles.css?v=20251025">
+  <link rel="stylesheet" href="blue-theme.css?v=20251025">
+  
+  <!-- PWA & Icons -->
+  <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="AKM Music Home">
-        <img src="images/logo.png" alt="AKM Music Logo" class="logo">
+        <img src="assets/Logo & Icons/logo.png" alt="AKM Music Logo" class="logo">
       </a>
-      <nav class="nav" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
+        <nav class="nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="products.html" class="nav-link">🎵 Products</a>
+        <a href="tools.html" class="nav-link">🛠️ Tools</a>
+        <a href="blog.html" class="nav-link">📝 Blog</a>
+        <a href="about.html" class="nav-link">📖 About</a>
+        <a href="contact.html" class="nav-link">📞 Contact</a>
       </nav>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
+      
+      <div class="header-actions">
+        <div class="cart-icon" onclick="toggleCart()">
+          <img src="assets/Logo & Icons/Cart_icon.png" alt="Cart" class="custom-icon">
+          <span class="cart-badge" id="cartCount">0</span>
+        </div>
+        <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-slides">
-      <img src="images/banner-hero.jpg" alt="Pianos and instruments - AKM Music Abu Dhabi" class="hero-img">
-      <img src="images/banner-hero-2.jpg" alt="Music showroom - AKM Music" class="hero-img">
+  <!-- Modern Hero Section with Animated Music Notes -->
+  <section class="hero-modern">
+    <div class="hero-bg">
+      <div class="music-note note1">♪</div>
+      <div class="music-note note2">♫</div>
+      <div class="music-note note3">♬</div>
+      <div class="music-note note4">♪</div>
+      <div class="music-note note5">♫</div>
+      <div class="music-note note6">♬</div>
+      <div class="music-note note7">♪</div>
+      <div class="music-note note8">♫</div>
     </div>
-    <div class="hero-content container">
-      <h2 id="hero-quote">Your One-Stop Music Shop</h2>
-      <p class="lead">Musical Instruments and services</p>
+    
+    <div class="hero-content">
+      <div class="hero-text animate__animated animate__fadeInLeft">
+        <div class="hero-brand-logo">
+        <h1 class="hero-title-main">AKM MUSIC</h1>
+        </div>
+        <h2 class="hero-tagline">PREMIUM MUSIC STORE</h2>
+        <p class="hero-description">
+          Discover premium musical instruments, professional services, and innovative music tools. 
+          From beginner-friendly options to professional-grade equipment - we've got everything 
+          to elevate your musical experience in Abu Dhabi.
+        </p>
+        <div class="hero-actions">
+         <a href="products.html" class="btn-3d btn-primary-3d">
+            <i class="fas fa-guitar"></i>
+            Shop Instruments
+          </a>
+          <a href="tools.html" class="btn-3d btn-secondary-3d">
+            <i class="fas fa-tools"></i>
+            Music Tools
+          </a>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <!-- Quick Actions -->
+  <section class="quick-actions">
+    <div class="qa-header" data-aos="fade-up">
+      <h2 class="qa-title">Quick Actions</h2>
+      <p class="qa-sub">Instant access to the most-used features</p>
+    </div>
+    <div class="qa-grid">
+      <!-- Removed Instant Checkout -->
+
+      <a class="qa-card qa--wa" href="https://api.whatsapp.com/send?phone=97126219929&text=Hello%20AKM%20Music!%20I%20need%20assistance." target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="100">
+        <div class="qa-icon"><i class="fab fa-whatsapp"></i></div>
+        <div class="qa-content">
+          <div class="qa-title-sm">WhatsApp Us</div>
+          <div class="qa-desc">Get quick support and pricing on WhatsApp</div>
+        </div>
+        <div class="qa-cta"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="qa-card qa--ms" href="https://m.me/akmmusiccenter" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="150">
+        <div class="qa-icon"><i class="fab fa-facebook-messenger"></i></div>
+        <div class="qa-content">
+          <div class="qa-title-sm">Messenger Chat</div>
+          <div class="qa-desc">Ask about availability and offers</div>
+        </div>
+        <div class="qa-cta"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="qa-card qa--install" href="#" onclick="installApp(); return false;" data-aos="fade-up" data-aos-delay="200">
+        <div class="qa-icon"><i class="fas fa-download"></i></div>
+        <div class="qa-content">
+          <div class="qa-title-sm">Install App</div>
+          <div class="qa-desc">Add AKM Music to your home screen</div>
+        </div>
+        <div class="qa-cta"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="qa-card qa--store" href="products.html" data-aos="fade-up" data-aos-delay="250">
+        <div class="qa-icon"><i class="fas fa-store"></i></div>
+        <div class="qa-content">
+          <div class="qa-title-sm">Browse Products</div>
+          <div class="qa-desc">Shop guitars, pianos, drums and more</div>
+        </div>
+        <div class="qa-cta"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="qa-card qa--directions" href="https://www.google.com/maps?q=24.495314,54.370049" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="300">
+        <div class="qa-icon"><i class="fas fa-location-arrow"></i></div>
+        <div class="qa-content">
+          <div class="qa-title-sm">Get Directions</div>
+          <div class="qa-desc">Open Google Maps for our showroom</div>
+        </div>
+        <div class="qa-cta"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      
+      <!-- Removed Payment Options -->
+    </div>
+  </section>
+  <!-- Services Cards -->
+  <section class="services-section container">
+    <div class="section-header" data-aos="fade-up">
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-subtitle">Comprehensive musical solutions for every need</p>
+    </div>
+    
+    <div class="services-grid">
+      <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-image">
+          <img src="assets/Banners_images/sales-1.jpg" alt="Musical Instruments Sales" loading="lazy">
+          <div class="service-overlay">
+            <i class="fas fa-guitar service-icon"></i>
+          </div>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Instrument Sales</h3>
+          <p class="service-description">Premium guitars, pianos, drums, and more from top brands worldwide</p>
+          <a href="products.html" class="service-link">
+            Shop Now <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-image">
+          <img src="assets/Banners_images/repairs-1.jpg" alt="Instrument Repairs" loading="lazy">
+          <div class="service-overlay">
+            <i class="fas fa-tools service-icon"></i>
+          </div>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Expert Repairs</h3>
+          <p class="service-description">Professional repair and maintenance services for all instruments</p>
+          <a href="contact.html" class="service-link">
+            Book Service <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-image">
+          <img src="assets/Banners_images/classes-1.jpg" alt="Music Classes" loading="lazy">
+          <div class="service-overlay">
+            <i class="fas fa-music service-icon"></i>
+          </div>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Music Classes</h3>
+          <p class="service-description">Learn from experienced instructors - all ages and skill levels welcome</p>
+          <a href="contact.html" class="service-link">
+            Enroll Now <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="service-image">
+          <img src="assets/Banners_images/rentals-1.jpg" alt="Instrument Rentals" loading="lazy">
+          <div class="service-overlay">
+            <i class="fas fa-handshake service-icon"></i>
+          </div>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Rentals</h3>
+          <p class="service-description">Flexible rental options for events, practice, or trying before buying</p>
+          <a href="contact.html" class="service-link">
+            View Rentals <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="service-image">
+          <img src="assets/Banners_images/studio-1.jpg" alt="Studio Rental" loading="lazy">
+          <div class="service-overlay">
+            <i class="fas fa-microphone service-icon"></i>
+          </div>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Studio Rental</h3>
+          <p class="service-description">Professional recording and rehearsal studios with state-of-the-art equipment</p>
+          <a href="contact.html" class="service-link">
+            Book Studio <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="service-card" data-aos="fade-up" data-aos-delay="600">
+        <div class="service-image">
+          <img src="assets/Banners_images/piano-1.jpg" alt="Music Tools" loading="lazy">
+          <div class="service-overlay">
+            <i class="fas fa-sliders-h service-icon"></i>
+          </div>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Music Tools</h3>
+          <p class="service-description">Free online tools - tuners, metronomes, chord charts, and more</p>
+          <a href="tools.html" class="service-link">
+            Try Tools <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products (horizontal scroll) -->
+  <section class="container featured-products">
+    <div class="section-header" data-aos="fade-up">
+      <h2 class="section-title">Featured Products</h2>
+      <p class="section-subtitle">Handpicked instruments from our collection</p>
+    </div>
+    <div class="featured-carousel" id="featuredCarousel"></div>
   </section>
 
   <!-- About Us -->
@@ -59,242 +302,86 @@
     <p>Visit us at our showroom in Abu Dhabi or Select one of our services below and start your next musical chapter.</p>
   </section>
 
-  <!-- Services -->
-  <section class="container services" style="margin-top: 1.5rem;">
-    <h3>Our Services</h3>
-    <p class="lead">Tailored solutions for events, schools and hotels</p>
-
-    <div class="tiles">
-      <!-- Classes -->
-      <article class="tile" data-modal="modal-classes">
-        <img src="images/classes-1.jpg" alt="Music classes Abu Dhabi piano guitar drums">
-        <h4>Music Classes</h4>
-        <p>Embark on a melodic adventure with personalized lessons in piano, guitar, and drums. Our affordable monthly package offers 8 sessions (twice weekly) for just 525 AED, including preparation for Trinity exams with expert instructors.</p>
-        <button class="btn small" data-open-modal="modal-classes">Sign Up</button>
-      </article>
-
-      <!-- Piano Services -->
-      <article class="tile" data-modal="modal-piano">
-        <img src="images/piano-1.jpg" alt="Piano tuning and rental Abu Dhabi">
-        <h4>Piano Services</h4>
-        <p>Expert care for your pianos: precise tuning, safe shifting, and comprehensive servicing for all types. Our professional teams specialize in moving and tuning grand pianos. Upright and grand piano rentals also available for events and personal use.</p>
-        <button class="btn small" data-open-modal="modal-piano">Enquire Now</button>
-      </article>
-
-      <!-- Studio -->
-      <article class="tile" data-modal="modal-studio">
-        <img src="images/studio-1.jpg" alt="Music studio rental Abu Dhabi recording booth">
-        <h4>Music Studio</h4>
-        <p>Step into our state-of-the-art glass recording studio equipped with premium instruments and gear. Perfect for rehearsals, recordings, and creative sessions – available for hourly rentals to bring your musical visions to life.</p>
-        <button class="btn small" data-open-modal="modal-studio">Book Studio</button>
-      </article>
-
-      <!-- Sales -->
-      <article class="tile" data-modal="modal-sales">
-        <img src="images/sales-1.jpg" alt="Instrument sales Abu Dhabi - guitars pianos drums">
-        <h4>Sales</h4>
-        <p>Discover a wide selection of new and used instruments including guitars, violins, pianos, drums, flutes, ukuleles, and percussion from top brands. Flexible payment options to suit every budget and need.</p>
-        <button class="btn small" data-open-modal="modal-sales">Request Quotation</button>
-      </article>
-
-      <!-- Rentals -->
-      <article class="tile" data-modal="modal-rentals">
-        <img src="images/rentals-1.jpg" alt="Instrument and sound system rentals UAE">
-        <h4>Rentals & Installations</h4>
-        <p>Reliable rentals of drum sets, PA systems, and sound equipment with professional installation services for mosques, hotels, outdoor events, and more – ensuring seamless audio experiences.</p>
-        <button class="btn small" data-open-modal="modal-rentals">Enquire</button>
-      </article>
-
-      <!-- Repairs -->
-      <article class="tile" data-modal="modal-repairs">
-        <img src="images/repairs-1.jpg" alt="Instrument repair Abu Dhabi speaker repair">
-        <h4>Repairs & Service</h4>
-        <p>Trust our skilled technicians for instrument repairs, speaker servicing, and sound system maintenance. Drop off at our workshop for expert diagnosis and competitive quotes.</p>
-        <button class="btn small" data-open-modal="modal-repairs">Get Repair Quote</button>
-      </article>
-    </div>
-  </section>
-
-  <!-- Modal templates (hidden) -->
-  <div id="modals">
-    <!-- Classes Modal -->
-    <div class="modal" id="modal-classes" aria-hidden="true">
-      <div class="modal-inner">
-        <button class="close" data-close>×</button>
-        <h3>Music Classes — 525 AED / month</h3>
-        <p>Individual piano/guitar/drum lessons. Package: 8 sessions (twice a week) — 525 AED per month. Trinity exam prep available.</p>
-        <form action="https://formsubmit.co/sales@akm-music.com" method="POST" class="modal-form">
-          <input type="hidden" name="_subject" value="Class signup from website">
-          <input type="hidden" name="_template" value="table">
-          <label>Full name <input name="name" required placeholder="Your full name"></label>
-          <label>Phone / WhatsApp <input name="phone" required placeholder="Your phone number"></label>
-          <label>Email <input name="email" type="email" placeholder="Your email"></label>
-          <label>Instrument
-            <select name="instrument">
-              <option>Piano Classes</option>
-              <option>Guitar Classes</option>
-              <option>Drums Classes</option>
-            </select>
-          </label>
-          <label>Preferred days/time <input name="preferred" placeholder="e.g., Mondays and Wednesdays, 5 PM"></label>
-          <div class="modal-actions"><button class="btn" type="submit">Sign Up</button></div>
-        </form>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h4>AKM Music</h4>
+        <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <p>📍 Abu Dhabi, UAE</p>
+        <p>📞 +971 2 621 9929</p>
+        <p>📧 Sales@akm-music.com</p>
       </div>
     </div>
-
-    <!-- Piano Services Modal -->
-    <div class="modal" id="modal-piano" aria-hidden="true">
-      <div class="modal-inner">
-        <button class="close" data-close>×</button>
-        <h3>Piano Services</h3>
-        <p>We offer full piano care: tuning, shifting, servicing for all models. Professional teams for grand piano moves and tuning. Rentals for upright and grand pianos.</p>
-        <form action="https://formsubmit.co/sales@akm-music.com" method="POST" class="modal-form">
-          <input type="hidden" name="_subject" value="Piano services inquiry from website">
-          <input type="hidden" name="_template" value="table">
-          <label>Full name <input name="name" required placeholder="Your full name"></label>
-          <label>Phone / WhatsApp <input name="phone" required placeholder="Your phone number"></label>
-          <label>Service type
-            <select name="service_type">
-              <option>Piano Tuning</option>
-              <option>Piano Shifting/Moving</option>
-              <option>Piano Servicing/Repair</option>
-              <option>Event Rentals of Piano</option>
-              <option>Term Rental of Piano</option>
-            </select>
-          </label>
-          <label>Details<textarea name="details" placeholder="Additional details"></textarea></label>
-          <div class="modal-actions"><button class="btn" type="submit">Request Price</button></div>
-        </form>
-      </div>
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p>&copy; 2024 AKM Music Abu Dhabi. All rights reserved.</p>
     </div>
+  </footer>  
 
-    <!-- Studio Modal -->
-    <div class="modal" id="modal-studio" aria-hidden="true">
-      <div class="modal-inner">
-        <button class="close" data-close>×</button>
-        <h3>Studio Booking</h3>
-        <p>Book our glass studio by hour. Full instrument set & recording gear available.</p>
-        <form action="https://formsubmit.co/sales@akm-music.com" method="POST" class="modal-form">
-          <input type="hidden" name="_subject" value="Studio booking from website">
-          <input type="hidden" name="_template" value="table">
-          <label>Full name <input name="name" required placeholder="Your full name"></label>
-          <label>Phone / WhatsApp <input name="phone" required placeholder="Your phone number"></label>
-          <label>Date <input name="date" type="date" required></label>
-          <label>From
-            <input id="studio-time-from" name="time_from" type="time" min="09:00" max="21:00" required>
-          </label>
-          <label>To
-            <input id="studio-time-to" name="time_to" type="time" min="09:00" max="21:00" required>
-          </label>
-          <div class="modal-actions"><button class="btn" type="submit">Request Booking</button></div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Sales Modal -->
-    <div class="modal" id="modal-sales" aria-hidden="true">
-      <div class="modal-inner">
-        <button class="close" data-close>×</button>
-        <h3>Sales — Instruments & Payments</h3>
-        <p>We supply guitars, violins, ukuleles, pianos, drums, flutes and percussion, new & used, from several brands and price ranges. We accept Cash, Card, Tabby, Cheque, Installments and PayPal.</p>
-        <form action="https://formsubmit.co/sales@akm-music.com" method="POST" class="modal-form">
-          <input type="hidden" name="_subject" value="Sales inquiry from website">
-          <input type="hidden" name="_template" value="table">
-          <label>Full name <input name="name" required placeholder="Your full name"></label>
-          <label>Phone / WhatsApp <input name="phone" required placeholder="Your phone number"></label>
-          <label>Email <input name="email" type="email" placeholder="Your email"></label>
-          <label>Tell us what you need<textarea name="message" required placeholder="Describe your needs"></textarea></label>
-          <div class="modal-actions"><button class="btn" type="submit">Send Inquiry</button></div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Rentals Modal -->
-    <div class="modal" id="modal-rentals" aria-hidden="true">
-      <div class="modal-inner">
-        <button class="close" data-close>×</button>
-        <h3>Rentals & Installations</h3>
-        <p>Drums, full PA systems and event installations. We provide setup for mosques, hotels and outdoor events.</p>
-        <form action="https://formsubmit.co/sales@akm-music.com" method="POST" class="modal-form">
-          <input type="hidden" name="_subject" value="Rental inquiry from website">
-          <input type="hidden" name="_template" value="table">
-          <label>Full name <input name="name" required placeholder="Your full name"></label>
-          <label>Phone / WhatsApp <input name="phone" required placeholder="Your phone number"></label>
-          <label>Rental type
-            <select name="rental_type">
-              <option>Drum set</option>
-              <option>PA / Sound system</option>
-            </select>
-          </label>
-          <label>Required dates <input name="dates" placeholder="e.g., 2025-09-10 to 2025-09-12"></label>
-          <label>Details<textarea name="details" placeholder="Additional details"></textarea></label>
-          <div class="modal-actions"><button class="btn" type="submit">Request Rental Quote</button></div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Repairs Modal -->
-    <div class="modal" id="modal-repairs" aria-hidden="true">
-      <div class="modal-inner">
-        <button class="close" data-close>×</button>
-        <h3>Repairs & Workshop</h3>
-        <p>We repair instruments and speakers. Diagnostic service available — bring the item to our store or request pickup for large gear.</p>
-        <form action="https://formsubmit.co/sales@akm-music.com" method="POST" class="modal-form">
-          <input type="hidden" name="_subject" value="Repair request from website">
-          <input type="hidden" name="_template" value="table">
-          <label>Full name <input name="name" required placeholder="Your full name"></label>
-          <label>Phone / WhatsApp <input name="phone" required placeholder="Your phone number"></label>
-          <label>Item to repair<textarea name="item" placeholder="e.g., Yamaha speaker model X"></textarea></label>
-          <label>Issue details<textarea name="issue" placeholder="Describe the issue"></textarea></label>
-          <div class="modal-actions"><button class="btn" type="submit">Request Repair Quote</button></div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer + quick contact -->
-  <footer class="site-footer container">
-    <div class="footer-social-row">
-      <a href="https://wa.me/97126219929" target="_blank" rel="noopener" class="footer-icon" title="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-      <a href="https://m.facebook.com/akmmusiccenter/" target="_blank" rel="noopener" class="footer-icon" title="Facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://www.instagram.com/akm.music" target="_blank" rel="noopener" class="footer-icon" title="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://m.me/akmmusiccenter" target="_blank" rel="noopener" class="footer-icon" title="Messenger">
-        <i class="fab fa-facebook-messenger"></i>
-      </a>
-    </div>
-    <div class="footer-copy">© AKM Music</div>
-  </footer>
-
-  <script src="script.js"></script>
-
-  <!-- LocalBusiness Schema JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MusicStore",
-    "name": "AKM Music (Ajmal Khan Mohammed Music Centre)",
-    "description": "Instrument sales, rentals, repairs, music classes and studio hire in Abu Dhabi. Piano rentals, sound system installations and more.",
-    "telephone": "+97126219929",
-    "email": "sales@akm-music.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "شارع حمدان بن محمد - behind millennium hotel - الدانة - Zone 1 , E3-02",
-      "addressLocality": "Abu Dhabi",
-      "postalCode": "8227",
-      "addressCountry": "AE"
-    },
-    "openingHours": "Mo,Tu,We,Th,Fr 10:00-19:00",
-    "sameAs": [
-      "https://m.facebook.com/akmmusiccenter/",
-      "https://www.instagram.com/akm.music"
-    ]
-  }
+  <!-- Scripts -->
+  <script src="google-analytics.js?v=20251025"></script>
+  <script src="cart.js?v=20251025"></script>
+  <script src="script.js?v=20251025"></script>
+  <script src="analytics.js?v=20251025"></script>
+  <script src="pwa.js?v=20251025"></script>
+  <!-- Excel (for featured products) -->
+  <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="excel-loader.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 700, once: true });
+  </script>
+  <script>
+    // Featured products (await Excel if available)
+    (async function(){
+      try {
+        if (window.productsDataReady && typeof window.productsDataReady.then === 'function') {
+          await window.productsDataReady;
+        }
+      } catch {}
+      const data = window.productsData || (typeof productsData !== 'undefined' ? productsData : null);
+      if (!data) return;
+      const list = [];
+      for (const cat in data) {
+        const arr = data[cat] || [];
+        list.push(...arr.filter(p => p.featured));
+      }
+      if (list.length === 0) {
+        for (const cat in data) { list.push(...(data[cat] || []).slice(0, 2)); }
+      }
+      const items = list.slice(0, 12);
+      const wrap = document.getElementById('featuredCarousel');
+      if (!wrap) return;
+      wrap.innerHTML = items.map(p => {
+        const img = p.image || 'assets/Products_images/DEMO001.jpg';
+        const price = (p.price || 0).toLocaleString('en-AE');
+        const wa = encodeURIComponent(`🎵 AKM Music Inquiry\n\nProduct: ${p.name}\nSKU: ${p.id}\nBrand: ${p.brand || ''}\nPrice: ${p.price || 0} AED`);
+        return `
+          <div class="featured-card" data-aos="fade-up">
+            <div class="fc-img"><img src="${img}" alt="${p.name}" loading="lazy" onerror="this.src='assets/Products_images/DEMO001.jpg'"></div>
+            <div class="fc-info">
+              <div class="fc-name">${p.name}</div>
+              <div class="fc-brand">${p.brand || ''}</div>
+              <div class="fc-price">${price} AED</div>
+              <div class="fc-actions">
+                <button class="btn-add-cart-compact" onclick="cart?.addItem({sku: '${p.id}', name: ${JSON.stringify(p.name || '')}, price: ${p.price || 0}, image: '${img}', brand: ${JSON.stringify(p.brand || 'AKM Music')}})"><img src="assets/Logo & Icons/Cart_icon.png" alt="Add to Cart" class="custom-icon"> Add</button>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    })();
   </script>
 </body>
 </html>

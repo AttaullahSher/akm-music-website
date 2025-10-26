@@ -1,0 +1,895 @@
+/* Font Fallbacks */
+:root {
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-heading: var(--font-display);
+}
+
+/* Tools Page Specific Styles */
+
+/* Tools Hero Section */
+.tools-hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+.tools-hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.tools-hero-text {
+  color: white;
+}
+
+.tools-hero-title {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tools-hero-description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Contrast fixes on Tools page */
+.tools-hero-title, .tools-hero-description { color: #ffffff !important; text-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+.tool-header h3, .tool-header p { color: #ffffff; }
+
+/* Tools Grid */
+.tools-section {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+.tools-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+/* Tool Cards */
+.tool-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: all 0.4s var(--ease-bounce);
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-brutal);
+}
+
+.tool-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.tool-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  background: var(--primary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  box-shadow: var(--shadow-medium);
+}
+
+.tool-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.tool-header p {
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.tool-body {
+  color: white;
+}
+
+/* Clip-on Tuner Styles */
+.clipon-tuner {
+  display: none !important;
+}
+
+/* Compact LCD Tuner (clip-on style) */
+.tuner-lcd { 
+  display: grid; 
+  gap: 12px; 
+  justify-items: center; 
+}
+
+.lcd-screen-sm {
+  width: 280px; /* compact */
+  height: 180px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #0a3d0a 0%, #0d4a0d 50%, #0a3d0a 100%);
+  box-shadow: inset 0 8px 30px rgba(0,0,0,0.45), 0 14px 34px rgba(0,0,0,0.45);
+  padding: 14px 16px;
+  color: #aef5a8; /* LCD glow */
+  position: relative;
+  overflow: hidden;
+}
+
+/* rounded bezel */
+.lcd-screen-sm::before { 
+  content:""; 
+  position:absolute; inset:-10px; 
+  border-radius: 18px; 
+  background: linear-gradient(145deg,#2f2f2f,#151515);
+  z-index:-1; 
+  box-shadow: 0 10px 28px rgba(0,0,0,.5);
+}
+
+/* top scale with pointer */
+.lcd-header { 
+  display:flex; align-items:center; justify-content:space-between; 
+  font-family: 'Courier New', monospace; font-weight:700; letter-spacing:.04em; 
+  color:#c5ffc0; opacity:.9; user-select:none; 
+}
+.scale-num { font-size: 12px; opacity:.85; }
+.lcd-pointer-wrap { position: relative; flex: 1; margin: 0 10px; height: 30px; }
+.lcd-center-mark { position:absolute; left:50%; top:-2px; transform:translateX(-50%); font-size:12px; }
+.lcd-pointer { position:absolute; left:50%; top:10px; width:2px; height:18px; background:#b8ffb1; box-shadow:0 0 8px rgba(184,255,177,.8); transform-origin:50% 0; transform:translateX(-50%) rotate(0deg); transition: transform .08s ease-out; }
+
+/* big note row */
+.lcd-note-row { display:flex; align-items:flex-end; justify-content:center; gap:12px; margin-top: 26px; }
+.lcd-big-note { font-family: 'Courier New', monospace; font-size: 82px; line-height: .9; letter-spacing: -3px; text-shadow: 0 0 12px rgba(174,245,168,.45); }
+.lcd-instrument { font-family: 'Inter', system-ui, Arial, sans-serif; font-size: 16px; opacity:.95; margin-bottom: 8px; }
+
+/* Start button */
+.tuner-start { 
+  display:flex; align-items:center; gap:10px; 
+  border:0; border-radius: 999px; padding: 12px 18px; 
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  color:#fff; font-weight:700; cursor:pointer; box-shadow:0 10px 22px rgba(37,99,235,.35);
+}
+.tuner-start:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.tuner-start:active { transform: translateY(0); }
+.tuner-start .tuner-start-label { font-size: 15px; }
+.tuner-start i { font-size: 16px; }
+.tuner-start.active { background: linear-gradient(145deg, #ef4444, #dc2626); box-shadow: 0 10px 22px rgba(239,68,68,.35); }
+.tuner-start.active .tuner-start-label { content: 'Stop Tuner'; }
+
+/* reduce extra legacy UI */
+.tuner-display, .tuner-instructions, .string-reference { display:none !important; }
+
+/* LCD Display */
+.lcd-display {
+  position: relative;
+  background: linear-gradient(180deg, #7a9b6e 0%, #8fae7f 50%, #7a9b6e 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 
+    inset 0 2px 10px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.2);
+}
+
+.lcd-screen {
+  background: linear-gradient(180deg, #9db591 0%, #a8c29a 100%);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #1a3a1a;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+/* Tuning Indicator Bars */
+.tuning-bars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 1rem;
+  height: 30px;
+  align-items: flex-end;
+}
+
+.tuning-bars .bar {
+  width: 12px;
+  height: 8px;
+  background: rgba(26, 58, 26, 0.15);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.tuning-bars .bar.center-bar {
+  height: 16px;
+}
+
+.tuning-bars .bar.active {
+  background: #1a3a1a;
+  box-shadow: 0 0 8px rgba(26, 58, 26, 0.5);
+}
+
+/* Note Display */
+.lcd-note-display {
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lcd-note {
+  font-size: 5rem;
+  letter-spacing: -0.05em;
+}
+
+.lcd-octave {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+/* Cents Display */
+.lcd-cents {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* Frequency Display */
+.lcd-frequency {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.hz-label {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Status Indicators */
+.status-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.status-icon {
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+
+.status-icon.active {
+  opacity: 1;
+  font-weight: bold;
+}
+
+.status-icon.in-tune.active {
+  color: #1a3a1a;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(26, 58, 26, 0.5);
+}
+
+/* Power LED */
+.power-led {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(26, 58, 26, 0.3);
+  transition: all 0.3s ease;
+}
+
+.power-led.active {
+  background: #ff4444;
+  box-shadow: 
+    0 0 10px rgba(255, 68, 68, 0.8),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Tuner Controls */
+.tuner-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.power-button {
+  background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+  border: 2px solid #1a1a1a;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 4px 12px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.power-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.power-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 8px rgba(0,0,0,0.3),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.power-button.active {
+  background: linear-gradient(145deg, #4a4a4a, #3a3a3a);
+  border-color: #2563eb;
+  box-shadow: 
+    0 4px 12px rgba(37, 99, 235, 0.3),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.power-icon {
+  font-size: 2rem;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.power-button.active .power-icon {
+  color: #2563eb;
+}
+
+.button-label {
+  font-size: 0.65rem;
+  color: #666;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+.power-button.active .button-label {
+  color: #2563eb;
+}
+
+/* String Reference */
+.string-reference {
+  display: none !important;
+}
+
+/* Tuner Instructions */
+.tuner-instructions {
+  display: none !important;
+}
+
+/* Old tuner styles - remove */
+.tuner-display {
+  display: none;
+}
+
+.string-btn {
+  display: none;
+}
+
+/* Metronome Styles */
+.metronome-display {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.bpm-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.bpm-display span {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #4facfe;
+}
+
+.bpm-display small {
+  font-size: 1rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.metronome-visual {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.beat-indicator {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: all 0.1s ease;
+}
+
+.metronome-controls {
+  margin-bottom: 2rem;
+}
+
+.bpm-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+  margin-bottom: 1rem;
+}
+
+.bpm-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+
+.tempo-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.metronome-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.metronome-actions .btn-3d {
+  flex: 1;
+  justify-content: center;
+  padding: 0.8rem 1rem;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Chord Chart Styles */
+.chord-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.chord-select, .scale-select {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+.chord-select option, .scale-select option {
+  background: #2d3748;
+  color: white;
+}
+
+.chord-display {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.guitar-fretboard, .piano-keyboard {
+  margin-bottom: 1.5rem;
+}
+
+.chord-info {
+  text-align: center;
+}
+
+.chord-info h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #4facfe;
+}
+
+/* Scale Finder Styles */
+.scale-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.scale-display {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+}
+
+.scale-notes-display, .scale-pattern-display {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.scale-notes-display h4, .scale-pattern-display h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #4facfe;
+}
+
+.notes, .pattern {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #43e97b;
+  letter-spacing: 1px;
+}
+
+/* Circle of Fifths Styles */
+.circle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.circle-of-fifths {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  padding: 1rem;
+}
+
+.circle-info {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+}
+
+.circle-info h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #4facfe;
+}
+
+/* BPM Calculator Styles */
+.bpm-calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: white;
+}
+
+.bpm-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 1rem;
+}
+
+.bpm-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.bmp-result {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Excel Template Headers Styles */
+.excel-template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.template-field {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.template-field:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.field-name {
+  color: #667eea;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.field-headers {
+  color: white;
+  opacity: 0.9;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.template-note {
+  background: rgba(67, 233, 123, 0.1);
+  border: 1px solid rgba(67, 233, 123, 0.3);
+  border-radius: 6px;
+  padding: 1rem;
+  color: #43e97b;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Responsive Design for Tools */
+@media (max-width: 1200px) {
+  .tools-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .tools-hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .tools-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .tool-card {
+    padding: 1.5rem;
+  }
+  
+  .tuner-strings {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .chord-selector, .scale-selector {
+    flex-direction: column;
+  }
+  
+  .metronome-actions {
+    flex-direction: column;
+  }
+
+  .clipon-tuner {
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+  
+  .lcd-note-display {
+    font-size: 3rem;
+  }
+  
+  .lcd-note {
+    font-size: 4rem;
+  }
+  
+  .lcd-octave {
+    font-size: 1.5rem;
+  }
+  
+  .tuner-strings {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .tools-hero-title {
+    font-size: 2rem;
+  }
+  
+  .tuner-strings {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .note-display {
+    font-size: 2.5rem;
+  }
+  
+  .bpm-display span {
+    font-size: 3rem;
+  }
+
+  .clipon-tuner {
+    padding: 1rem;
+  }
+  
+  .lcd-display {
+    padding: 1rem;
+  }
+  
+  .lcd-screen {
+    padding: 1rem 0.75rem;
+  }
+  
+  .lcd-note-display {
+    font-size: 2.5rem;
+  }
+  
+  .lcd-note {
+    font-size: 3rem;
+  }
+  
+  .lcd-octave {
+    font-size: 1.25rem;
+  }
+  
+  .lcd-cents {
+    font-size: 1.25rem;
+  }
+  
+  .tuning-bars {
+    height: 24px;
+  }
+  
+  .tuning-bars .bar {
+    width: 10px;
+    height: 6px;
+  }
+  
+  .tuning-bars .bar.center-bar {
+    height: 12px;
+  }
+  
+  .power-button {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .power-icon {
+    font-size: 1.75rem;
+  }
+  
+  .button-label {
+    font-size: 0.6rem;
+  }
+  
+  .tuner-strings {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+  
+  .string-note {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* iPhone 12/13/14/15 narrow widths */
+@media (max-width: 430px) {
+  .tools-hero { padding-top: 72px; }
+  .tools-hero-title { font-size: 2.25rem; }
+  .tools-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .tool-card { padding: 1.25rem; }
+  .tool-icon { width: 56px; height: 56px; border-radius: 14px; font-size: 1.25rem; }
+  .note-display { font-size: 2.25rem; }
+  .bpm-display span { font-size: 2.5rem; }
+  .string-btn { padding: 0.6rem; font-size: 0.95rem; }
+  .tuner-display { width: 220px; height: 220px; }
+  .note-display { font-size: 2rem; }
+  .lcd-screen-sm { width: 240px; height: 160px; padding: 12px; }
+  .lcd-big-note { font-size: 68px; }
+  .tuner-start { padding: 10px 16px; }
+}
+
+/* Button polish */
+.btn-3d {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary-3d { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+.btn-secondary-3d { background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+.btn-3d:active { transform: translateY(1px); }
+
+/* PWA Install Button */
+.install-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--primary-color, #4a90e2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-primary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.install-button:hover {
+    background: var(--primary-color-dark, #357abd);
+}
+
+.install-button i {
+    font-size: 1.1em;
+}
+
+#tuner-tool .tool-header { margin-bottom: 1rem; }
+#tuner-tool .tool-body { padding-top: 0.25rem; }

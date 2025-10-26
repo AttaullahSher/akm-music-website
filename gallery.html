@@ -1,71 +1,226 @@
-<!doctype html>
+k<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Gallery | AKM Music</title>
-  <meta name="description" content="Gallery of AKM Music showroom, instruments, studio and events.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Gallery | AKM Music Abu Dhabi</title>
+  <meta name="description" content="Photo gallery of AKM Music Abu Dhabi: showroom, products, services and events.">
+  <link rel="canonical" href="https://www.akm-music.com/gallery.html">
+  <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="images/favicon.ico">
+  <link rel="stylesheet" href="modern-styles.css">
+  <link rel="stylesheet" href="blue-theme.css">
+  <style>
+    .pagination-section {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: white;
+      padding: 15px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .pagination-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .pagination-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .pagination-info {
+      font-weight: 600;
+      color: #374151;
+      font-size: 16px;
+    }
+  </style>
+  <script src="google-analytics.js?v=20251025"></script>
 </head>
 <body>
-  <!-- Use this header on ALL pages: index.html, gallery.html, contact.html -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="AKM Music Home">
-        <img src="images/logo.png" alt="AKM Music Logo" class="logo">
+        <img src="assets/Logo & Icons/logo.png" alt="AKM Music Logo" class="logo">
+        <div class="brand-text">
+          <span class="brand-title">AKM MUSIC</span>
+        </div>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="contact.html">Contact</a>
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="products.html" class="nav-link">🎵 Products</a>
+        <a href="tools.html" class="nav-link">🛠️ Tools</a>
+        <a href="blog.html" class="nav-link">📝 Blog</a>
+        <a href="about.html" class="nav-link">📖 About</a>
+        <a href="contact.html" class="nav-link">📞 Contact</a>
       </nav>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
+      <div class="header-actions">
+        <div class="cart-icon" onclick="toggleCart()">
+          <img src="assets/Logo & Icons/Cart_icon.png" alt="Cart" class="custom-icon">
+          <span class="cart-badge" id="cartCount">0</span>
+        </div>
+        <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
+
+        <button class="nav-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+      </div>
     </div>
   </header>
 
-  <main class="container gallery-page">
-    <h2>Gallery</h2>
-    <p class="lead">Click image to enlarge. Use pagination to load more images.</p>
-
-    <div id="galleryGrid" class="gallery-grid"></div>
-
-    <div class="pagination" id="pagination"></div>
-  </main>
-
-  <footer class="site-footer container">
-    <div class="footer-social-row">
-      <a href="https://wa.me/97126219929" target="_blank" rel="noopener" class="footer-icon" title="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-      <a href="https://m.facebook.com/akmmusiccenter/" target="_blank" rel="noopener" class="footer-icon" title="Facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="https://www.instagram.com/akm.music" target="_blank" rel="noopener" class="footer-icon" title="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://m.me/akmmusiccenter" target="_blank" rel="noopener" class="footer-icon" title="Messenger">
-        <i class="fab fa-facebook-messenger"></i>
-      </a>
+  <section class="container" style="margin-top: 20px;">
+    <h1>Gallery</h1>
+    <div class="gallery-grid" id="galleryGrid">
+      <img src="assets/Banners_images/sales-1.jpg" alt="Sales" loading="lazy" data-aos="fade-up">
+      <img src="assets/Banners_images/repairs-1.jpg" alt="Repairs" loading="lazy" data-aos="fade-up" data-aos-delay="100">
+      <img src="assets/Banners_images/classes-1.jpg" alt="Classes" loading="lazy" data-aos="fade-up" data-aos-delay="200">
+      <img src="assets/Banners_images/studio-1.jpg" alt="Studio" loading="lazy" data-aos="fade-up" data-aos-delay="300">
+      <img src="assets/Banners_images/piano-1.jpg" alt="Piano" loading="lazy" data-aos="fade-up" data-aos-delay="400">
+      <img src="assets/Banners_images/banner-hero-2.jpg" alt="Showroom" loading="lazy" data-aos="fade-up" data-aos-delay="500">
     </div>
-    <div class="footer-copy">© AKM Music</div>
+    <!-- Pagination Controls -->
+    <div class="pagination-section" style="margin-top: 40px;">
+      <div class="pagination-controls">
+        <button class="pagination-btn" id="galleryPrev"><i class="fas fa-chevron-left"></i> Previous</button>
+        <div class="pagination-info">Page <span id="galleryPageNum">1</span> of <span id="galleryTotalPages">1</span></div>
+        <button class="pagination-btn" id="galleryNext">Next <i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h4>AKM Music</h4>
+        <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <p>📍 Abu Dhabi, UAE</p>
+        <p>📞 +971 2 621 9929</p>
+        <p>📧 Sales@akm-music.com</p>
+      </div>
+    </div>
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p>&copy; 2024 AKM Music Abu Dhabi. All rights reserved.</p>
+    </div>
   </footer>
 
+  <script src="cart.js"></script>
   <script src="script.js"></script>
+  <script src="analytics.js"></script>
+  <script src="pwa.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
-    // List of gallery images (now using 1.jpg, 2.jpg, 3.jpg, ...)
-    const GALLERY_IMAGES = [
-      '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg'
-      // Add more as needed
+    AOS.init({ duration: 700, once: true });
+
+    // Gallery Pagination - Dynamic loading from assets/Gallery folder
+    const galleryImages = [
+      { src: "assets/Gallery/1.jpg", alt: "Gallery Image 1" },
+      { src: "assets/Gallery/2.jpg", alt: "Gallery Image 2" },
+      { src: "assets/Gallery/3.jpg", alt: "Gallery Image 3" },
+      { src: "assets/Gallery/3D274.png", alt: "Gallery Image 3D274" },
+      { src: "assets/Gallery/4.jpg", alt: "Gallery Image 4" },
+      { src: "assets/Gallery/5.jpg", alt: "Gallery Image 5" },
+      { src: "assets/Gallery/6.jpg", alt: "Gallery Image 6" },
+      { src: "assets/Gallery/7.jpg", alt: "Gallery Image 7" },
+      { src: "assets/Gallery/8.jpg", alt: "Gallery Image 8" },
+      { src: "assets/Gallery/9.jpg", alt: "Gallery Image 9" },
+      { src: "assets/Gallery/10.jpg", alt: "Gallery Image 10" },
+      { src: "assets/Gallery/11.jpg", alt: "Gallery Image 11" },
+      { src: "assets/Gallery/12.jpg", alt: "Gallery Image 12" },
+      { src: "assets/Gallery/13.jpg", alt: "Gallery Image 13" },
+      { src: "assets/Gallery/banner-hero-2.jpg", alt: "Banner Hero 2" },
+      { src: "assets/Gallery/banner-hero.jpg", alt: "Banner Hero" },
+      { src: "assets/Gallery/classes-1.jpg", alt: "Classes" },
+      { src: "assets/Gallery/piano-1.jpg", alt: "Piano" },
+      { src: "assets/Gallery/rentals-1.jpg", alt: "Rentals" },
+      { src: "assets/Gallery/repairs-1.jpg", alt: "Repairs" },
+      { src: "assets/Gallery/sales-1.jpg", alt: "Sales" },
+      { src: "assets/Gallery/studio-1.jpg", alt: "Studio" },
+      { src: "assets/Gallery/WhatsApp Image 2025-08-11 at 18.48.31_1ec60b9f.jpg", alt: "WhatsApp Image" }
     ];
-    // initialize gallery pagination (script.js contains gallery renderer function)
-    window.addEventListener('DOMContentLoaded', ()=> {
-      if (window.renderGallery) renderGallery(GALLERY_IMAGES, 15); // 15 images per page
+
+    const imagesPerPage = 6;
+    let currentPage = 1;
+    const totalPages = Math.ceil(galleryImages.length / imagesPerPage);
+
+    function renderGalleryPage(page) {
+      const start = (page - 1) * imagesPerPage;
+      const end = start + imagesPerPage;
+      const pageImages = galleryImages.slice(start, end);
+
+      const galleryGrid = document.getElementById('galleryGrid');
+      galleryGrid.innerHTML = pageImages.map((img, index) => `
+        <img src="${img.src}" alt="${img.alt}" loading="lazy" data-aos="fade-up" data-aos-delay="${index * 100}">
+      `).join('');
+
+      // Re-initialize AOS for new elements
+      AOS.refresh();
+
+      // Update pagination controls
+      document.getElementById('galleryPageNum').textContent = page;
+      document.getElementById('galleryTotalPages').textContent = totalPages;
+      document.getElementById('galleryPrev').disabled = page === 1;
+      document.getElementById('galleryNext').disabled = page === totalPages;
+    }
+
+    // Event listeners for pagination
+    document.getElementById('galleryPrev').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderGalleryPage(currentPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
+
+    document.getElementById('galleryNext').addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderGalleryPage(currentPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    // Initial render
+    renderGalleryPage(currentPage);
   </script>
 </body>
 </html>

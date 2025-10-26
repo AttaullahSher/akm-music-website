@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Us | AKM Music Abu Dhabi - Premium Musical Instruments Since 1984</title>
+  <meta name="description" content="Learn about AKM Music - Abu Dhabi's leading music store since 1984. Premium instruments, professional services, music education, and more.">
+  <meta name="keywords" content="about AKM Music, music store history, Abu Dhabi music, instrument rental, music classes, professional repairs">
+  <link rel="canonical" href="https://www.akm-music.com/about.html">
+  
+  <!-- SEO Meta Tags -->
+  <meta property="og:title" content="About AKM Music Abu Dhabi - Music Store Since 1984">
+  <meta property="og:description" content="Discover our story, services, and passion for music education at AKM Music Abu Dhabi.">
+  <meta property="og:image" content="assets/Banners_images/banner-hero.jpg">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#2563eb">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="modern-styles.css">
+  <link rel="stylesheet" href="blue-theme.css">
+  
+  <!-- PWA & Icons -->
+  <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
+  <link rel="manifest" href="manifest.json">
+  
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .about-hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .about-hero .lead {
+      font-size: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      opacity: 0.95;
+    }
+
+    .about-section {
+      margin-bottom: 80px;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 60px;
+    }
+
+    .about-content.reverse {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .about-content.reverse > *:first-child {
+      order: 2;
+    }
+
+    .about-content.reverse > *:last-child {
+      order: 1;
+    }
+
+    .about-content img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .about-text h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #1f2937;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .about-text p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #4b5563;
+      margin-bottom: 15px;
+    }
+
+    /* Stronger contrast for first About text block */
+    .about-section .about-text {
+      background: #ffffff; /* solid white for maximum contrast */
+      color: #0f172a;
+      padding: 28px;
+      border-radius: 14px;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.10);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+    }
+    .about-section .about-text h2 { color: #0f172a; }
+    @media (max-width: 768px) { .about-section .about-text { padding: 20px; } }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .service-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      border-left: 4px solid #2563eb;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+    }
+
+    .service-card i {
+      font-size: 32px;
+      color: #2563eb;
+      margin-bottom: 15px;
+    }
+
+    .service-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #1f2937;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .gallery-section {
+      background: #f3f4f6;
+      padding: 60px 20px;
+      border-radius: 12px;
+      margin-top: 60px;
+    }
+
+    .gallery-section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 36px;
+      color: #1f2937;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(37, 99, 235, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      opacity: 1;
+    }
+
+    .gallery-item-overlay i {
+      font-size: 32px;
+      color: white;
+    }
+
+    .stats-section {
+      background: white;
+      padding: 32px 20px; /* reduced from 60px to shrink height */
+      margin-bottom: 40px; /* slightly tighter spacing below */
+      border-radius: 20px; /* increased rounding */
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 28px; /* reduced gap to tighten layout */
+      text-align: center;
+    }
+
+    .stat { padding: 12px; }
+    .stat-number { margin-bottom: 6px; }
+
+    .team-section {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      padding: 60px 20px;
+      border-radius: 12px;
+      margin-bottom: 60px;
+    }
+
+    .team-section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 36px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .team-member {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+    }
+
+    .team-member-avatar {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .team-member h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .team-member p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .about-content {
+        grid-template-columns: 1fr;
+      }
+
+      .about-content.reverse {
+        grid-template-columns: 1fr;
+      }
+
+      .about-content.reverse > * {
+        order: unset !important;
+      }
+
+      .about-hero h1 {
+        font-size: 32px;
+      }
+
+      .about-text h2 {
+        font-size: 24px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="AKM Music Home">
+        <img src="assets/Logo & Icons/logo.png" alt="AKM Music Logo" class="logo">
+        <div class="brand-text">
+          <span class="brand-title">AKM MUSIC</span>
+        </div>
+      </a>
+      
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="products.html" class="nav-link">🎵 Products</a>
+        <a href="tools.html" class="nav-link">🛠️ Tools</a>
+        <a href="blog.html" class="nav-link">📝 Blog</a>
+        <a href="about.html" class="nav-link active">📖 About</a>
+        <a href="contact.html" class="nav-link">📞 Contact</a>
+      </nav>
+      
+      <div class="header-actions">
+        <div class="cart-icon" onclick="toggleCart()">
+          <img src="assets/Logo & Icons/Cart_icon.png" alt="Cart" class="custom-icon">
+          <span class="cart-badge" id="cartCount">0</span>
+        </div>
+        <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
+
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Hero -->
+  <section class="about-hero">
+    <div class="container">
+      <h1>About AKM Music</h1>
+      <p class="lead">Leading music store in Abu Dhabi since 1984, dedicated to excellence in instruments, education, and services</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <!-- Our Story Section -->
+    <section class="about-section">
+      <div class="about-content">
+        <div class="about-text">
+          <h2>Our Story</h2> 
+          <p>Founded in 1984 by Ajmal Khan Mohammed, AKM Music has been a cornerstone of Abu Dhabi's music community for nearly four decades. What started as a small music shop has evolved into a comprehensive music center offering a wide range of services.</p>
+          <p>Our mission is to inspire musicians of all levels by providing premium instruments, professional services, and quality music education. We believe that music has the power to transform lives, and we're committed to making it accessible to everyone.</p>
+          <p>Today, AKM Music stands as one of the most trusted names in the Gulf for musical instruments, repairs, rentals, and music classes.</p>
+        </div>
+        <img src="assets/Banners_images/banner-hero.jpg" alt="AKM Music Store">
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number">40+</div>
+          <div class="stat-label">Years of Excellence</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">10,000+</div>
+          <div class="stat-label">Happy Customers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Products In Stock</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="about-section">
+      <h2 style="text-align: center; font-size: 36px; margin-bottom: 40px; color: #1f2937;">Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class="fas fa-guitar"></i>
+          <h3>Premium Instruments</h3>
+          <p>Curated collection of new and pre-owned instruments from top brands worldwide. From beginner to professional level.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-tools"></i>
+          <h3>Professional Repairs</h3>
+          <p>Expert repair and maintenance services for all types of instruments. Quick turnaround and quality workmanship.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-book"></i>
+          <h3>Music Classes</h3>
+          <p>Professional music education from experienced instructors. Individual and group lessons available for all ages.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-microphone"></i>
+          <h3>Studio Rental</h3>
+          <p>State-of-the-art recording and rehearsal studios equipped with professional equipment and sound systems.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-share-alt"></i>
+          <h3>Instrument Rental</h3>
+          <p>Affordable rental options for students and professionals. Perfect for trying instruments before buying.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-handshake"></i>
+          <h3>Trade-In Program</h3>
+          <p>Get fair value for your used instruments. Trade up to newer models with our competitive trade-in program.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+      <h2>Meet Our Team</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="team-member-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3>Ajmal Khan Mohammed</h3>
+          <p>Founder & MD</p>
+        </div>
+        <div class="team-member">
+          <div class="team-member-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3>Muhammed Quresh</h3>
+          <p>Manager ZAK Al Karamah</p>
+        </div>
+        <div class="team-member">
+          <div class="team-member-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3>Nizar Ali</h3>
+          <p>Manager ZAK Deira</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+      <h2>Gallery</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="assets/Banners_images/sales-1.jpg" alt="Store Sales Area">
+          <div class="gallery-item-overlay">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Banners_images/repairs-1.jpg" alt="Repair Services">
+          <div class="gallery-item-overlay">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Banners_images/classes-1.jpg" alt="Music Classes">
+          <div class="gallery-item-overlay">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Banners_images/studio-1.jpg" alt="Recording Studio">
+          <div class="gallery-item-overlay">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Banners_images/rentals-1.jpg" alt="Instrument Rentals">
+          <div class="gallery-item-overlay">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Banners_images/banner-hero-2.jpg" alt="Store Front">
+          <div class="gallery-item-overlay">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 60px 20px; border-radius: 12px; text-align: center; margin-bottom: 60px;">
+      <h2 style="font-size: 32px; margin-bottom: 20px;">Ready to Start Your Musical Journey?</h2>
+      <p style="font-size: 18px; margin-bottom: 30px; opacity: 0.95;">Visit us today and discover why we're Abu Dhabi's trusted music destination.</p>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <a href="products.html" class="btn" style="background: white; color: #2563eb; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600; display: inline-block;">
+          <i class="fas fa-shopping-bag"></i> Shop Now
+        </a>
+        <a href="contact.html" class="btn" style="background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: 600; display: inline-block; border: 2px solid white;">
+          <i class="fas fa-phone"></i> Contact Us
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h4>AKM Music</h4>
+        <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <p>📍 Abu Dhabi, UAE</p>
+        <p>📞 +971 2 621 9929</p>
+        <p>📧 Sales@akm-music.com</p>
+      </div>
+    </div>
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p>&copy; 2024 AKM Music Abu Dhabi. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="google-analytics.js?v=20251025"></script>
+  <script src="cart.js?v=20251025"></script>
+  <script src="script.js?v=20251025"></script>
+  <script src="analytics.js?v=20251025"></script>
+  <script src="pwa.js?v=20251025"></script>
+</body>
+</html>

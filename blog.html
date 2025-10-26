@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blog | AKM Music Abu Dhabi - Music Tips, News & Educational Content</title>
+  <meta name="description" content="Explore our blog for music tips, instrument guides, industry news, and educational content from AKM Music Abu Dhabi's music experts.">
+  <meta name="keywords" content="music blog, instrument tips, music education, Abu Dhabi music, piano guides, guitar tips, drum tutorials">
+  <link rel="canonical" href="https://www.akm-music.com/blog.html">
+  
+  <!-- Favicon & PWA -->
+  <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Enhanced Meta Tags -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Enhanced Open Graph -->
+  <meta property="og:title" content="Music Blog | AKM Music Abu Dhabi">
+  <meta property="og:description" content="🎵 Discover music tips, instrument guides, and educational content from Abu Dhabi's premier music store since 1984.">
+  <meta property="og:image" content="assets/Banners_images/banner-hero.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.akm-music.com/blog.html">
+  <meta property="og:site_name" content="AKM Music Abu Dhabi">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css?v=20251025">
+  <link rel="stylesheet" href="modern-styles.css?v=20251025">
+  <link rel="stylesheet" href="blue-theme.css?v=20251025">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="AKM Music Home">
+        <img src="assets/Logo & Icons/logo.png" alt="AKM Music Logo" class="logo">
+        <div class="brand-text">
+          <span class="brand-title">AKM MUSIC</span>
+        </div>
+      </a>
+        <nav class="nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="products.html" class="nav-link">🎵 Products</a>
+        <a href="tools.html" class="nav-link">🛠️ Tools</a>
+        <a href="blog.html" class="nav-link active">📝 Blog</a>
+        <a href="about.html" class="nav-link">📖 About</a>
+        <a href="contact.html" class="nav-link">📞 Contact</a>
+      </nav>
+      
+      <div class="header-actions">
+        <div class="cart-icon" onclick="toggleCart()">
+          <img src="assets/Logo & Icons/Cart_icon.png" alt="Cart" class="custom-icon">
+          <span class="cart-badge" id="cartCount">0</span>
+        </div>
+
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Blog Hero Section -->
+  <section class="blog-hero">
+    <div class="hero-background">
+      <div class="hero-gradient"></div>
+      <div class="hero-particles"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title animate__animated animate__fadeInUp">
+          <span class="gradient-text">Music Blog</span>
+        </h1>
+        <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+          Expert tips, educational content, and the latest music industry insights from Abu Dhabi's premier music store
+        </p>
+        <div class="hero-search animate__animated animate__fadeInUp animate__delay-2s">
+          <input type="text" id="blogSearch" placeholder="🔍 Search articles..." onkeyup="searchBlogPosts()">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Categories Filter -->
+  <section class="blog-filters">
+    <div class="container">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <button class="filter-btn active" onclick="filterPosts('all')">All</button>
+          <button class="filter-btn" onclick="filterPosts('guides')">🎯 Guides</button>
+          <button class="filter-btn" onclick="filterPosts('news')">📰 News</button>
+          <button class="filter-btn" onclick="filterPosts('tips')">💡 Tips</button>
+          <button class="filter-btn" onclick="filterPosts('education')">🎓 Education</button>
+        </div>
+        <div class="sort-group">
+          <select id="sortBy" onchange="sortBlogPosts()">
+            <option value="date">Latest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="title">Title A-Z</option>
+            <option value="category">By Category</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Regular Blog Posts Grid -->
+  <section class="blog-posts">
+    <div class="container">
+      <div class="posts-grid" id="postsGrid"></div>
+      <!-- Pagination (Prev/Next) -->
+      <section class="pagination-section">
+        <div class="pagination-controls" id="blogPagination">
+          <button class="pagination-btn" id="blogPrev"><i class="fas fa-chevron-left"></i> Previous</button>
+          <div class="pagination-info">Page <span id="blogPageNum">1</span> of <span id="blogTotalPages">1</span></div>
+          <button class="pagination-btn" id="blogNext">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- Newsletter Subscription -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-card">
+        <div class="newsletter-content">
+          <h3>Stay Updated with Music Tips & News</h3>
+          <p>Subscribe to our newsletter for weekly music tips, instrument guides, and exclusive offers from AKM Music.</p>
+          <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">
+              <i class="fas fa-paper-plane"></i>
+              Subscribe
+            </button>
+          </form>
+        </div>
+        <div class="newsletter-visual">
+          <i class="fas fa-music newsletter-icon"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Post Modal -->
+  <div class="blog-modal" id="blogModal">
+    <div class="modal-overlay" onclick="closeBlogPost()"></div>
+    <div class="modal-container">
+      <div class="modal-header">
+        <button class="modal-close" onclick="closeBlogPost()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-content" id="modalContent">
+        <!-- Dynamic content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h4>AKM Music</h4>
+        <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <p>📍 Abu Dhabi, UAE</p>
+        <p>📞 +971 2 621 9929</p>
+        <p>📧 Sales@akm-music.com</p>
+      </div>
+    </div>
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <p>&copy; 2024 AKM Music Abu Dhabi. All rights reserved.</p>
+    </div>
+  </footer>
+  <!-- Scripts -->
+  <script src="google-analytics.js?v=20251025"></script>
+  <script src="cart.js?v=20251025"></script>
+  <script src="script.js?v=20251025"></script>
+  <script src="analytics.js?v=20251025"></script>
+  <script src="blog.js?v=20251025"></script>
+  <script src="pwa.js?v=20251025"></script>
+
+  <!-- Schema Markup for Blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "AKM Music Blog",
+    "description": "Music tips, instrument guides, and educational content from Abu Dhabi's premier music store since 1984",
+    "url": "https://www.akm-music.com/blog.html",
+    "publisher": {
+      "@type": "MusicStore",
+      "name": "AKM Music (Ajmal Khan Mohammed Music Centre)",
+      "url": "https://www.akm-music.com",
+      "telephone": "+97126219929",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Al Dana, Zone 1",
+        "addressLocality": "Abu Dhabi",
+        "addressCountry": "AE"
+      }
+    }
+  }
+  </script>
+</body>
+</html>
