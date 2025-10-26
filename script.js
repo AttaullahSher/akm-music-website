@@ -35,9 +35,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
   });
 
   const navToggle = document.querySelector('.nav-toggle');
-  if (navToggle) {
+  const nav = document.querySelector('.nav');
+  if (navToggle && nav) {
     navToggle.addEventListener('click', function() {
-      document.querySelector('.nav')?.classList.toggle('nav-open');
+      nav.classList.toggle('nav-open');
     });
   }
 
