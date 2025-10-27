@@ -85,15 +85,15 @@ function renderProductCard(product, container) {
     </div>
     <div class="product-info">
       <div class="product-text">
-        <p class="product-sku">${product.id || 'N/A'}</p>
-        <p class="product-brand"><strong>${product.brand || 'Brand'}</strong></p>
-        <h3 class="product-name">${product.name || 'Product Name'}</h3>
+        <h3 class="product-sku">${product.id || 'N/A'}</h3>
+        <p class="product-brand">${product.brand || 'Brand'}</p>
+        <p class="product-name">${product.name || 'Product Name'}</p>
       </div>
       <div class="product-footer">
         <span class="price-current">${priceDisplay}</span>
         <button class="btn-cart-icon" title="Add to Cart"
           onclick="addProductToCart('${product.id}', '${(product.name||'').replace(/'/g, "\\'")}', ${price}, '${finalImage}', '${product.brand || 'AKM Music'}')">
-          <img src="assets/Logo & Icons/cart_plus.png" alt="Add to cart">
+          <i class="fas fa-shopping-cart"></i>
         </button>
       </div>
     </div>
@@ -263,8 +263,25 @@ function setupProductModals() {
 // Setup search functionality
 function setupSearchFunctionality() {
   const searchInput = document.getElementById('productSearch');
+  const searchClear = document.getElementById('searchClear');
+  
   if (searchInput) {
-    searchInput.addEventListener('input', debounce(searchProducts, 300));
+    searchInput.addEventListener('input', function() {
+      if (searchClear) {
+        searchClear.style.display = this.value ? 'flex' : 'none';
+      }
+      debounce(searchProducts, 300)();
+    });
+  }
+  
+  if (searchClear) {
+    searchClear.addEventListener('click', function() {
+      if (searchInput) {
+        searchInput.value = '';
+        this.style.display = 'none';
+        searchProducts();
+      }
+    });
   }
 }
 
@@ -278,13 +295,13 @@ function searchProducts() {
   productCards.forEach(card => {
     const title = card.querySelector('.product-name')?.textContent.toLowerCase() || '';
     const brand = card.querySelector('.product-brand')?.textContent.toLowerCase() || '';
-    // description may not be present on compact cards; ignore safely
-    const match = title.includes(searchTerm) || brand.includes(searchTerm);
+    const sku = card.querySelector('.product-sku')?.textContent.toLowerCase() || '';
+    const match = title.includes(searchTerm) || brand.includes(searchTerm) || sku.includes(searchTerm);
     card.style.display = match ? 'block' : 'none';
     if (match) visibleCount++;
   });
   
-  updateProductCount(visibleCount, 'search results');
+  updateProductCount(visibleCount, searchTerm ? 'search results' : 'products');
 }
 
 // Setup sorting options

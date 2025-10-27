@@ -60,13 +60,18 @@ class MusicTools {
     async startTuner() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
-                audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: false } 
+                audio: { 
+                    echoCancellation: false, 
+                    autoGainControl: false, 
+                    noiseSuppression: false,
+                    sampleRate: 44100
+                } 
             });
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
             this.microphone = this.audioContext.createMediaStreamSource(stream);
             this.analyser = this.audioContext.createAnalyser();
-            this.analyser.fftSize = 8192;
-            this.analyser.smoothingTimeConstant = 0.3;
+            this.analyser.fftSize = 16384; // Increased for better low frequency detection
+            this.analyser.smoothingTimeConstant = 0.4;
             this.microphone.connect(this.analyser);
 
             // Initialize compact LCD UI state
@@ -126,18 +131,21 @@ class MusicTools {
     }
 
     autoCorrelate(buffer, sampleRate) {
-        // Improved autocorrelation for better pitch detection
+        // Enhanced autocorrelation with better noise filtering
         let SIZE = buffer.length;
         let rms = 0;
         
+        // Calculate RMS (signal strength)
         for (let i = 0; i < SIZE; i++) {
             rms += buffer[i] * buffer[i];
         }
         rms = Math.sqrt(rms / SIZE);
         
-        if (rms < 0.01) return -1; // Not enough signal
+        // Require stronger signal for better accuracy
+        if (rms < 0.015) return -1; // Increased threshold
         
-        let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+        // Find center of waveform
+        let r1 = 0, r2 = SIZE - 1, thres = 0.15;
         for (let i = 0; i < SIZE / 2; i++) {
             if (Math.abs(buffer[i]) < thres) { r1 = i; break; }
         }
@@ -148,6 +156,9 @@ class MusicTools {
         buffer = buffer.slice(r1, r2);
         SIZE = buffer.length;
         
+        if (SIZE < 100) return -1; // Buffer too small
+        
+        // Autocorrelation
         let c = new Array(SIZE).fill(0);
         for (let i = 0; i < SIZE; i++) {
             for (let j = 0; j < SIZE - i; j++) {
@@ -155,9 +166,11 @@ class MusicTools {
             }
         }
         
+        // Find first dip
         let d = 0;
-        while (c[d] > c[d + 1]) d++;
+        while (d < SIZE - 1 && c[d] > c[d + 1]) d++;
         
+        // Find maximum after first dip
         let maxval = -1, maxpos = -1;
         for (let i = d; i < SIZE; i++) {
             if (c[i] > maxval) {
@@ -166,15 +179,24 @@ class MusicTools {
             }
         }
         
+        if (maxpos === -1 || maxval < 0.1) return -1;
+        
         let T0 = maxpos;
         
-        // Parabolic interpolation for better accuracy
-        let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
-        let a = (x1 + x3 - 2 * x2) / 2;
-        let b = (x3 - x1) / 2;
-        if (a) T0 = T0 - b / (2 * a);
+        // Parabolic interpolation for sub-sample accuracy
+        if (T0 > 0 && T0 < SIZE - 1) {
+            let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+            let a = (x1 + x3 - 2 * x2) / 2;
+            let b = (x3 - x1) / 2;
+            if (a) T0 = T0 - b / (2 * a);
+        }
         
-        return sampleRate / T0;
+        let frequency = sampleRate / T0;
+        
+        // Filter out unrealistic frequencies
+        if (frequency < 40 || frequency > 2000) return -1;
+        
+        return frequency;
     }
 
     frequencyToNote(frequency) {
@@ -257,20 +279,46 @@ class MusicTools {
     }
 
     playClick() {
-        // Create audio context for click sound
+        // Create realistic mechanical metronome click sound
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = ctx.createOscillator();
-        const gain = ctx.createGain();
         
-        oscillator.connect(gain);
-        gain.connect(ctx.destination);
+        // Create two oscillators for a more mechanical sound
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        const gain2 = ctx.createGain();
+        const masterGain = ctx.createGain();
         
-        oscillator.frequency.setValueAtTime(1000, ctx.currentTime);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        // Connect audio graph
+        osc1.connect(gain1);
+        osc2.connect(gain2);
+        gain1.connect(masterGain);
+        gain2.connect(masterGain);
+        masterGain.connect(ctx.destination);
         
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.1);
+        // High frequency click (wood sound)
+        osc1.frequency.setValueAtTime(2000, ctx.currentTime);
+        osc1.type = 'square';
+        gain1.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03);
+        
+        // Lower frequency thump (mechanical sound)
+        osc2.frequency.setValueAtTime(100, ctx.currentTime);
+        osc2.type = 'sine';
+        gain2.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        
+        // Master volume
+        masterGain.gain.setValueAtTime(0.3, ctx.currentTime);
+        
+        // Start and stop
+        osc1.start(ctx.currentTime);
+        osc1.stop(ctx.currentTime + 0.03);
+        osc2.start(ctx.currentTime);
+        osc2.stop(ctx.currentTime + 0.05);
+        
+        // Clean up context after sound finishes
+        setTimeout(() => ctx.close(), 100);
     }
 
     playTone(frequency, duration) {

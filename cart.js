@@ -195,9 +195,7 @@ class ShoppingCart {
                 </div>
                 <div class="cart-footer">
                     <div class="cart-total-section">
-                        <div class="total-row">
-                            <span>Total: <strong id="cartTotal">0.00 AED</strong></span>
-                        </div>
+                        <div id="cartTotal"></div>
                     </div>
                     <div class="cart-actions">
                         <button class="btn-3d btn-secondary-3d" onclick="cart.clearCart()">
@@ -217,24 +215,34 @@ class ShoppingCart {
     // Toggle cart modal
     toggleCart() {
         const modal = document.getElementById('cartModal');
+        const isModalVisible = modal.style.display === 'flex';
+        
+        if (isModalVisible) {
+            modal.style.display = 'none';
+            return;
+        }
+        
+        // Update UI before showing
+        this.updateCartUI();
+        
         const isEmpty = this.items.length === 0;
-        
-        modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-        
-        // Show/hide empty state
         const cartItems = document.getElementById('cartItems');
         const cartEmpty = document.querySelector('.cart-empty');
         const cartFooter = document.querySelector('.cart-footer');
         
+        // Show/hide empty state
         if (isEmpty) {
-            cartItems.style.display = 'none';
-            cartEmpty.style.display = 'block';
-            cartFooter.style.display = 'none';
+            if (cartItems) cartItems.style.display = 'none';
+            if (cartEmpty) cartEmpty.style.display = 'block';
+            if (cartFooter) cartFooter.style.display = 'none';
         } else {
-            cartItems.style.display = 'block';
-            cartEmpty.style.display = 'none';
-            cartFooter.style.display = 'block';
+            if (cartItems) cartItems.style.display = 'block';
+            if (cartEmpty) cartEmpty.style.display = 'none';
+            if (cartFooter) cartFooter.style.display = 'block';
         }
+        
+        // Show modal
+        modal.style.display = 'flex';
     }
 
     // Clear cart

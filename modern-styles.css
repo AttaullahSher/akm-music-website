@@ -1184,6 +1184,13 @@ fc-actions {
 
 .cart-total-section {
   margin-bottom: 1.5rem;
+  color: white;
+}
+
+.cart-total-section > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .total-row {
@@ -1191,7 +1198,7 @@ fc-actions {
   justify-content: space-between;
   align-items: center;
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .total-row strong {
