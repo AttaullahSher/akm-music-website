@@ -1316,6 +1316,16 @@ input[type="time"] {
   }
 }
 
+@media (max-width: 400px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 350px) {
+  html { font-size: 14px; }
+}
+
 /* 404 Error Page Styles */
 .error-page {
   min-height: 70vh;
@@ -1510,3 +1520,71 @@ img.loaded {
  table { border-collapse: collapse; }
  table thead th, table tbody td { border-left: 1px solid rgba(0,0,0,0.06); border-right: 1px solid rgba(0,0,0,0.06); }
  table { margin-left: 8px; margin-right: 8px; }
+
+/* Blog Read More Expansion */
+.blog-card {
+  position: relative;
+  overflow: hidden;
+}
+.blog-readmore-expanded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30,41,59,0.92); /* dark, semi-transparent */
+  color: #fff;
+  z-index: 10;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  animation: fadeIn 0.3s;
+  scrollbar-width: thin;
+  scrollbar-color: #2563eb #222c3b;
+}
+.blog-readmore-expanded::-webkit-scrollbar {
+  width: 6px;
+  background: #222c3b;
+}
+.blog-readmore-expanded::-webkit-scrollbar-thumb {
+  background: #2563eb;
+  border-radius: 6px;
+}
+.blog-readmore-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.blog-readmore-close:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+@media (max-width: 600px) {
+  .blog-readmore-expanded {
+    padding: 14px 6px;
+    font-size: 0.98rem;
+  }
+  .blog-readmore-close {
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+}

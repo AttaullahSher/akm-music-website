@@ -1,0 +1,3 @@
+- [ ] Add all unstaged changes to staging area
+- [ ] Commit changes with descriptive message
+- [ ] Push changes to remote repository

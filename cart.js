@@ -119,24 +119,18 @@ class ShoppingCart {
         if (cartItems) {
             cartItems.innerHTML = this.items.map(item => `
                 <div class="cart-item" data-sku="${item.sku}">
-                    <div class="cart-item-image">
-                        <img src="${item.image}" alt="${item.name}" loading="lazy">
-                    </div>
-                    <div class="cart-item-details">
-                        <h4>${item.name}</h4>
-                        <p class="cart-item-brand">${item.brand}</p>
-                        <p class="cart-item-price">${item.price} AED</p>
-                    </div>
+                    <div class="cart-item-sku">${item.sku}</div>
                     <div class="cart-item-controls">
                         <div class="quantity-controls">
                             <button onclick="cart.updateQuantity('${item.sku}', ${item.quantity - 1})">-</button>
                             <span>${item.quantity}</span>
                             <button onclick="cart.updateQuantity('${item.sku}', ${item.quantity + 1})">+</button>
                         </div>
-                        <button class="remove-btn" onclick="cart.removeItem('${item.sku}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
                     </div>
+                    <div class="cart-item-price">${item.price} AED</div>
+                    <button class="remove-btn" onclick="cart.removeItem('${item.sku}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             `).join('');
         }
