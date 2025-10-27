@@ -128,9 +128,6 @@ class ShoppingCart {
                         </div>
                     </div>
                     <div class="cart-item-price">${item.price} AED</div>
-                    <button class="remove-btn" onclick="cart.removeItem('${item.sku}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
                 </div>
             `).join('');
         }

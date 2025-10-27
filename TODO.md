@@ -1,3 +1,4 @@
-- [ ] Add all unstaged changes to staging area
-- [ ] Commit changes with descriptive message
-- [ ] Push changes to remote repository
+- [x] Fix cart display to show only SKU, quantity controls (+/-), price, and totals
+- [x] Change home screen services buttons to redirect to WhatsApp instead of contact page
+- [ ] Test cart functionality
+- [ ] Test service button redirects
