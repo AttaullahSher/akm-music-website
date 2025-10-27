@@ -118,16 +118,29 @@ class ShoppingCart {
         
         if (cartItems) {
             cartItems.innerHTML = this.items.map(item => `
-                <div class="cart-item" data-sku="${item.sku}">
-                    <div class="cart-item-sku">${item.sku}</div>
+                <div class="cart-item" data-sku="${item.sku}" role="listitem">
+                    <div class="cart-item-info">
+                        <div class="cart-item-sku">${item.sku}</div>
+                        <div class="cart-item-name">${item.name || 'Product'}</div>
+                    </div>
                     <div class="cart-item-controls">
                         <div class="quantity-controls">
-                            <button onclick="cart.updateQuantity('${item.sku}', ${item.quantity - 1})">-</button>
-                            <span>${item.quantity}</span>
-                            <button onclick="cart.updateQuantity('${item.sku}', ${item.quantity + 1})">+</button>
+                            <button onclick="cart.updateQuantity('${item.sku}', ${item.quantity - 1})" aria-label="Decrease quantity for ${item.name || item.sku}" class="quantity-btn quantity-minus">
+                                <i class="fas fa-minus" aria-hidden="true"></i>
+                            </button>
+                            <span class="quantity-value" aria-label="${item.quantity} items">${item.quantity}</span>
+                            <button onclick="cart.updateQuantity('${item.sku}', ${item.quantity + 1})" aria-label="Increase quantity for ${item.name || item.sku}" class="quantity-btn quantity-plus">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="cart-item-price">${item.price} AED</div>
+                    <div class="cart-item-price">
+                        <span class="price-amount">${item.price} AED</span>
+                        <span class="price-subtotal">(${(parseFloat(item.price) * item.quantity).toFixed(2)} AED)</span>
+                    </div>
+                    <button onclick="cart.removeItem('${item.sku}')" class="cart-item-remove" aria-label="Remove ${item.name || item.sku} from cart">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                    </button>
                 </div>
             `).join('');
         }
@@ -157,49 +170,65 @@ class ShoppingCart {
     // Create cart modal
     createCartModal() {
         if (document.getElementById('cartModal')) return;
-        
+
         const modal = document.createElement('div');
         modal.id = 'cartModal';
         modal.className = 'cart-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-labelledby', 'cart-title');
         modal.innerHTML = `
             <div class="cart-modal-content glass-container">
                 <div class="cart-header">
-                    <h3><i class="fas fa-shopping-cart"></i> Shopping Cart</h3>
-                    <button class="cart-close" onclick="cart.toggleCart()">
-                        <i class="fas fa-times"></i>
+                    <h3 id="cart-title"><i class="fas fa-shopping-cart" aria-hidden="true"></i> Shopping Cart</h3>
+                    <button class="cart-close" onclick="cart.toggleCart()" aria-label="Close cart">
+                        <i class="fas fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div class="cart-profile">
                     <div class="profile-fields">
-                        <input id="customerName" type="text" placeholder="Your Name" value="${this.customer.name || ''}" />
-                        <input id="customerArea" type="text" placeholder="Your Area/Location" value="${this.customer.area || ''}" />
-                        <button class="btn-3d btn-secondary-3d" onclick="cart.saveCustomerProfile(document.getElementById('customerName').value, document.getElementById('customerArea').value)"><i class="fas fa-save"></i> Save</button>
+                        <div class="input-group">
+                            <label for="customerName" class="sr-only">Your Name</label>
+                            <input id="customerName" type="text" placeholder="Your Name" value="${this.customer.name || ''}" />
+                        </div>
+                        <div class="input-group">
+                            <label for="customerArea" class="sr-only">Your Area/Location</label>
+                            <input id="customerArea" type="text" placeholder="Your Area/Location" value="${this.customer.area || ''}" />
+                        </div>
+                        <button class="btn-3d btn-secondary-3d" onclick="cart.saveCustomerProfile(document.getElementById('customerName').value, document.getElementById('customerArea').value)">
+                            <i class="fas fa-save" aria-hidden="true"></i> Save Profile
+                        </button>
                     </div>
                 </div>
                 <div class="cart-body">
-                    <div id="cartItems"></div>
-                    <div class="cart-empty" style="display: none;">
-                        <i class="fas fa-shopping-cart"></i>
-                        <p>Your cart is empty</p>
-                        <a href="products.html" class="btn-3d btn-primary-3d">Browse Products</a>
+                    <div id="cartItems" class="cart-items-list" role="list" aria-label="Cart items"></div>
+                    <div class="cart-empty" style="display: none;" role="status" aria-live="polite">
+                        <div class="empty-icon">
+                            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                        </div>
+                        <h4>Your cart is empty</h4>
+                        <p>Add some products to get started!</p>
+                        <a href="products.html" class="btn-3d btn-primary-3d">
+                            <i class="fas fa-store" aria-hidden="true"></i> Browse Products
+                        </a>
                     </div>
                 </div>
                 <div class="cart-footer">
                     <div class="cart-total-section">
-                        <div id="cartTotal"></div>
+                        <div id="cartTotal" class="cart-totals"></div>
                     </div>
                     <div class="cart-actions">
-                        <button class="btn-3d btn-secondary-3d" onclick="cart.clearCart()">
-                            <i class="fas fa-trash"></i> Clear Cart
+                        <button class="btn-3d btn-secondary-3d" onclick="cart.clearCart()" aria-label="Clear all items from cart">
+                            <i class="fas fa-trash" aria-hidden="true"></i> Clear Cart
                         </button>
-                        <button class="btn-3d btn-primary-3d" onclick="cart.orderViaWhatsApp()">
-                            <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                        <button class="btn-3d btn-primary-3d" onclick="cart.orderViaWhatsApp()" aria-label="Place order via WhatsApp">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i> Order via WhatsApp
                         </button>
                     </div>
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(modal);
     }
 

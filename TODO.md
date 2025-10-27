@@ -1,4 +1,4 @@
-- [x] Fix cart display to show only SKU, quantity controls (+/-), price, and totals
-- [x] Change home screen services buttons to redirect to WhatsApp instead of contact page
-- [ ] Test cart functionality
-- [ ] Test service button redirects
+- [ ] Redesign cart modal view for better appearance and mobile responsiveness
+- [ ] Add proper CSS styling for cart items layout
+- [ ] Fix mobile edge-to-edge issue with padding/margins
+- [ ] Test cart on mobile and desktop
