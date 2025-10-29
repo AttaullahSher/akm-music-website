@@ -389,18 +389,22 @@ class ShoppingCart {
 
     // Track events (integrate with your analytics)
     trackEvent(eventName, properties = {}) {
-        // Google Analytics 4 / GA4
-        if (typeof gtag !== 'undefined') {
-            gtag('event', eventName, properties);
+        try {
+            // Google Analytics 4 / GA4
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, properties);
+            }
+
+            // Facebook Pixel
+            if (typeof fbq !== 'undefined') {
+                fbq('track', eventName, properties);
+            }
+
+            // Console log for development
+            console.log('Cart Event:', eventName, properties);
+        } catch (error) {
+            console.warn('Analytics tracking error:', error);
         }
-        
-        // Facebook Pixel
-        if (typeof fbq !== 'undefined') {
-            fbq('track', eventName, properties);
-        }
-        
-        // Console log for development
-        console.log('Cart Event:', eventName, properties);
     }
 }
 

@@ -128,14 +128,16 @@ function toggleSaveProduct(id, name) {
 
 // Add product to cart
 function addProductToCart(id, name, price, image, brand) {
-  if (typeof cart !== 'undefined') {
+  if (typeof cart !== 'undefined' && cart && typeof cart.addItem === 'function') {
     cart.addItem({
       sku: id,
-      name,
-      price,
+      name: name || 'Product',
+      price: parseFloat(price) || 0,
       image: image || 'assets/Products_images/DEMO001.jpg', // fallback
       brand: brand || 'AKM Music'
     });
+  } else {
+    console.warn('Cart not available, cannot add item:', id);
   }
 }
 
@@ -264,13 +266,15 @@ function setupProductModals() {
 function setupSearchFunctionality() {
   const searchInput = document.getElementById('productSearch');
   const searchClear = document.getElementById('searchClear');
-  
+
   if (searchInput) {
     searchInput.addEventListener('input', function() {
       if (searchClear) {
         searchClear.style.display = this.value ? 'flex' : 'none';
       }
-      debounce(searchProducts, 300)();
+      // Debounce search to avoid excessive calls
+      clearTimeout(searchInput._debounceTimer);
+      searchInput._debounceTimer = setTimeout(searchProducts, 300);
     });
   }
   
@@ -343,7 +347,8 @@ function getProductPrice(card) {
   if (priceElement) {
     const text = priceElement.textContent;
     if (text.includes('Price on Request')) return 0;
-    return parseInt(text.replace(/[^0-9]/g, ''));
+    const priceMatch = text.match(/[\d,]+/);
+    return priceMatch ? parseInt(priceMatch[0].replace(/,/g, '')) : 0;
   }
   return 0;
 }
@@ -482,5 +487,7 @@ function changePage(direction) {
 
   if (newPage >= 1 && newPage <= totalPages) {
     renderPaginatedProducts(newPage);
+  } else {
+    console.log('Invalid page change:', newPage, 'Total pages:', totalPages);
   }
 }

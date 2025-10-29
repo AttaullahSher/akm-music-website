@@ -19,12 +19,16 @@ class MusicTools {
         const now = Date.now();
         if (now - this.lastTunerClick < 300) return; // Debounce 300ms
         this.lastTunerClick = now;
-        
-        if (window.gtag) {
-            window.gtag('event', eventName, {
-                ...params,
-                timestamp: new Date().toISOString()
-            });
+
+        try {
+            if (window.gtag) {
+                window.gtag('event', eventName, {
+                    ...params,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        } catch (error) {
+            console.warn('Analytics tracking error:', error);
         }
     }
 
@@ -37,54 +41,112 @@ class MusicTools {
         this.createToolsStyles();
     }
 
-    // Guitar Tuner Implementation
+    // Enhanced Guitar Tuner Implementation - iPhone Optimized
     async setupTuner() {
         const startButton = document.getElementById('startTuner');
         if (!startButton) return;
 
-        startButton.addEventListener('click', async () => {
+        // iPhone-specific handling
+        this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        this.audioContextUnlocked = false;
+
+        startButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+
             if (this.microphone) {
                 this.stopTuner();
                 startButton.classList.remove('active');
-                startButton.querySelector('.tuner-start-label').textContent = 'Start Tuner';
+                startButton.querySelector('.tuner-start-label').textContent = '🎸 Start Tuner';
+                this.updateTunerStatus('Tap to start tuning', 'ready');
                 this.trackEvent('stop_tuner');
             } else {
-                await this.startTuner();
-                startButton.classList.add('active');
-                startButton.querySelector('.tuner-start-label').textContent = 'Stop Tuner';
-                this.trackEvent('start_tuner');
+                try {
+                    await this.startTuner();
+                    startButton.classList.add('active');
+                    startButton.querySelector('.tuner-start-label').textContent = '⏹️ Stop Tuner';
+                    this.updateTunerStatus('🎵 Listening... Play a note', 'listening');
+                    this.trackEvent('start_tuner');
+                } catch (error) {
+                    console.error('Tuner start error:', error);
+                    this.showTunerError('Unable to access microphone. Please check permissions and try again.');
+                }
             }
         });
+
+        // Add visual feedback for iOS
+        if (this.isIOS) {
+            this.addIOSAudioHint();
+        }
     }
 
     async startTuner() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                audio: { 
-                    echoCancellation: false, 
-                    autoGainControl: false, 
+            // iOS-specific audio context handling
+            if (this.isIOS && !this.audioContextUnlocked) {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // Unlock audio context on iOS
+                const unlock = async () => {
+                    await this.audioContext.resume();
+                    this.audioContextUnlocked = true;
+                    document.removeEventListener('touchstart', unlock);
+                    document.removeEventListener('touchend', unlock);
+                };
+                document.addEventListener('touchstart', unlock, { once: true });
+                document.addEventListener('touchend', unlock, { once: true });
+            }
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: false,
+                    autoGainControl: false,
                     noiseSuppression: false,
-                    sampleRate: 44100
-                } 
+                    sampleRate: this.isIOS ? 48000 : 44100, // Higher sample rate for iOS
+                    channelCount: 1,
+                    volume: 1.0
+                }
             });
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            if (!this.audioContext || this.audioContext.state === 'closed') {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            // Ensure audio context is running
+            if (this.audioContext.state === 'suspended') {
+                await this.audioContext.resume();
+            }
+
             this.microphone = this.audioContext.createMediaStreamSource(stream);
             this.analyser = this.audioContext.createAnalyser();
-            this.analyser.fftSize = 16384; // Increased for better low frequency detection
-            this.analyser.smoothingTimeConstant = 0.4;
+            this.analyser.fftSize = this.isIOS ? 8192 : 16384; // Smaller FFT for iOS performance
+            this.analyser.smoothingTimeConstant = this.isIOS ? 0.3 : 0.4; // Faster response on iOS
+            this.analyser.minDecibels = -90;
+            this.analyser.maxDecibels = -10;
+
             this.microphone.connect(this.analyser);
 
-            // Initialize compact LCD UI state
-            const needle = document.getElementById('lcdNeedle');
-            if (needle) needle.style.transform = 'translateX(-50%) rotate(0deg)';
-            const noteEl = document.getElementById('noteDisplay');
-            if (noteEl) noteEl.textContent = '♪';
+            // Initialize enhanced UI state
+            this.resetTunerDisplay();
+            this.updateTunerStatus('🎵 Listening... Play a note', 'listening');
 
-            // Kick off loop
+            // Start the tuning loop
             this.updateTuner();
+
         } catch (error) {
             console.error('Microphone access error:', error);
-            alert('⚠️ Microphone access required\n\nPlease allow microphone access to use the tuner.');
+            let errorMessage = 'Unable to access microphone. ';
+
+            if (error.name === 'NotAllowedError') {
+                errorMessage += 'Please allow microphone access in your browser settings.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage += 'No microphone found. Please check your audio devices.';
+            } else if (this.isIOS) {
+                errorMessage += 'On iOS, you may need to unlock audio by tapping the screen first.';
+            } else {
+                errorMessage += 'Please check your browser permissions and try again.';
+            }
+
+            this.showTunerError(errorMessage);
+            throw error;
         }
     }
 
@@ -93,84 +155,99 @@ class MusicTools {
             this.microphone.disconnect();
             this.microphone = null;
         }
-        if (this.audioContext) {
+        // Don't close audio context on iOS - keep it unlocked
+        if (this.audioContext && !this.isIOS) {
             this.audioContext.close();
             this.audioContext = null;
         }
+
         const startButton = document.getElementById('startTuner');
         if (startButton) {
             startButton.classList.remove('active');
             const lbl = startButton.querySelector('.tuner-start-label');
-            if (lbl) lbl.textContent = 'Start Tuner';
+            if (lbl) lbl.textContent = '🎸 Start Tuner';
         }
-        // Reset compact LCD
-        const needle = document.getElementById('lcdNeedle');
-        if (needle) needle.style.transform = 'translateX(-50%) rotate(0deg)';
-        const noteEl = document.getElementById('noteDisplay');
-        if (noteEl) noteEl.textContent = '--';
+
+        // Reset enhanced display
+        this.resetTunerDisplay();
+        this.updateTunerStatus('Tap to start tuning', 'ready');
     }
 
     updateTuner() {
         if (!this.analyser) return;
+
         const bufferLength = this.analyser.fftSize;
         const buffer = new Float32Array(bufferLength);
         this.analyser.getFloatTimeDomainData(buffer);
+
         const frequency = this.autoCorrelate(buffer, this.audioContext.sampleRate);
+
         if (frequency > 40 && frequency < 2000) {
             const note = this.frequencyToNote(frequency);
             const cents = this.getCents(frequency, note.frequency);
             const noteName = note.name.replace(/[0-9]/g, '');
-            const noteEl = document.getElementById('noteDisplay');
-            if (noteEl) noteEl.textContent = noteName;
-            // Pointer rotation, clamp (-20..+20) cents -> (-40..+40deg)
-            let deg = Math.max(-40, Math.min(40, (cents / 20) * 40));
-            const needle = document.getElementById('lcdNeedle');
-            if (needle) needle.style.transform = `translateX(-50%) rotate(${deg}deg)`;
+            const octave = note.name.match(/\d+/)[0];
+
+            // Update display with enhanced information
+            this.updateTunerDisplay(noteName, octave, cents, frequency);
+
+            // Visual feedback for tuning accuracy
+            this.updateTuningAccuracy(cents);
+        } else {
+            // No valid frequency detected
+            this.updateTunerDisplay('--', '', 0, 0);
+            this.updateTuningAccuracy(null);
         }
-        if (this.microphone) requestAnimationFrame(() => this.updateTuner());
+
+        if (this.microphone) {
+            // Use setTimeout for more consistent timing on mobile
+            setTimeout(() => this.updateTuner(), this.isIOS ? 50 : 16); // ~20fps on iOS, ~60fps on desktop
+        }
     }
 
     autoCorrelate(buffer, sampleRate) {
-        // Enhanced autocorrelation with better noise filtering
+        // Enhanced autocorrelation with better noise filtering and mobile optimization
         let SIZE = buffer.length;
         let rms = 0;
-        
-        // Calculate RMS (signal strength)
+
+        // Calculate RMS (signal strength) - adjusted for mobile sensitivity
         for (let i = 0; i < SIZE; i++) {
             rms += buffer[i] * buffer[i];
         }
         rms = Math.sqrt(rms / SIZE);
-        
-        // Require stronger signal for better accuracy
-        if (rms < 0.015) return -1; // Increased threshold
-        
-        // Find center of waveform
-        let r1 = 0, r2 = SIZE - 1, thres = 0.15;
+
+        // Dynamic threshold based on device
+        const threshold = this.isIOS ? 0.01 : 0.015; // More sensitive on iOS
+        if (rms < threshold) return -1;
+
+        // Find center of waveform with improved edge detection
+        let r1 = 0, r2 = SIZE - 1, thres = 0.2;
         for (let i = 0; i < SIZE / 2; i++) {
             if (Math.abs(buffer[i]) < thres) { r1 = i; break; }
         }
         for (let i = 1; i < SIZE / 2; i++) {
             if (Math.abs(buffer[SIZE - i]) < thres) { r2 = SIZE - i; break; }
         }
-        
+
         buffer = buffer.slice(r1, r2);
         SIZE = buffer.length;
-        
-        if (SIZE < 100) return -1; // Buffer too small
-        
-        // Autocorrelation
+
+        if (SIZE < (this.isIOS ? 50 : 100)) return -1; // Smaller buffer for iOS
+
+        // Autocorrelation with optimized loop for mobile
         let c = new Array(SIZE).fill(0);
         for (let i = 0; i < SIZE; i++) {
             for (let j = 0; j < SIZE - i; j++) {
                 c[i] = c[i] + buffer[j] * buffer[j + i];
             }
         }
-        
-        // Find first dip
+
+        // Find first dip with better noise tolerance
         let d = 0;
         while (d < SIZE - 1 && c[d] > c[d + 1]) d++;
-        
-        // Find maximum after first dip
+        if (d === 0) d = 1; // Ensure we don't start at 0
+
+        // Find maximum after first dip with confidence check
         let maxval = -1, maxpos = -1;
         for (let i = d; i < SIZE; i++) {
             if (c[i] > maxval) {
@@ -178,11 +255,11 @@ class MusicTools {
                 maxpos = i;
             }
         }
-        
-        if (maxpos === -1 || maxval < 0.1) return -1;
-        
+
+        if (maxpos === -1 || maxval < (this.isIOS ? 0.05 : 0.1)) return -1;
+
         let T0 = maxpos;
-        
+
         // Parabolic interpolation for sub-sample accuracy
         if (T0 > 0 && T0 < SIZE - 1) {
             let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
@@ -190,12 +267,12 @@ class MusicTools {
             let b = (x3 - x1) / 2;
             if (a) T0 = T0 - b / (2 * a);
         }
-        
+
         let frequency = sampleRate / T0;
-        
-        // Filter out unrealistic frequencies
-        if (frequency < 40 || frequency > 2000) return -1;
-        
+
+        // Filter out unrealistic frequencies with guitar-specific range
+        if (frequency < 70 || frequency > 1200) return -1; // Guitar range: E2 (82Hz) to E6 (1318Hz)
+
         return frequency;
     }
 
@@ -605,24 +682,279 @@ class MusicTools {
         `;
     }
 
+    // Enhanced UI helper methods
+    resetTunerDisplay() {
+        const needle = document.getElementById('lcdNeedle');
+        const noteEl = document.getElementById('noteDisplay');
+        const octaveEl = document.getElementById('octaveDisplay');
+        const centsEl = document.getElementById('centsDisplay');
+        const freqEl = document.getElementById('frequencyDisplay');
+
+        if (needle) needle.style.transform = 'translateX(-50%) rotate(0deg)';
+        if (noteEl) noteEl.textContent = '--';
+        if (octaveEl) octaveEl.textContent = '';
+        if (centsEl) centsEl.textContent = '';
+        if (freqEl) freqEl.textContent = '';
+    }
+
+    updateTunerDisplay(note, octave, cents, frequency) {
+        const noteEl = document.getElementById('noteDisplay');
+        const octaveEl = document.getElementById('octaveDisplay');
+        const centsEl = document.getElementById('centsDisplay');
+        const freqEl = document.getElementById('frequencyDisplay');
+
+        if (noteEl) noteEl.textContent = note;
+        if (octaveEl) octaveEl.textContent = octave;
+        if (centsEl) centsEl.textContent = cents !== 0 ? `${cents > 0 ? '+' : ''}${cents}` : '';
+        if (freqEl) freqEl.textContent = frequency > 0 ? `${frequency.toFixed(1)} Hz` : '';
+    }
+
+    updateTuningAccuracy(cents) {
+        const accuracyEl = document.getElementById('tuningAccuracy');
+        const needle = document.getElementById('lcdNeedle');
+
+        if (!accuracyEl || !needle) return;
+
+        if (cents === null) {
+            accuracyEl.textContent = '';
+            accuracyEl.className = 'tuning-accuracy';
+            needle.style.transform = 'translateX(-50%) rotate(0deg)';
+            return;
+        }
+
+        // Enhanced needle movement with smooth animation
+        let deg = Math.max(-50, Math.min(50, (cents / 50) * 50)); // -50 to +50 degrees
+        needle.style.transform = `translateX(-50%) rotate(${deg}deg)`;
+
+        // Color-coded accuracy feedback
+        accuracyEl.classList.remove('tuning-flat', 'tuning-sharp', 'tuning-good');
+
+        if (Math.abs(cents) <= 5) {
+            accuracyEl.textContent = '🎯 PERFECT!';
+            accuracyEl.classList.add('tuning-good');
+        } else if (cents < -5) {
+            accuracyEl.textContent = '⬅️ TOO LOW';
+            accuracyEl.classList.add('tuning-flat');
+        } else if (cents > 5) {
+            accuracyEl.textContent = 'TOO HIGH ➡️';
+            accuracyEl.classList.add('tuning-sharp');
+        }
+    }
+
+    updateTunerStatus(message, status) {
+        const statusEl = document.getElementById('tunerStatus');
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.className = `tuner-status status-${status}`;
+        }
+    }
+
+    showTunerError(message) {
+        this.updateTunerStatus(`❌ ${message}`, 'error');
+        const startButton = document.getElementById('startTuner');
+        if (startButton) {
+            startButton.classList.remove('active');
+            const lbl = startButton.querySelector('.tuner-start-label');
+            if (lbl) lbl.textContent = '🎸 Start Tuner';
+        }
+    }
+
+    addIOSAudioHint() {
+        const hint = document.createElement('div');
+        hint.id = 'ios-audio-hint';
+        hint.innerHTML = `
+            <div style="background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 8px; font-size: 14px; text-align: center; margin: 10px 0;">
+                📱 <strong>iOS Tip:</strong> Tap anywhere on the screen to unlock audio before starting the tuner.
+            </div>
+        `;
+        const tunerSection = document.querySelector('.tuner-section') || document.body;
+        tunerSection.insertBefore(hint, tunerSection.firstChild);
+    }
+
     createToolsStyles() {
         if (document.getElementById('dynamic-tools-styles')) return;
-        
+
         const style = document.createElement('style');
         style.id = 'dynamic-tools-styles';
         style.textContent = `
+            /* Enhanced Tuner Styles */
+            .tuner-display {
+                background: linear-gradient(135deg, #1a1a2e, #16213e);
+                border-radius: 15px;
+                padding: 20px;
+                margin: 20px 0;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                border: 2px solid rgba(255,255,255,0.1);
+            }
+
+            .tuner-main-display {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
+                position: relative;
+            }
+
+            .note-display-large {
+                font-size: 4rem;
+                font-weight: 700;
+                color: #fff;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+                min-width: 120px;
+                text-align: center;
+            }
+
+            .octave-display {
+                font-size: 1.5rem;
+                color: rgba(255,255,255,0.7);
+                margin-left: 10px;
+            }
+
+            .tuner-gauge {
+                position: relative;
+                width: 200px;
+                height: 100px;
+                margin: 0 20px;
+            }
+
+            .gauge-background {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: conic-gradient(
+                    from -90deg,
+                    #ff4757 0deg,
+                    #ffa502 30deg,
+                    #2ed573 60deg,
+                    #ffa502 120deg,
+                    #ff4757 150deg,
+                    #2f3542 180deg
+                );
+                border-radius: 100px 100px 0 0;
+                opacity: 0.3;
+            }
+
+            .gauge-needle {
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                width: 2px;
+                height: 80px;
+                background: #fff;
+                transform-origin: bottom center;
+                transition: transform 0.1s ease-out;
+                box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            }
+
+            .tuner-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 15px;
+                font-size: 0.9rem;
+            }
+
+            .frequency-display, .cents-display {
+                color: rgba(255,255,255,0.8);
+                font-family: 'Courier New', monospace;
+            }
+
+            .tuning-accuracy {
+                text-align: center;
+                font-weight: 600;
+                padding: 8px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                font-size: 1.1rem;
+            }
+
+            .tuning-good {
+                background: linear-gradient(45deg, #2ed573, #26de81);
+                color: white;
+                animation: pulse 0.5s ease-in-out;
+            }
+
+            .tuning-flat {
+                background: linear-gradient(45deg, #ff4757, #ff3838);
+                color: white;
+            }
+
+            .tuning-sharp {
+                background: linear-gradient(45deg, #ffa502, #ff9f43);
+                color: white;
+            }
+
+            .tuner-status {
+                text-align: center;
+                padding: 10px;
+                border-radius: 8px;
+                margin: 10px 0;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .status-ready {
+                background: rgba(255,255,255,0.1);
+                color: rgba(255,255,255,0.8);
+            }
+
+            .status-listening {
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                color: white;
+            }
+
+            .status-error {
+                background: linear-gradient(45deg, #ff4757, #ff3838);
+                color: white;
+            }
+
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+
+            /* Mobile optimizations */
+            @media (max-width: 768px) {
+                .tuner-display {
+                    padding: 15px;
+                    margin: 15px 0;
+                }
+
+                .note-display-large {
+                    font-size: 3rem;
+                }
+
+                .tuner-gauge {
+                    width: 150px;
+                    height: 75px;
+                }
+
+                .gauge-needle {
+                    height: 60px;
+                }
+            }
+
+            /* iOS specific styles */
+            @supports (-webkit-touch-callout: none) {
+                .tuner-display {
+                    -webkit-user-select: none;
+                    user-select: none;
+                }
+            }
+
             .beat-active {
                 transform: scale(1.2) !important;
                 background: #43e97b !important;
             }
-            
+
             .piano-keys {
                 display: flex;
                 gap: 2px;
                 justify-content: center;
                 margin: 1rem 0;
             }
-            
+
             .piano-key {
                 width: 30px;
                 height: 80px;
@@ -635,13 +967,13 @@ class MusicTools {
                 font-size: 0.8rem;
                 font-weight: 600;
             }
-            
+
             .piano-key.white {
                 background: white;
                 color: #333;
                 border: 1px solid #ccc;
             }
-            
+
             .piano-key.black {
                 background: #333;
                 color: white;
@@ -650,17 +982,17 @@ class MusicTools {
                 margin: 0 -10px;
                 z-index: 2;
             }
-            
+
             .piano-key.active {
                 background: #667eea !important;
                 color: white !important;
             }
-            
+
             .circle-key {
                 cursor: pointer;
                 transition: all 0.3s ease;
             }
-            
+
             .circle-key:hover {
                 fill: rgba(255,255,255,0.2) !important;
             }

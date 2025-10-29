@@ -158,11 +158,15 @@
             console.log('[Excel Loader] Categories:', categories.join(', '));
 
             // Dispatch custom event for other scripts
-            window.dispatchEvent(new CustomEvent('productsDataLoaded', {
-                detail: { productsData: productsByCategory, count: processedCount }
-            }));
-            // Also dispatch the standardized event used by products.js
-            window.dispatchEvent(new Event('products-data-ready'));
+            try {
+                window.dispatchEvent(new CustomEvent('productsDataLoaded', {
+                    detail: { productsData: productsByCategory, count: processedCount }
+                }));
+                // Also dispatch the standardized event used by products.js
+                window.dispatchEvent(new Event('products-data-ready'));
+            } catch (error) {
+                console.warn('Event dispatch error:', error);
+            }
 
         } catch (error) {
             console.error('[Excel Loader] ❌ ERROR:', error);
