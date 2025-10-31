@@ -27,10 +27,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Products",
-      "short_name": "Products",
-      "description": "Browse our musical instruments",
-      "url": "/products.html",
+      "name": "Tools",
+      "short_name": "Tools",
+      "description": "Free professional music tools",
+      "url": "/tools.html",
       "icons": [
         {
           "src": "assets/Logo & Icons/logo.png",

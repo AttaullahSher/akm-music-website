@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', ()=> {
 
-  // Initialize global cart instance early so toggleCart() works from header
-  window.cart = window.cart || new ShoppingCart();
+
 
   /* Modal open/close */
   document.querySelectorAll('[data-open-modal]').forEach(btn => {
@@ -72,9 +71,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
     window.updateCustomerBadge(existing);
   } catch {}
 
-  // Expose toggleCart globally for header icon
-  window.toggleCart = function() {
-    try { window.cart?.toggleCart(); } catch {}
-  }
+
 
 });

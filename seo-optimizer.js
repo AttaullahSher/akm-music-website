@@ -128,7 +128,7 @@ class SEOOptimizer {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": `${this.businessInfo.url}/products.html?search={search_term_string}`
+          "urlTemplate": `${this.businessInfo.url}/tools.html?search={search_term_string}`
         },
         "query-input": "required name=search_term_string"
       },
@@ -166,9 +166,8 @@ class SEOOptimizer {
   getBreadcrumbs(path) {
     const breadcrumbs = [
       { name: "Home", url: `${this.businessInfo.url}/` }
-    ];    if (path.includes('products')) {
-      breadcrumbs.push({ name: "Products", url: `${this.businessInfo.url}/products.html` });
-    } else if (path.includes('tools')) {
+    ];
+    if (path.includes('tools')) {
       breadcrumbs.push({ name: "Music Tools", url: `${this.businessInfo.url}/tools.html` });
     } else if (path.includes('blog')) {
       breadcrumbs.push({ name: "Blog", url: `${this.businessInfo.url}/blog.html` });
@@ -261,12 +260,9 @@ class SEOOptimizer {
   // Optimize meta tags dynamically
   optimizeMetaTags() {
     const path = window.location.pathname;
-    
+
     // Update page-specific meta descriptions
-    if (path.includes('products')) {
-      this.updateMetaTag('description', 'Shop premium musical instruments at AKM Music Abu Dhabi. Guitars, pianos, drums, violins & more. Professional quality, competitive prices. Order via WhatsApp!');
-      this.updateMetaTag('keywords', 'buy musical instruments abu dhabi, guitar shop uae, piano store, drum sets, violin shop, music equipment, online music store');
-    } else if (path.includes('tools')) {
+    if (path.includes('tools')) {
       this.updateMetaTag('description', 'Free professional music tools - Chromatic tuner, metronome, chord charts, scale finder, circle of fifths. Perfect for musicians & music students.');
       this.updateMetaTag('keywords', 'music tools online, chromatic tuner, metronome, chord charts, music theory tools, scale finder, circle of fifths');
     } else if (path.includes('blog')) {
@@ -276,7 +272,7 @@ class SEOOptimizer {
 
     // Add canonical URL
     this.addCanonicalURL();
-    
+
     // Add hreflang for international targeting
     this.addHrefLang();
   }
@@ -330,14 +326,7 @@ class SEOOptimizer {
       this.updatePageSEO();
     });
 
-    // Update SEO when cart is opened
-    document.addEventListener('cartOpened', () => {
-      if (window.akmAnalytics) {
-        window.akmAnalytics.trackEvent('cart_view', {
-          event_category: 'ecommerce'
-        });
-      }
-    });
+
 
     // Track search queries
     document.addEventListener('search', (e) => {
@@ -350,10 +339,8 @@ class SEOOptimizer {
   // Update page SEO based on current context
   updatePageSEO() {
     const hash = window.location.hash;
-    
-    if (hash === '#products') {
-      document.title = 'Products - AKM Music Abu Dhabi | Premium Musical Instruments';
-    } else if (hash === '#tools') {
+
+    if (hash === '#tools') {
       document.title = 'Music Tools - AKM Music Abu Dhabi | Professional Online Tools';
     } else if (hash === '#contact') {
       document.title = 'Contact - AKM Music Abu Dhabi | Get in Touch';
@@ -371,7 +358,6 @@ class SEOOptimizer {
   generateSitemap() {
     const pages = [
       { url: '/', priority: '1.0', changefreq: 'daily' },
-      { url: '/products.html', priority: '0.9', changefreq: 'weekly' },
       { url: '/tools.html', priority: '0.8', changefreq: 'monthly' },
       { url: '/blog.html', priority: '0.8', changefreq: 'weekly' },
       { url: '/about.html', priority: '0.7', changefreq: 'monthly' },

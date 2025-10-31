@@ -8,7 +8,7 @@ const DYNAMIC_CACHE = 'akm-dynamic-v1.7.3';
 // Files to cache for offline functionality (relative paths for GitHub Pages)
 const CACHE_ASSETS = [
   'index.html',
-  'products.html',
+
   'tools.html',
   'blog.html',
   'about.html',
@@ -19,7 +19,6 @@ const CACHE_ASSETS = [
   'tools-styles.css',
   'blue-theme.css',
   'script.js',
-  'cart.js',
   'tools.js',
   'products.js',
   'blog.js',
@@ -298,37 +297,14 @@ function isAPIRequest(url) {
 self.addEventListener('sync', (event) => {
   console.log('Service Worker: Background sync triggered', event.tag);
   
-  if (event.tag === 'cart-sync') {
-    event.waitUntil(syncCart());
-  } else if (event.tag === 'form-sync') {
+  if (event.tag === 'form-sync') {
     event.waitUntil(syncForms());
   } else if (event.tag === 'analytics-sync') {
     event.waitUntil(syncAnalytics());
   }
 });
 
-// Sync cart data when back online
-async function syncCart() {
-  try {
-    const cartData = await getStoredData('pending-cart');
-    
-    if (cartData && cartData.length > 0) {
-      // Send cart data to server/Google Sheets
-      const response = await fetch('/api/sync-cart', {
-        method: 'POST',
-        body: JSON.stringify(cartData),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      if (response.ok) {
-        await clearStoredData('pending-cart');
-        console.log('Cart synced successfully');
-      }
-    }
-  } catch (error) {
-    console.error('Cart sync failed:', error);
-  }
-}
+
 
 // Sync form submissions when back online
 async function syncForms() {

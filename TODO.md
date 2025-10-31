@@ -1,4 +1,0 @@
-- [ ] Redesign cart modal view for better appearance and mobile responsiveness
-- [ ] Add proper CSS styling for cart items layout
-- [ ] Fix mobile edge-to-edge issue with padding/margins
-- [ ] Test cart on mobile and desktop

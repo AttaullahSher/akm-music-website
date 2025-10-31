@@ -200,7 +200,7 @@ body {
   box-shadow: var(--shadow-medium);
 }
 
-/* Header Actions - Fix cart icon visibility */
+/* Header Actions */
 .header-actions {
   display: flex;
   align-items: center;

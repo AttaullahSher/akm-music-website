@@ -17,14 +17,7 @@ const BLOG_PAGE_SIZE = 6; // 6 cards per page
 function initializeBlog() {
     loadBlogPosts();
     setupEventListeners();
-    // Safe cart badge refresh if available
-    try {
-      if (typeof window.updateCartUI === 'function') {
-        window.updateCartUI();
-      } else if (typeof cart !== 'undefined' && typeof cart.updateCartUI === 'function') {
-        cart.updateCartUI();
-      }
-    } catch(e) { console.debug('[Blog] cart UI init skipped:', e); }
+
     
     // Add loading animation
     setTimeout(() => {
@@ -663,12 +656,7 @@ function openServiceModal(service) {
     window.location.href = `index.html#${service}`;
 }
 
-// Update cart display from cart.js integration
-function updateCartDisplay() {
-    if (typeof updateCartCount === 'function') {
-        updateCartCount();
-    }
-}
+
 
 // Animation on scroll
 window.addEventListener('scroll', () => {
