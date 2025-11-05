@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://www.akm-music.com/sitemap.xml
-
-# Block specific files if needed
-Disallow: /Products.xlsx

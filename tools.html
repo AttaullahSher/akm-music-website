@@ -11,21 +11,19 @@
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     </noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     </noscript>
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles.css?v=20251027g">
-    <link rel="stylesheet" href="modern-styles.css?v=20251027g">
-    <link rel="stylesheet" href="tools-styles.css?v=20251027g">
-    <link rel="stylesheet" href="blue-theme.css">
-    <link rel="stylesheet" href="design-improvements.css?v=20251105">
+    <!-- Styles - Simplified & Unified -->
+    <link rel="stylesheet" href="master-design.css?v=20251106">
+    <link rel="stylesheet" href="tools-master.css?v=20251106">
+    <link rel="stylesheet" href="fixes.css?v=20251106">
     
     <!-- Icons -->
     <link rel="icon" href="assets/Logo & Icons/favicon.ico">
@@ -43,7 +41,7 @@
                     <span class="brand-title">AKM MUSIC</span>
                 </div>
             </a>
-              <nav class="nav">
+              <nav class="nav" aria-label="Main navigation">
                 <a href="index.html" class="nav-link">🏠 Home</a>
                 <a href="tools.html" class="nav-link">🛠️ Tools</a>
                 <a href="blog.html" class="nav-link">📝 Blog</a>
@@ -53,7 +51,6 @@
             
             <div class="header-actions">
                 <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
-
                 <button class="nav-toggle" aria-label="Toggle navigation">
                   <i class="fas fa-bars"></i>
                 </button>
@@ -94,16 +91,29 @@
                         <div class="tuner-lcd">
                             <div class="lcd-screen-sm" id="tunerLCD">
                                 <div class="lcd-header">
-                                    <span class="scale-num">-20</span>
+                                    <span class="scale-num">-50</span>
                                     <div class="lcd-pointer-wrap">
                                         <div class="lcd-center-mark">0</div>
                                         <div class="lcd-pointer" id="lcdNeedle"></div>
                                     </div>
-                                    <span class="scale-num">+20</span>
+                                    <span class="scale-num">+50</span>
                                 </div>
                                 <div class="lcd-note-row">
                                     <div class="lcd-big-note" id="noteDisplay">--</div>
                                     <div class="lcd-instrument" id="instrumentLabel">Guitar</div>
+                                </div>
+                                <div class="tuner-info">
+                                    <div class="tuner-info-item">
+                                        <div class="tuner-info-label">Frequency</div>
+                                        <div class="tuner-info-value" id="frequencyDisplay">--</div>
+                                    </div>
+                                    <div class="tuner-info-item">
+                                        <div class="tuner-info-label">Cents</div>
+                                        <div class="tuner-info-value" id="centsDisplay">0</div>
+                                    </div>
+                                </div>
+                                <div class="tuner-status ready" id="tunerStatus">
+                                    🎸 Tap Start to begin tuning
                                 </div>
                             </div>
                             <button class="tuner-start" id="startTuner" aria-label="Start/Stop Tuner">

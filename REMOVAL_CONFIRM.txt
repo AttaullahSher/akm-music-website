@@ -1,1 +1,0 @@
-cart.js is still present. Proceeding to delete cart.js and all cart/product related code and links. Only services (rentals, repairs, classes) will remain on the AKM Music website.

@@ -503,7 +503,6 @@ class MusicTools {
         const fretboard = document.getElementById('guitarFretboard');
         if (!fretboard) return;
         
-        // Simple guitar chord display (this would be more complex in a full implementation)
         fretboard.innerHTML = `
             <div class="chord-info">
                 <h4>${chordNotes.join(' - ')}</h4>
@@ -686,58 +685,92 @@ class MusicTools {
     resetTunerDisplay() {
         const needle = document.getElementById('lcdNeedle');
         const noteEl = document.getElementById('noteDisplay');
-        const octaveEl = document.getElementById('octaveDisplay');
         const centsEl = document.getElementById('centsDisplay');
         const freqEl = document.getElementById('frequencyDisplay');
+        const statusEl = document.getElementById('tunerStatus');
 
-        if (needle) needle.style.transform = 'translateX(-50%) rotate(0deg)';
-        if (noteEl) noteEl.textContent = '--';
-        if (octaveEl) octaveEl.textContent = '';
-        if (centsEl) centsEl.textContent = '';
-        if (freqEl) freqEl.textContent = '';
+        if (needle) {
+            needle.style.transform = 'translateX(-50%) rotate(0deg)';
+            needle.style.background = 'linear-gradient(180deg, var(--brand-red) 0%, var(--brand-red-dark) 100%)';
+            needle.style.boxShadow = '0 2px 8px rgba(220, 38, 38, 0.4)';
+        }
+        if (noteEl) {
+            noteEl.textContent = '--';
+            noteEl.classList.remove('in-tune');
+        }
+        if (centsEl) centsEl.textContent = '0';
+        if (freqEl) freqEl.textContent = '-- Hz';
+        if (statusEl) {
+            statusEl.textContent = '🎸 Tap Start to begin tuning';
+            statusEl.className = 'tuner-status ready';
+        }
     }
 
     updateTunerDisplay(note, octave, cents, frequency) {
         const noteEl = document.getElementById('noteDisplay');
-        const octaveEl = document.getElementById('octaveDisplay');
         const centsEl = document.getElementById('centsDisplay');
         const freqEl = document.getElementById('frequencyDisplay');
+        const statusEl = document.getElementById('tunerStatus');
 
-        if (noteEl) noteEl.textContent = note;
-        if (octaveEl) octaveEl.textContent = octave;
-        if (centsEl) centsEl.textContent = cents !== 0 ? `${cents > 0 ? '+' : ''}${cents}` : '';
-        if (freqEl) freqEl.textContent = frequency > 0 ? `${frequency.toFixed(1)} Hz` : '';
+        if (noteEl) {
+            noteEl.textContent = note;
+            // Add in-tune class if cents are within ±5
+            if (Math.abs(cents) <= 5 && note !== '--') {
+                noteEl.classList.add('in-tune');
+            } else {
+                noteEl.classList.remove('in-tune');
+            }
+        }
+        
+        if (centsEl) {
+            if (cents !== 0 && note !== '--') {
+                centsEl.textContent = `${cents > 0 ? '+' : ''}${cents}`;
+            } else {
+                centsEl.textContent = '0';
+            }
+        }
+        
+        if (freqEl) {
+            freqEl.textContent = frequency > 0 ? `${frequency.toFixed(1)} Hz` : '-- Hz';
+        }
+
+        // Update status based on tuning accuracy
+        if (statusEl && note !== '--') {
+            if (Math.abs(cents) <= 3) {
+                statusEl.textContent = '🎯 Perfect! In Tune';
+                statusEl.className = 'tuner-status in-tune';
+            } else if (Math.abs(cents) <= 10) {
+                statusEl.textContent = cents > 0 ? '⬆️ Too Sharp - Tune Down' : '⬇️ Too Flat - Tune Up';
+                statusEl.className = 'tuner-status out-of-tune';
+            } else {
+                statusEl.textContent = cents > 0 ? '⬆️⬆️ Way Too Sharp' : '⬇️⬇️ Way Too Flat';
+                statusEl.className = 'tuner-status out-of-tune';
+            }
+        }
     }
 
     updateTuningAccuracy(cents) {
-        const accuracyEl = document.getElementById('tuningAccuracy');
         const needle = document.getElementById('lcdNeedle');
 
-        if (!accuracyEl || !needle) return;
+        if (!needle) return;
 
         if (cents === null) {
-            accuracyEl.textContent = '';
-            accuracyEl.className = 'tuning-accuracy';
             needle.style.transform = 'translateX(-50%) rotate(0deg)';
             return;
         }
 
         // Enhanced needle movement with smooth animation
-        let deg = Math.max(-50, Math.min(50, (cents / 50) * 50)); // -50 to +50 degrees
+        // Map cents to degrees: -50 cents = -45deg, +50 cents = +45deg
+        let deg = Math.max(-45, Math.min(45, (cents / 50) * 45));
         needle.style.transform = `translateX(-50%) rotate(${deg}deg)`;
 
-        // Color-coded accuracy feedback
-        accuracyEl.classList.remove('tuning-flat', 'tuning-sharp', 'tuning-good');
-
+        // Change needle color based on accuracy
         if (Math.abs(cents) <= 5) {
-            accuracyEl.textContent = '🎯 PERFECT!';
-            accuracyEl.classList.add('tuning-good');
-        } else if (cents < -5) {
-            accuracyEl.textContent = '⬅️ TOO LOW';
-            accuracyEl.classList.add('tuning-flat');
-        } else if (cents > 5) {
-            accuracyEl.textContent = 'TOO HIGH ➡️';
-            accuracyEl.classList.add('tuning-sharp');
+            needle.style.background = 'linear-gradient(180deg, #10b981 0%, #059669 100%)';
+            needle.style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.6)';
+        } else {
+            needle.style.background = 'linear-gradient(180deg, var(--brand-red) 0%, var(--brand-red-dark) 100%)';
+            needle.style.boxShadow = '0 2px 8px rgba(220, 38, 38, 0.4)';
         }
     }
 
@@ -745,17 +778,21 @@ class MusicTools {
         const statusEl = document.getElementById('tunerStatus');
         if (statusEl) {
             statusEl.textContent = message;
-            statusEl.className = `tuner-status status-${status}`;
+            statusEl.className = `tuner-status ${status}`;
         }
     }
 
     showTunerError(message) {
-        this.updateTunerStatus(`❌ ${message}`, 'error');
+        const statusEl = document.getElementById('tunerStatus');
+        if (statusEl) {
+            statusEl.textContent = `❌ ${message}`;
+            statusEl.className = 'tuner-status ready';
+        }
         const startButton = document.getElementById('startTuner');
         if (startButton) {
             startButton.classList.remove('active');
             const lbl = startButton.querySelector('.tuner-start-label');
-            if (lbl) lbl.textContent = '🎸 Start Tuner';
+            if (lbl) lbl.textContent = 'Start Tuner';
         }
     }
 
@@ -777,252 +814,35 @@ class MusicTools {
         const style = document.createElement('style');
         style.id = 'dynamic-tools-styles';
         style.textContent = `
-            /* Enhanced Tuner Styles */
-            .tuner-display {
-                background: linear-gradient(135deg, #1a1a2e, #16213e);
-                border-radius: 15px;
-                padding: 20px;
-                margin: 20px 0;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-                border: 2px solid rgba(255,255,255,0.1);
-            }
-
-            .tuner-main-display {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 20px;
-                position: relative;
-            }
-
-            .note-display-large {
-                font-size: 4rem;
-                font-weight: 700;
-                color: #fff;
-                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-                min-width: 120px;
-                text-align: center;
-            }
-
-            .octave-display {
-                font-size: 1.5rem;
-                color: rgba(255,255,255,0.7);
-                margin-left: 10px;
-            }
-
-            .tuner-gauge {
-                position: relative;
-                width: 200px;
-                height: 100px;
-                margin: 0 20px;
-            }
-
-            .gauge-background {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                background: conic-gradient(
-                    from -90deg,
-                    #ff4757 0deg,
-                    #ffa502 30deg,
-                    #2ed573 60deg,
-                    #ffa502 120deg,
-                    #ff4757 150deg,
-                    #2f3542 180deg
-                );
-                border-radius: 100px 100px 0 0;
-                opacity: 0.3;
-            }
-
+            /* Additional dynamic tuner styles */
             .gauge-needle {
-                position: absolute;
-                bottom: 10px;
-                left: 50%;
-                width: 2px;
-                height: 80px;
-                background: #fff;
-                transform-origin: bottom center;
-                transition: transform 0.1s ease-out;
-                box-shadow: 0 0 10px rgba(255,255,255,0.5);
-            }
-
-            .tuner-info {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 15px;
-                font-size: 0.9rem;
-            }
-
-            .frequency-display, .cents-display {
-                color: rgba(255,255,255,0.8);
-                font-family: 'Courier New', monospace;
-            }
-
-            .tuning-accuracy {
-                text-align: center;
-                font-weight: 600;
-                padding: 8px;
-                border-radius: 8px;
-                transition: all 0.3s ease;
-                font-size: 1.1rem;
-            }
-
-            .tuning-good {
-                background: linear-gradient(45deg, #2ed573, #26de81);
-                color: white;
-                animation: pulse 0.5s ease-in-out;
-            }
-
-            .tuning-flat {
-                background: linear-gradient(45deg, #ff4757, #ff3838);
-                color: white;
-            }
-
-            .tuning-sharp {
-                background: linear-gradient(45deg, #ffa502, #ff9f43);
-                color: white;
-            }
-
-            .tuner-status {
-                text-align: center;
-                padding: 10px;
-                border-radius: 8px;
-                margin: 10px 0;
-                font-weight: 500;
-                transition: all 0.3s ease;
-            }
-
-            .status-ready {
-                background: rgba(255,255,255,0.1);
-                color: rgba(255,255,255,0.8);
-            }
-
-            .status-listening {
-                background: linear-gradient(45deg, #667eea, #764ba2);
-                color: white;
-            }
-
-            .status-error {
-                background: linear-gradient(45deg, #ff4757, #ff3838);
-                color: white;
-            }
-
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-            }
-
-            /* Mobile optimizations */
-            @media (max-width: 768px) {
-                .tuner-display {
-                    padding: 15px;
-                    margin: 15px 0;
-                }
-
-                .note-display-large {
-                    font-size: 3rem;
-                }
-
-                .tuner-gauge {
-                    width: 150px;
-                    height: 75px;
-                }
-
-                .gauge-needle {
-                    height: 60px;
-                }
-            }
-
-            /* iOS specific styles */
-            @supports (-webkit-touch-callout: none) {
-                .tuner-display {
-                    -webkit-user-select: none;
-                    user-select: none;
-                }
+                transition: transform 0.1s ease-out, background 0.2s ease;
             }
 
             .beat-active {
-                transform: scale(1.2) !important;
-                background: #43e97b !important;
+                transform: scale(1.15) !important;
+                background: var(--color-success) !important;
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.5) !important;
             }
 
-            .piano-keys {
-                display: flex;
-                gap: 2px;
-                justify-content: center;
-                margin: 1rem 0;
+            /* Responsive tuner adjustments */
+            @media (max-width: 768px) {
+                .tuner-display {
+                    padding: var(--space-lg);
+                }
+
+                .note-display-large {
+                    font-size: 3.5rem;
+                }
             }
 
-            .piano-key {
-                width: 30px;
-                height: 80px;
-                display: flex;
-                align-items: flex-end;
-                justify-content: center;
-                padding: 5px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                font-size: 0.8rem;
-                font-weight: 600;
-            }
-
-            .piano-key.white {
-                background: white;
-                color: #333;
-                border: 1px solid #ccc;
-            }
-
-            .piano-key.black {
-                background: #333;
-                color: white;
-                height: 50px;
-                width: 20px;
-                margin: 0 -10px;
-                z-index: 2;
-            }
-
-            .piano-key.active {
-                background: #667eea !important;
-                color: white !important;
-            }
-
-            .circle-key {
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .circle-key:hover {
-                fill: rgba(255,255,255,0.2) !important;
-            }
-
-            .excel-headers-list {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .header-group {
-                background: rgba(255,255,255,0.05);
-                padding: 1rem;
-                border-radius: 8px;
-                border-left: 4px solid #667eea;
-            }
-
-            .header-group h4 {
-                margin: 0 0 0.5rem 0;
-                color: #667eea;
-                font-size: 1rem;
-                font-weight: 600;
-            }
-
-            .header-options {
-                color: white;
-                opacity: 0.9;
-                font-family: 'Inter', sans-serif;
-                font-size: 0.9rem;
-                line-height: 1.4;
+            /* iOS specific optimizations */
+            @supports (-webkit-touch-callout: none) {
+                .tuner-display,
+                .tool-card {
+                    -webkit-user-select: none;
+                    user-select: none;
+                }
             }
         `;
 

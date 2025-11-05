@@ -500,14 +500,18 @@ function renderFilteredPosts(posts) {
     }
 
     postsGrid.innerHTML = posts.map(post => `
-        <article class="blog-card" data-category="${post.category}" data-date="${post.date}">
+        <article class="blog-card" data-category="${post.category}" data-date="${post.date}" data-post-id="${post.id}">
           <div class="card-image">
             <img src="${post.image}" alt="${post.title}" loading="lazy">
           </div>
           <div class="card-content">
             <h3>${post.title}</h3>
-            <p>${post.excerpt}</p>
-            <button class="read-more-btn" onclick="openPost('${post.id}')">Read More <i class="fas fa-arrow-right"></i></button>
+            <p class="blog-excerpt">${post.excerpt}</p>
+            <div class="blog-full-content" style="display: none;"></div>
+            <button class="read-more-btn" onclick="togglePost('${post.id}')">
+              <span class="read-more-text">Read More</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
           </div>
         </article>
     `).join('');
@@ -553,29 +557,55 @@ function sortBlogPosts() {
     renderBlogPosts();
 }
 
-// Open Blog Post in Modal
-function openPost(postId) {
+// Toggle Blog Post Expansion
+function togglePost(postId) {
     const post = blogPosts.find(p => p.id === postId);
     if (!post) return;
     
-    const modal = document.getElementById('blogModal');
-    const modalContent = document.getElementById('modalContent');
+    const card = document.querySelector(`.blog-card[data-post-id="${postId}"]`);
+    if (!card) return;
     
-    modalContent.innerHTML = post.content;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    const excerpt = card.querySelector('.blog-excerpt');
+    const fullContent = card.querySelector('.blog-full-content');
+    const button = card.querySelector('.read-more-btn');
+    const buttonText = button.querySelector('.read-more-text');
+    const buttonIcon = button.querySelector('i');
     
-    // Track blog post view
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'blog_post_view', {
-            'blog_post_id': postId,
-            'blog_post_title': post.title
-        });
+    const isExpanded = card.classList.contains('expanded');
+    
+    if (isExpanded) {
+        // Collapse
+        card.classList.remove('expanded');
+        excerpt.style.display = 'block';
+        fullContent.style.display = 'none';
+        buttonText.textContent = 'Read More';
+        buttonIcon.className = 'fas fa-chevron-down';
+    } else {
+        // Expand
+        card.classList.add('expanded');
+        excerpt.style.display = 'none';
+        fullContent.innerHTML = post.content;
+        fullContent.style.display = 'block';
+        buttonText.textContent = 'Show Less';
+        buttonIcon.className = 'fas fa-chevron-up';
+        
+        // Smooth scroll to card
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Track blog post view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'blog_post_view', {
+                'blog_post_id': postId,
+                'blog_post_title': post.title
+            });
+        }
     }
 }
 
 // Expose handlers for inline HTML attributes
-window.openPost = openPost;
+window.togglePost = togglePost;
+// Expose handlers for inline HTML attributes
+window.togglePost = togglePost;
 window.closeBlogPost = closeBlogPost;
 window.filterPosts = filterPosts;
 window.sortBlogPosts = sortBlogPosts;

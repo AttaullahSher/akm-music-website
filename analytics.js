@@ -1,14 +1,11 @@
-// Simple analytics and performance monitoring for AKM Music website
 (function() {
     'use strict';
-    
-    // Simple page view tracking
+
     function trackPageView() {
         const page = window.location.pathname;
         const referrer = document.referrer;
         const timestamp = new Date().toISOString();
-        
-        // Log to console for now (you can send to analytics service later)
+
         console.log('Page view:', {
             page,
             referrer,

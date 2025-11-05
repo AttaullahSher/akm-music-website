@@ -1,0 +1,449 @@
+/* ===============================================
+   IMPROVED GUITAR TUNER (GuitarTuna Style)
+   Light Theme with Brand Colors
+   =============================================== */
+
+/* Main Tuner Card - Light and Clean */
+#tuner-tool {
+  background: #ffffff !important;
+  border: 3px solid var(--brand-blue) !important;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.15) !important;
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#tuner-tool .tool-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#tuner-tool .tool-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-blue-dark) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  color: white;
+  font-size: 28px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+#tuner-tool h3 {
+  color: var(--brand-blue) !important;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+#tuner-tool p {
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem;
+}
+
+/* LCD Display - Clean and Modern */
+.tuner-lcd {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0;
+}
+
+.lcd-screen-sm {
+  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%) !important;
+  border: 3px solid var(--brand-blue) !important;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 
+    inset 0 2px 8px rgba(37, 99, 235, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tuning Needle/Meter */
+.lcd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+  height: 60px;
+}
+
+.scale-num {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.lcd-pointer-wrap {
+  flex: 1;
+  position: relative;
+  height: 60px;
+  margin: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Meter Background Lines */
+.lcd-pointer-wrap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border-light);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+/* Meter Tick Marks */
+.lcd-pointer-wrap::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 24px;
+  background: var(--brand-blue);
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.lcd-center-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--brand-blue);
+  background: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+/* Tuning Needle */
+.lcd-pointer {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(0deg);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 4;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+}
+
+.lcd-pointer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--brand-red);
+  border: 2px solid white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4);
+}
+
+/* Note Display */
+.lcd-note-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.lcd-big-note {
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--brand-blue) !important;
+  font-family: 'Playfair Display', serif;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lcd-instrument {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Frequency and Cents Display */
+.tuner-info {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid var(--border-light);
+}
+
+.tuner-info-item {
+  text-align: center;
+}
+
+.tuner-info-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.tuner-info-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--brand-blue);
+}
+
+/* Tuning Status Indicator */
+.tuner-status {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tuner-status.ready {
+  background: var(--brand-blue-pale);
+  color: var(--brand-blue);
+}
+
+.tuner-status.listening {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.tuner-status.in-tune {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.tuner-status.out-of-tune {
+  background: var(--brand-red-pale);
+  color: var(--brand-red);
+}
+
+/* Start/Stop Button */
+.tuner-start {
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px 24px;
+  background: linear-gradient(145deg, var(--brand-blue) 0%, var(--brand-blue-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 
+    0 4px 16px rgba(37, 99, 235, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tuner-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 24px rgba(37, 99, 235, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tuner-start:active {
+  transform: translateY(0);
+}
+
+.tuner-start.active {
+  background: linear-gradient(145deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
+  box-shadow: 
+    0 4px 16px rgba(220, 38, 38, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tuner-start.active:hover {
+  box-shadow: 
+    0 6px 24px rgba(220, 38, 38, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tuner-start i {
+  font-size: 1.3rem;
+}
+
+.tuner-start-label {
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+/* Tuning Accuracy Indicator */
+.tuning-accuracy {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 12px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.accuracy-bar {
+  width: 6px;
+  height: 40px;
+  background: var(--border-light);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.accuracy-bar.active {
+  background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.accuracy-bar.active.sharp {
+  background: linear-gradient(180deg, var(--brand-red) 0%, var(--brand-red-dark) 100%);
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.5);
+}
+
+.accuracy-bar.active.flat {
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+}
+
+/* Auto-tune Mode Toggle (Optional) */
+.tuner-mode-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px;
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-btn:hover {
+  border-color: var(--brand-blue);
+  color: var(--brand-blue);
+}
+
+.mode-btn.active {
+  background: var(--brand-blue);
+  border-color: var(--brand-blue);
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Error Message */
+.tuner-error {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--brand-red-pale);
+  border-left: 4px solid var(--brand-red);
+  border-radius: 8px;
+  color: var(--brand-red-dark);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Animation for tuning feedback */
+@keyframes pulse-in-tune {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.lcd-big-note.in-tune {
+  animation: pulse-in-tune 1s ease-in-out infinite;
+  color: #10b981 !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #tuner-tool {
+    padding: 16px;
+  }
+  
+  .lcd-screen-sm {
+    padding: 16px;
+  }
+  
+  .lcd-big-note {
+    font-size: 3rem;
+    min-height: 60px;
+  }
+  
+  .lcd-header {
+    height: 50px;
+  }
+  
+  .lcd-pointer {
+    height: 30px;
+  }
+  
+  .tuner-start {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lcd-big-note {
+    font-size: 2.5rem;
+  }
+  
+  .scale-num {
+    font-size: 0.75rem;
+  }
+  
+  .lcd-center-mark {
+    font-size: 0.9rem;
+    padding: 3px 10px;
+  }
+}

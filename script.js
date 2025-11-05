@@ -35,10 +35,44 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   const navToggle = document.querySelector('.nav-toggle');
   const nav = document.querySelector('.nav');
+  const header = document.querySelector('.site-header');
   if (navToggle && nav) {
+    const closeMenu = () => {
+      nav.classList.remove('active');
+      document.body.classList.remove('menu-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    };
+
     navToggle.addEventListener('click', function() {
-      nav.classList.toggle('nav-open');
+      const willOpen = !nav.classList.contains('active');
+      nav.classList.toggle('active');
+      document.body.classList.toggle('menu-open', willOpen);
+      navToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
     });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+    
+    // Close menu when clicking a link
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        closeMenu();
+      });
+    });
+  }
+
+  // Header shadow on scroll
+  if (header) {
+    const onScroll = () => {
+      if (window.scrollY > 4) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   // Provide quick contact helpers
