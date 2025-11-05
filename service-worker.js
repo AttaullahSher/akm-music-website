@@ -1,14 +1,13 @@
 // AKM Music Service Worker
 // Provides offline functionality and PWA features
 
-const CACHE_NAME = 'akm-music-v1.7.3';
-const STATIC_CACHE = 'akm-static-v1.7.3';
-const DYNAMIC_CACHE = 'akm-dynamic-v1.7.3';
+const CACHE_NAME = 'akm-music-v1.9.0';
+const STATIC_CACHE = 'akm-static-v1.9.0';
+const DYNAMIC_CACHE = 'akm-dynamic-v1.9.0';
 
 // Files to cache for offline functionality (relative paths for GitHub Pages)
 const CACHE_ASSETS = [
   'index.html',
-
   'tools.html',
   'blog.html',
   'about.html',
@@ -18,21 +17,17 @@ const CACHE_ASSETS = [
   'modern-styles.css',
   'tools-styles.css',
   'blue-theme.css',
+  'design-improvements.css',
   'script.js',
   'tools.js',
-  'products.js',
   'blog.js',
   'analytics.js',
   'pwa.js',
-  'excel-loader.js',
   'assets/Logo & Icons/logo.png',
   'assets/Logo & Icons/favicon.ico',
-  'assets/Logo & Icons/Cart_icon.png',
   'assets/Logo & Icons/Whatsapp_icon.png',
   'assets/Banners_images/banner-hero.jpg',
-  'assets/Banners_images/3D274.png',
-  'assets/Products_images/DEMO001.jpg'
-  // Note: products-data.js is optional fallback, not required
+  'assets/Banners_images/3D274.png'
 ];
 
 // Install event - cache static assets

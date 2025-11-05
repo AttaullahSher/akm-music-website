@@ -882,6 +882,129 @@ fc-actions {
   margin-top: 10px;
 }
 
+.product-card:hover .product-image img {
+  transform: scale(1.1);
+}
+
+.product-info {
+  padding: 0.6rem; /* More compact */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-name {
+  font-size: 0.85rem; /* Smaller */
+  font-weight: 700;
+  color: var(--dark-primary);
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-brand {
+  font-size: 0.75rem; /* Smaller */
+  color: var(--dark-secondary);
+  margin-bottom: 0.2rem;
+}
+
+.product-sku {
+  font-size: 0.65rem; /* Smaller */
+  color: #999;
+  margin-bottom: 0.3rem;
+}
+
+.product-price {
+  margin: 0.3rem 0;
+}
+
+.price-current {
+  font-size: 0.95rem; /* Smaller */
+  font-weight: 800;
+  background: var(--primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Compact actions and wishlist */
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  display: grid;
+  place-items: center;
+  color: #e11d48;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+.wishlist-btn.saved { color: #b91c1c; background: #fff; }
+
+.product-actions.multi { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; }
+.btn-compact { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; border: none; background: #f3f4f6; color: #111827; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.btn-compact i { font-size: 1.1rem; }
+.btn-whatsapp { background: #25D366; color: #fff; }
+.btn-messenger { background: #0084FF; color: #fff; }
+
+/* Compact Add to Cart Button */
+.btn-add-cart-compact {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-bounce);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-add-cart-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+}
+
+.btn-add-cart-compact i {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* Products Grid - More columns for compact cards */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Reduced from 300px */
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 1280px) {
+  .products-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .product-text { min-height: 64px; }
+}
+
 /* Pagination Controls */
 .pagination-controls {
   display: flex;
@@ -1864,6 +1987,52 @@ fc-actions {
   height: 22px;
   object-fit: contain;
   filter: none;
+}
+
+/* Product card refinements */
+.product-card {
+  background: #eaf1ff;
+  border: 1px solid rgba(102,126,234,0.18);
+}
+.product-sku {
+  font-weight: 800;
+  color: #2563eb;
+  margin: 0.05rem 0;
+}
+.product-brand {
+  margin: 0.05rem 0;
+}
+.product-name {
+  font-weight: 400;
+  color: #374151;
+  margin: 0.08rem 0;
+}
+.product-price {
+  margin: 0.2rem 0 0.1rem;
+}
+
+/* Ensure mobile looks tidy */
+@media (max-width: 768px) {
+  .product-text { min-height: 64px; }
+}
+
+/* Products page compact tweaks */
+.products-section { padding-top: 1rem; }
+.products-section .products-filter { display:flex; gap:.5rem; flex-wrap: wrap; overflow: visible; -webkit-overflow-scrolling: touch; padding:.75rem .5rem; margin-bottom:1rem; background:rgba(255,255,255,.95); border-radius:14px; box-shadow: var(--shadow-medium); }
+.products-section .products-filter::-webkit-scrollbar { display:none; }
+.products-section .filter-btn { padding:8px 14px; font-size:.85rem; border-radius:999px; border-width:1.5px; white-space:nowrap; }
+.products-section .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:1.25rem; padding: 0 6px; }
+@media (max-width:768px){ .products-section .products-grid{ grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); padding:0 8px; gap:1rem; } .product-name{ font-size:.8rem;} .product-brand{ font-size:.7rem;} .price-current{ font-size:.9rem;} }
+@media (max-width:430px){ .products-section .products-grid{ grid-template-columns: repeat(2, 1fr); padding:0 10px; gap:.9rem; } }
+.product-card { border-radius:14px; box-shadow:0 3px 12px rgba(0,0,0,.12); }
+.product-info { padding:.55rem; gap:6px; }
+/* Clear left menu button */
+@media (max-width:900px){
+  .site-header .nav-toggle{ position:absolute; left:12px; top:50%; transform:translateY(-50%); display:inline-flex; align-items:center; gap:8px; background:var(--primary); color:#fff; border-radius:999px; padding:6px 12px; line-height:1; box-shadow:0 6px 16px rgba(37,99,235,.25);} .site-header .nav-toggle i{ font-size:1rem; } .site-header .nav-toggle::after{ content:'Menu'; font-weight:800; font-size:.9rem; letter-spacing:.02em;} .site-header .header-inner{ padding-left:64px; } .nav{ left:12px !important; right:auto !important; }
+  .site-header .header-inner { justify-content:center; }
+  .site-header .brand { margin: 0 auto; }
+  .site-header .nav-toggle { left: 10px; top: 50%; transform: translateY(-50%); }
+  .nav { top: calc(var(--header-fixed-height) - 10px); }
 }
 
 /* Mobile: hide logo, show only "AKM MUSIC" text centered */

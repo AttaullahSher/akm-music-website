@@ -83,7 +83,7 @@ function loadBlogPosts() {
                     </ul>
                     <div class="cta-section">
                         <div class="cta-buttons">
-                            <a href="products.html" class="cta-btn primary">Browse Pianos</a>
+                            <a href="contact.html" class="cta-btn primary">Contact Us for Piano Services</a>
                             <a href="contact.html" class="cta-btn secondary">Get Expert Help</a>
                         </div>
                     </div>

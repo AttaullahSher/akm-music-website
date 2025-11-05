@@ -57,7 +57,7 @@
     // Track button clicks
     function trackButtonClicks() {
         document.addEventListener('click', function(e) {
-            if (e.target.matches('button, .btn, .product-inquiry')) {
+            if (e.target.matches('button, .btn')) {
                 const buttonText = e.target.textContent.trim();
                 const buttonClass = e.target.className;
                 trackEvent('button_click', { buttonText, buttonClass });

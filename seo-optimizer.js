@@ -33,13 +33,11 @@ class SEOOptimizer {
     
     this.init();
   }
-
   init() {
     this.addBusinessSchema();
     this.addWebsiteSchema();
     this.addBreadcrumbSchema();
     this.optimizeMetaTags();
-    this.addProductSchemas();
     this.setupDynamicSEO();
   }
 
@@ -177,85 +175,7 @@ class SEOOptimizer {
       breadcrumbs.push({ name: "Contact", url: `${this.businessInfo.url}/contact.html` });
     }
 
-    return breadcrumbs;
-  }
-
-  // Add Product Schemas (for products page)
-  addProductSchemas() {
-    if (window.location.pathname.includes('products')) {
-      const products = this.getProductsFromPage();
-      
-      products.forEach(product => {
-        const schema = {
-          "@context": "https://schema.org",
-          "@type": "Product",
-          "name": product.name,
-          "description": product.description,
-          "sku": product.sku,
-          "category": product.category,
-          "brand": {
-            "@type": "Brand",
-            "name": product.brand || "Various"
-          },
-          "offers": {
-            "@type": "Offer",
-            "priceCurrency": "AED",
-            "price": product.price,
-            "availability": "https://schema.org/InStock",
-            "seller": {
-              "@type": "Organization",
-              "name": this.businessInfo.name
-            },
-            "validFrom": new Date().toISOString(),
-            "priceSpecification": {
-              "@type": "PriceSpecification",
-              "priceCurrency": "AED",
-              "price": product.price
-            }
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "127"
-          }
-        };
-
-        if (product.image) {
-          schema.image = product.image;
-        }
-
-        this.addJSONLD(schema);
-      });
-    }
-  }
-
-  // Extract products from page
-  getProductsFromPage() {
-    const products = [];
-    const productCards = document.querySelectorAll('.product-card');
-    
-    productCards.forEach(card => {
-      const name = card.querySelector('h3')?.textContent?.trim();
-      const price = card.querySelector('.price-current')?.textContent?.replace(/[^0-9]/g, '');
-      const sku = card.querySelector('[data-sku]')?.getAttribute('data-sku');
-      const category = card.getAttribute('data-category');
-      const image = card.querySelector('img')?.src;
-      const description = card.querySelector('.product-description')?.textContent?.trim();
-
-      if (name && price) {
-        products.push({
-          name,
-          price: parseFloat(price),
-          sku: sku || name.toLowerCase().replace(/\s+/g, '-'),
-          category: category || 'Musical Instruments',
-          image,
-          description: description || `${name} available at AKM Music Abu Dhabi`
-        });
-      }
-    });
-
-    return products;
-  }
+    return breadcrumbs;  }
 
   // Optimize meta tags dynamically
   optimizeMetaTags() {
