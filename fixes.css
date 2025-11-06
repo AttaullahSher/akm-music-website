@@ -183,6 +183,13 @@ body.menu-open { overflow: hidden; }
   gap: var(--space-sm);
 }
 
+/* Hide specific home cards: Instrument Sales and Music Tools */
+/* Instrument Sales card (by image alt) */
+.services-grid .service-card:has(img[alt="Instrument Sales"]) { display: none !important; }
+/* Music Tools card (by image src and link to tools.html) */
+.services-grid .service-card:has(img[src*="Service Cards/Tools.jpg"]) { display: none !important; }
+.services-grid .service-card:has(a[href$="tools.html"]) { display: none !important; }
+
 @media (max-width: 768px) {
   .services-grid {
     grid-template-columns: 1fr;

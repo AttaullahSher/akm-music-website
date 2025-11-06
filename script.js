@@ -105,6 +105,31 @@ document.addEventListener('DOMContentLoaded', ()=> {
     window.updateCustomerBadge(existing);
   } catch {}
 
+  // Remove unwanted home cards by title/link text (robust across cached variants)
+  try {
+    const grid = document.querySelector('.services-grid');
+    if (grid) {
+      grid.querySelectorAll('.service-card').forEach(card => {
+        const title = (card.querySelector('.service-title, h3')?.textContent || '').trim().toLowerCase();
+        const linkText = (card.querySelector('.service-link')?.textContent || '').trim().toLowerCase();
+        const imgAlt = (card.querySelector('img')?.getAttribute('alt') || '').trim().toLowerCase();
+        const imgSrc = (card.querySelector('img')?.getAttribute('src') || '').toLowerCase();
+        const href = (card.querySelector('a')?.getAttribute('href') || '').toLowerCase();
+        const shouldRemove =
+          title.includes('instrument sales') ||
+          title.includes('music tools') ||
+          linkText.includes('shop now') ||
+          linkText.includes('try tools') ||
+          imgAlt.includes('instrument sales') ||
+          imgSrc.includes('service cards/tools.jpg') ||
+          href.endsWith('tools.html');
+        if (shouldRemove) {
+          card.remove();
+        }
+      });
+    }
+  } catch {}
+
 
 
 });

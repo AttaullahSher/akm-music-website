@@ -36,7 +36,7 @@
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
-  padding: var(--space-2xl);
+  padding: var(--space-xl);
 }
 
 .tools-hero-title {
@@ -45,12 +45,12 @@
   color: var(--color-white);
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .tools-hero-description {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   color: var(--color-white);
   opacity: 0.95;
   line-height: var(--line-height-relaxed);
@@ -93,11 +93,14 @@
   margin-top: var(--space-2xl);
 }
 
-@media (max-width: 768px) {
-  .tools-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-  }
+@media (min-width: 1024px) {
+  .tools-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .tools-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767.98px) {
+  .tools-grid { grid-template-columns: 1fr; }
 }
 
 /* ===============================================
@@ -109,9 +112,15 @@
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-xl);
   padding: var(--space-2xl);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  overflow: hidden;
 }
+
+@media (max-width: 1024px) { .tool-card { height: 280px; } }
+@media (max-width: 768px)  { .tool-card { height: 260px; } }
 
 .tool-card:hover {
   transform: translateY(-8px);
@@ -121,7 +130,7 @@
 
 .tool-header {
   text-align: center;
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-md);
 }
 
 .tool-icon {
@@ -139,21 +148,29 @@
 }
 
 .tool-header h3 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
 }
 
 .tool-header p {
-  font-size: var(--font-size-base);
+  font-size: 0.9rem;
   color: var(--text-muted);
   margin-bottom: 0;
 }
 
 .tool-body {
   margin-bottom: var(--space-lg);
+  flex: 1;
+  overflow: auto;
+  padding-bottom: var(--space-sm);
 }
+
+/* Compact buttons inside cards */
+.tool-card .btn-3d,
+.tool-card .tool-button { padding: 8px 12px; font-size: 0.9rem; }
+.tool-card .metronome-actions { display: flex; gap: var(--space-sm); }
 
 /* ===============================================
    TOOL CONTROLS
@@ -362,45 +379,29 @@
 }
 
 .tuner-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md);
-  background: var(--color-gray-800);
-  border-radius: var(--border-radius-md);
-  font-family: monospace;
-  font-size: var(--font-size-sm);
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
 }
 
-.frequency-display,
-.cents-display {
-  color: var(--color-gray-300);
+.tuner-info-label {
+  font-size: .7rem;
+  color: #9ca3af;
+}
+
+.tuner-info-value {
+  font-size: .95rem;
+  font-family: monospace;
 }
 
 .tuner-status {
+  font-size: .9rem;
   text-align: center;
-  padding: var(--space-md);
-  background: var(--color-gray-800);
-  border-radius: var(--border-radius-md);
-  font-weight: var(--font-weight-semibold);
-  margin-top: var(--space-md);
+  color: #93c5fd;
 }
 
-.tuner-status.ready {
-  color: var(--color-gray-400);
-}
-
-.tuner-status.listening {
-  color: var(--color-primary-light);
-}
-
-.tuner-status.in-tune {
-  color: var(--color-success);
-  background: rgba(16, 185, 129, 0.1);
-}
-
-.tuner-status.out-of-tune {
-  color: var(--color-warning);
+.tuner-start {
+  margin-top: 8px;
 }
 
 @media (max-width: 768px) {
@@ -457,22 +458,56 @@
    =============================================== */
 
 .metronome-visual {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto var(--space-lg);
-  background: var(--color-gray-800);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.1s ease-out;
+  width: 120px;
+  height: 26px;
+  background: var(--color-gray-200);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
 }
 
-.metronome-visual.beat-active {
+.metronome-visual .beat-indicator {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 18px;
+  height: 18px;
   background: var(--color-primary);
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+  border-radius: 50%;
+  transition: transform .2s ease;
+}
+
+.metronome-display {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.bpm-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+}
+
+.bpm-display span {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.bpm-slider {
+  height: 6px;
+}
+
+.tempo-labels {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  font-size: .8rem;
+  color: var(--text-muted);
 }
 
 /* ===============================================
@@ -484,7 +519,7 @@
   background: var(--color-gray-50);
   border-radius: var(--border-radius-lg);
   padding: var(--space-xl);
-  margin-bottom: var(--space-lg);
+  margin-top: var(--space-sm);
 }
 
 .chord-notes,
@@ -509,6 +544,17 @@
 .note-badge.active {
   background: var(--color-primary);
   color: var(--color-white);
+}
+
+.chord-select, .scale-select {
+  height: 36px;
+  font-size: .95rem;
+}
+
+.chord-selector, .scale-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
 }
 
 /* ===============================================
@@ -596,9 +642,8 @@
 }
 
 #circleOfFifths {
-  max-width: 400px;
+  max-width: 220px;
   height: auto;
-  margin-bottom: var(--space-lg);
 }
 
 .circle-key {
@@ -631,6 +676,11 @@
   color: var(--text-secondary);
 }
 
+.circle-container {
+  display: flex;
+  justify-content: center;
+}
+
 /* ===============================================
    BPM CALCULATOR
    =============================================== */
@@ -641,12 +691,13 @@
   border-radius: var(--border-radius-lg);
   border: 2px solid var(--color-success);
   text-align: center;
-  margin-top: var(--space-lg);
+  margin-top: 8px;
   min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-weight: 600;
 }
 
 .bpm-result-value {
@@ -659,6 +710,17 @@
 .bpm-result-text {
   font-size: var(--font-size-base);
   color: var(--text-muted);
+}
+
+.bpm-calculator .input-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.bpm-input {
+  height: 36px;
+  font-size: .95rem;
 }
 
 /* ===============================================
