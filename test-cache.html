@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Cache Test - AKM Music</title>
+    <link rel="stylesheet" href="master-design.css?v=20251108b">
+    <link rel="stylesheet" href="fixes.css?v=20251108b">
+    <style>
+        body { padding: 40px; font-family: Arial, sans-serif; }
+        .test-box { 
+            padding: 20px; 
+            margin: 20px 0; 
+            border: 2px solid #1e88e5; 
+            border-radius: 8px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🧪 AKM Music - Cache Test Page</h1>
+    
+    <div class="test-box info">
+        <h2>Purpose</h2>
+        <p>This page tests if CSS files are loading correctly without cache issues.</p>
+    </div>
+
+    <div class="test-box" id="cssTest">
+        <h2>CSS Load Test</h2>
+        <p id="cssStatus">Testing CSS files...</p>
+    </div>
+
+    <div class="test-box">
+        <h2>Header Test</h2>
+        <header class="site-header" style="position: relative; margin-bottom: 20px;">
+            <div class="container header-inner">
+                <a href="index.html" class="brand">
+                    <div class="brand-text">
+                        <span class="brand-title">AKM MUSIC</span>
+                    </div>
+                </a>
+                <nav class="nav">
+                    <a href="#" class="nav-link active" aria-current="page">Test Link</a>
+                    <a href="#" class="nav-link">Another Link</a>
+                </nav>
+            </div>
+        </header>
+        <p>If you see a white header with blue underline on the active link, CSS is working!</p>
+    </div>
+
+    <div class="test-box">
+        <h2>Actions</h2>
+        <button onclick="clearAllCaches()" style="padding: 10px 20px; background: #1e88e5; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">
+            🧹 Clear All Caches
+        </button>
+        <button onclick="location.href='index.html'" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px;">
+            ✅ Go to Home Page
+        </button>
+    </div>
+
+    <script>
+        // Check if CSS files loaded
+        function checkCSS() {
+            const testBox = document.getElementById('cssTest');
+            const statusEl = document.getElementById('cssStatus');
+            
+            // Check if master-design.css loaded (look for CSS variables)
+            const rootStyles = getComputedStyle(document.documentElement);
+            const primaryColor = rootStyles.getPropertyValue('--color-primary');
+            
+            if (primaryColor) {
+                testBox.className = 'test-box success';
+                statusEl.innerHTML = `
+                    ✅ <strong>SUCCESS!</strong> CSS files are loading correctly.<br>
+                    Primary color detected: <span style="color: ${primaryColor}">${primaryColor}</span>
+                `;
+            } else {
+                testBox.className = 'test-box error';
+                statusEl.innerHTML = `
+                    ❌ <strong>ERROR:</strong> CSS files are NOT loading.<br>
+                    Please click "Clear All Caches" button below.
+                `;
+            }
+        }
+
+        // Clear all caches
+        function clearAllCaches() {
+            console.log('🧹 Clearing all caches...');
+            
+            // Unregister service workers
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                        console.log('✅ Unregistered:', registration.scope);
+                    }
+                });
+            }
+            
+            // Clear caches
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                        console.log('✅ Deleted cache:', name);
+                    }
+                });
+            }
+            
+            // Clear storage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            alert('✅ All caches cleared! Page will reload.');
+            setTimeout(() => location.reload(true), 500);
+        }
+
+        // Run check on load
+        window.addEventListener('load', checkCSS);
+    </script>
+</body>
+</html>

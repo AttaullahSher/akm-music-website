@@ -1,11 +1,12 @@
 // AKM Music Service Worker
 // Provides offline functionality and PWA features
 
-const CACHE_NAME = 'akm-music-v2.0.0';
-const STATIC_CACHE = 'akm-static-v2.0.0';
-const DYNAMIC_CACHE = 'akm-dynamic-v2.0.0';
+const CACHE_NAME = 'akm-music-v4.0.2';
+const STATIC_CACHE = 'akm-static-v4.0.2';
+const DYNAMIC_CACHE = 'akm-dynamic-v4.0.2';
 
 // Files to cache for offline functionality (relative paths for GitHub Pages)
+// Updated to only include current CSS files
 const CACHE_ASSETS = [
   'index.html',
   'tools.html',
@@ -13,18 +14,17 @@ const CACHE_ASSETS = [
   'about.html',
   'gallery.html',
   'contact.html',
-  'styles.css',
-  'modern-styles.css',
-  'tools-styles.css',
-  'blue-theme.css',
-  'design-improvements.css',
-  'light-theme-improvements.css',
-  'tuner-improvements.css',
+  '404.html',
+  'master-design.css',
+  'tools-master.css',
+  'fixes.css',
   'script.js',
   'tools.js',
   'blog.js',
   'analytics.js',
   'pwa.js',
+  'google-analytics.js',
+  'seo-optimizer.js',
   'assets/Logo & Icons/logo.png',
   'assets/Logo & Icons/favicon.ico',
   'assets/Logo & Icons/Whatsapp_icon.png',
@@ -52,19 +52,24 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate event - clean up old caches
+// Activate event - clean up old caches AGGRESSIVELY
 self.addEventListener('activate', (event) => {
   console.log('Service Worker: Activating...');
   
   event.waitUntil(
     caches.keys()
-      .then((cacheNames) => Promise.all(cacheNames.map((cacheName) => {
-        if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-          console.log('Service Worker: Deleting old cache', cacheName);
+      .then((cacheNames) => {
+        console.log('Service Worker: Deleting ALL old caches to force refresh');
+        // Delete ALL caches to force complete refresh
+        return Promise.all(cacheNames.map((cacheName) => {
+          console.log('Service Worker: Deleting cache', cacheName);
           return caches.delete(cacheName);
-        }
-      })))
-      .then(() => self.clients.claim())
+        }));
+      })
+      .then(() => {
+        console.log('Service Worker: All old caches deleted');
+        return self.clients.claim();
+      })
   );
 });
 
@@ -72,7 +77,20 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
+  // Debug bypass: allow opting out of SW via ?no-sw=1
+  if (url.searchParams && url.searchParams.get('no-sw') === '1') {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  // Run legacy CSS mapper at the top so even old HTML gets valid CSS
+  const legacyCssResponse = respondWithLegacyCss(url);
+  if (legacyCssResponse) {
+    event.respondWith(legacyCssResponse);
+    return;
+  }
+
   // Handle different types of requests
   if (request.method === 'GET') {
     // For navigation requests (pages)
@@ -129,10 +147,38 @@ async function handleNavigationRequest(request) {
   }
 }
 
+// Legacy CSS mapper: serve current CSS when old filenames are requested
+function respondWithLegacyCss(url) {
+  const name = url.pathname.split('/').pop().toLowerCase();
+  const commonCss = "@import url('master-design.css?v=20251108b');\n@import url('fixes.css?v=20251108b');\n";
+  const legacyCommon = new Set([
+    'styles.css',
+    'modern-styles.css',
+    'blue-theme.css',
+    'light-theme-improvements.css',
+    'design-improvements.css'
+  ]);
+  if (legacyCommon.has(name)) {
+    return new Response(commonCss, { headers: { 'Content-Type': 'text/css' } });
+  }
+  if (name === 'tools-styles.css') {
+    return new Response(commonCss + "@import url('tools-master.css?v=20251108b');\n", {
+      headers: { 'Content-Type': 'text/css' }
+    });
+  }
+  return null;
+}
+
 // Handle static asset requests (CSS, JS, fonts)
 async function handleStaticAssetRequest(request) {
   const url = new URL(request.url);
-  
+
+  // First, map any legacy CSS filenames to current CSS so old pages still render
+  const legacy = respondWithLegacyCss(url);
+  if (legacy) {
+    return legacy;
+  }
+
   // Don't try to cache external CDN resources in service worker
   // Let browser handle CDN caching naturally
   if (url.hostname !== self.location.hostname && 
@@ -144,24 +190,24 @@ async function handleStaticAssetRequest(request) {
     // Pass through to network without SW intervention
     return fetch(request);
   }
-  
+
   try {
     // Try cache first for local static assets
     const cachedResponse = await caches.match(request);
-    
+
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     // If not in cache, fetch and cache (local assets only)
     const networkResponse = await fetch(request);
-    
+
     if (networkResponse.ok) {
       const cache = await caches.open(STATIC_CACHE);
       cache.put(request, networkResponse.clone());
       return networkResponse;
     }
-    
+
     throw new Error('Network response not ok');
   } catch (error) {
     // Only log for local assets
@@ -300,8 +346,6 @@ self.addEventListener('sync', (event) => {
     event.waitUntil(syncAnalytics());
   }
 });
-
-
 
 // Sync form submissions when back online
 async function syncForms() {

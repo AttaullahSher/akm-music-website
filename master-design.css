@@ -336,13 +336,16 @@ small {
   position: relative;
 }
 
-.nav a:hover {
-  color: var(--color-primary);
-}
+/* Simplify: ensure links never look like pills/buttons */
+.nav a,
+.nav .nav-link { padding: 0; background: transparent; border-radius: 0; box-shadow: none; }
+/* Kill any decorative ::before from legacy styles */
+.nav a::before,
+.nav .nav-link::before { content: none !important; display: none !important; }
 
-.nav a.active {
-  color: var(--color-primary);
-}
+.nav a:hover { color: var(--color-primary); }
+
+.nav a.active { color: var(--color-primary); }
 
 .nav a.active::after {
   content: '';
@@ -352,6 +355,20 @@ small {
   right: 0;
   height: 2px;
   background: var(--color-primary);
+}
+
+/* Simplified global nav link baseline to prevent pill styles */
+.nav a,
+.nav .nav-link {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.nav a.active,
+.nav .nav-link.active {
+  background: transparent;
 }
 
 /* Mobile Menu Toggle */
@@ -574,6 +591,16 @@ small {
   gap: var(--space-md);
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* Ensure home hero text is centered on all viewports */
+.hero-modern .hero-text {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-modern .hero-actions {
+  justify-content: center;
 }
 
 @media (max-width: 768px) {

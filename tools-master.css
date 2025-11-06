@@ -26,22 +26,16 @@
   overflow: hidden;
 }
 
-.tools-hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="2" fill="white" opacity="0.15"/></svg>');
-  opacity: 0.4;
-}
+/* Disable overlay pattern entirely to avoid tint */
+.tools-hero::before { content: none !important; display: none !important; background: none !important; opacity: 1 !important; }
 
 .tools-hero-content {
   position: relative;
   z-index: 2;
   text-align: center;
   max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
   padding: var(--space-2xl);
 }
 
@@ -49,6 +43,8 @@
   font-size: var(--font-size-5xl);
   font-weight: var(--font-weight-black);
   color: var(--color-white);
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: var(--space-lg);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
@@ -201,6 +197,7 @@
   border-radius: var(--border-radius-sm);
   background: var(--color-gray-200);
   outline: none;
+  appearance: none;
   -webkit-appearance: none;
 }
 
@@ -554,7 +551,7 @@
   width: 28px;
   height: 90px;
   background: var(--color-gray-900);
-  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  border-radius: 0 0 var(--border-radius-sm) var (--border-radius-sm);
   margin: 0 -14px;
   z-index: 2;
   box-shadow: var(--shadow-md);
