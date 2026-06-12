@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="master-design.css?v=20260612c">
+  <link rel="stylesheet" href="master-design.css?v=20260613a">
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
   <style>
     body { background: var(--bg-section-light); padding-top: 0; }
@@ -105,7 +105,9 @@
     <!-- App -->
     <div id="app" style="display:none;">
       <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="listings"><i class="fas fa-toggle-on"></i> Listings</button>
+        <button class="admin-tab active" data-tab="listings"><i class="fas fa-toggle-on"></i> Supplier Listings</button>
+        <button class="admin-tab" data-tab="own"><i class="fas fa-box-open"></i> Our Products</button>
+        <button class="admin-tab" data-tab="featured"><i class="fas fa-star"></i> Featured</button>
         <button class="admin-tab" data-tab="orders"><i class="fas fa-shopping-cart"></i> Orders</button>
         <button class="admin-tab" data-tab="bookings"><i class="fas fa-calendar-check"></i> Bookings</button>
       </div>
@@ -130,6 +132,52 @@
         <button class="btn btn-primary" id="listingMore" style="margin:var(--space-md) auto 0; display:none;">Show more</button>
       </div>
 
+      <div class="admin-panel" id="panel-own" style="display:none;">
+        <div class="listing-toolbar">
+          <button class="btn btn-primary btn-sm" id="ownAddBtn"><i class="fas fa-plus"></i> Add Product</button>
+          <button class="btn btn-secondary btn-sm" id="ownExportBtn"><i class="fas fa-file-excel"></i> Export Excel</button>
+          <button class="btn btn-secondary btn-sm" id="ownImportBtn"><i class="fas fa-file-import"></i> Import Excel</button>
+          <input type="file" id="ownImportFile" accept=".xlsx,.xls,.csv" style="display:none;">
+          <span class="listing-stats" id="ownStats" style="margin:0 0 0 auto;"></span>
+        </div>
+        <p style="font-size:var(--font-size-xs); color:var(--text-muted); margin:0 0 12px;">
+          Your own products (ref <strong>AKM-…</strong>) appear in the shop alongside supplier items.
+          Excel columns: <code>Ref, Name, Brand, Category, Price, In Stock, Image URL</code> — leave Ref empty for new items.
+          Import <em>updates</em> matching refs and <em>adds</em> new rows; it never deletes.
+        </p>
+        <div id="ownForm" style="display:none; border:1px solid var(--border-color); border-radius:var(--border-radius-md); padding:var(--space-md); margin-bottom:var(--space-md);">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Ref<input type="text" id="ownRef" readonly placeholder="auto" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-section-light);"></label>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Name *<input type="text" id="ownName" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Brand<input type="text" id="ownBrand" placeholder="AKM" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Category *<input type="text" id="ownCategory" list="subcatList" placeholder="e.g. Acoustic Guitars" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"><datalist id="subcatList"></datalist></label>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Price (AED) *<input type="number" id="ownPrice" min="0" step="0.01" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">In stock
+              <select id="ownStock" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"><option value="yes">Yes</option><option value="no">No</option></select>
+            </label>
+            <label style="font-size:var(--font-size-xs); font-weight:600; grid-column:1/-1;">Image — paste a link OR upload (auto-compressed)
+              <input type="url" id="ownImageUrl" placeholder="https://… image link (optional)" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:6px;">
+              <input type="file" id="ownImageFile" accept="image/*">
+              <span id="ownImageInfo" style="color:var(--text-muted);"></span>
+            </label>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" id="ownSaveBtn">Save Product</button>
+            <button class="btn btn-secondary btn-sm" id="ownCancelBtn">Cancel</button>
+          </div>
+        </div>
+        <div id="ownRows" class="empty-msg">Loading…</div>
+      </div>
+
+      <div class="admin-panel" id="panel-featured" style="display:none;">
+        <p style="font-size:var(--font-size-sm); color:var(--text-muted); margin:0 0 12px;">
+          Hand-pick what shows first on the home page and at the top of the shop. Drag-free: search, then ⭐ to add — ✕ to remove. Order = display order.
+        </p>
+        <div class="listing-toolbar"><input type="search" id="featSearch" placeholder="Search products to feature…"></div>
+        <div id="featPicked" style="margin-bottom:var(--space-md);"></div>
+        <div id="featResults"></div>
+      </div>
+
       <div class="admin-panel" id="panel-orders" style="display:none;">
         <div id="ordersList" class="empty-msg">Loading…</div>
       </div>
@@ -142,7 +190,8 @@
 
   <div class="toast" id="toast"></div>
 
-  <script src="firebase-config.js?v=20260612c"></script>
-  <script type="module" src="admin.js?v=20260612c"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="firebase-config.js?v=20260613a"></script>
+  <script type="module" src="admin.js?v=20260613a"></script>
 </body>
 </html>

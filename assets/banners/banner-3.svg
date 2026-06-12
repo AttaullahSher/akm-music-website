@@ -1,0 +1,14 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='400' viewBox='0 0 1600 400'>
+<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+<stop offset='0' stop-color='#0f766e'/><stop offset='1' stop-color='#2563eb'/></linearGradient></defs>
+<rect width='1600' height='400' fill='url(#g)'/>
+<circle cx='1380' cy='80' r='260' fill='rgba(255,255,255,0.06)'/>
+<circle cx='1500' cy='340' r='180' fill='rgba(255,255,255,0.05)'/>
+<text x='120' y='330' font-size='38' fill='rgba(255,255,255,0.07)' transform='rotate(-8 120 330)'>♪</text><text x='330' y='352' font-size='52' fill='rgba(255,255,255,0.07)' transform='rotate(-4 330 330)'>♫</text><text x='540' y='374' font-size='66' fill='rgba(255,255,255,0.07)' transform='rotate(0 540 330)'>♩</text><text x='750' y='330' font-size='38' fill='rgba(255,255,255,0.07)' transform='rotate(4 750 330)'>♬</text><text x='960' y='352' font-size='52' fill='rgba(255,255,255,0.07)' transform='rotate(8 960 330)'>♪</text><text x='1170' y='374' font-size='66' fill='rgba(255,255,255,0.07)' transform='rotate(-8 1170 330)'>♫</text><text x='1380' y='330' font-size='38' fill='rgba(255,255,255,0.07)' transform='rotate(-4 1380 330)'>♩</text><text x='1590' y='352' font-size='52' fill='rgba(255,255,255,0.07)' transform='rotate(0 1590 330)'>♬</text>
+<text x='110' y='118' font-size='26' font-family='Montserrat, Arial, sans-serif' font-weight='700' fill='rgba(255,255,255,0.85)' letter-spacing='4'>REHEARSAL & RECORDING</text>
+<text x='106' y='196' font-size='64' font-family='Montserrat, Arial, sans-serif' font-weight='900' fill='white' letter-spacing='1'>Book Our Studio</text>
+<text x='110' y='248' font-size='26' font-family='Montserrat, Arial, sans-serif' font-weight='500' fill='rgba(255,255,255,0.92)'>Solo AED 100 · Band AED 150 per hour · gear included</text>
+<rect x='110' y='288' rx='26' width='250' height='52' fill='white'/>
+<text x='235' y='322' font-size='22' font-family='Montserrat, Arial, sans-serif' font-weight='800' fill='#0f766e' text-anchor='middle'>BOOK A SLOT →</text>
+<text x='1370' y='225' font-size='150' text-anchor='middle'>🎙️</text>
+</svg>

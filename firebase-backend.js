@@ -48,11 +48,25 @@
       return {
         disabledIds: d.disabledIds || {},
         disabledCategories: d.disabledCategories || [],
-        disabledBrands: d.disabledBrands || []
+        disabledBrands: d.disabledBrands || [],
+        featuredIds: d.featuredIds || []
       };
     } catch (err) {
       console.warn('overrides unavailable:', err.message);
       return null;
+    }
+  }
+
+  // AKM's own products, managed in admin.html — stored as one document
+  // (siteConfig/ownProducts) so every shopper costs a single read.
+  async function getOwnProducts() {
+    if (!(await ready)) return [];
+    try {
+      const snap = await state.fs.getDoc(state.fs.doc(state.db, 'siteConfig', 'ownProducts'));
+      return snap.exists() ? (snap.data().products || []) : [];
+    } catch (err) {
+      console.warn('own products unavailable:', err.message);
+      return [];
     }
   }
 
@@ -104,5 +118,5 @@
     }
   }
 
-  window.AKM = { ready, getCatalogOverrides, saveOrder, saveBooking, askGemini };
+  window.AKM = { ready, getCatalogOverrides, getOwnProducts, saveOrder, saveBooking, askGemini };
 })();
