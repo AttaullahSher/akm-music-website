@@ -147,12 +147,12 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
-  <script src="analytics.js"></script>
-  <script src="pwa.js"></script>
+  <script src="script.js?v=20260612c"></script>
+  <script src="analytics.js?v=20260612c"></script>
+  <script src="pwa.js?v=20260612c"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 700, once: true });
+    if (window.AOS) AOS.init({ duration: 700, once: true });
 
     // Gallery Pagination - Dynamic loading from assets/Gallery folder
     const galleryImages = [

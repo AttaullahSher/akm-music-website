@@ -168,8 +168,10 @@
   function openModal(p) {
     modalProduct = p;
     modalQty = 1;
-    document.getElementById('modalImg').src = p.imageLarge;
-    document.getElementById('modalImg').onerror = function () { this.onerror = null; this.src = PLACEHOLDER_IMG; };
+    // High-res from supplier CDN → local copy → placeholder
+    const modalImg = document.getElementById('modalImg');
+    modalImg.onerror = function () { this.onerror = function () { this.onerror = null; this.src = PLACEHOLDER_IMG; }; this.src = p.image; };
+    modalImg.src = p.imageLarge || p.image;
     document.getElementById('modalBrand').textContent = p.brand;
     document.getElementById('modalName').textContent = p.name;
     document.getElementById('modalPrice').innerHTML = '<span class="currency">AED</span>' + fmtPrice(p.price);

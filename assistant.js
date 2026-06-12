@@ -104,8 +104,14 @@ Reply in under 120 words, warm and helpful. Mention 1-3 specific products with t
         addMsg('bot', 'I\'m having trouble thinking right now 😅 — please use the search bar above, or <a href="https://wa.me/97126219929" target="_blank" rel="noopener">ask us on WhatsApp</a>.');
       } else {
         addMsg('bot', esc(answer).replace(/\n/g, '<br>'));
-        if (picks.length) {
-          addMsg('bot cards', picks.slice(0, 3).map(p => `
+        // Show cards for the products Gemini actually mentioned (fallback: top matches)
+        const mentioned = picks.filter(p => {
+          const key = p.name.toLowerCase().split(/\s+/).slice(0, 3).join(' ');
+          return answer.toLowerCase().includes(key);
+        });
+        const cards = (mentioned.length ? mentioned : picks).slice(0, 3);
+        if (cards.length) {
+          addMsg('bot cards', cards.map(p => `
             <a class="ai-card" href="shop.html?q=${encodeURIComponent(p.name.split(' ').slice(0, 4).join(' '))}">
               <img src="${esc(p.image)}" alt="" loading="lazy">
               <span class="ai-card-name">${esc(p.name)}</span>
