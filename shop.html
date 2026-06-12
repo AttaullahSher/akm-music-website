@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop Musical Instruments - AKM Music Abu Dhabi | Guitars, Pianos, Drums & More</title>
+  <meta name="description" content="🎵 Shop 1,500+ musical instruments at AKM Music Abu Dhabi. Guitars, pianos, keyboards, drums, amps & accessories from Ibanez, Kawai, Korg, Tama, Alhambra & more. WhatsApp ordering with delivery across UAE.">
+  <meta name="keywords" content="buy musical instruments abu dhabi, guitar shop uae, piano store abu dhabi, ibanez uae, kawai piano, korg keyboard, drum store, music shop online uae">
+  <meta name="author" content="AKM Music Abu Dhabi - Ajmal Khan Mohammed">
+  <link rel="canonical" href="https://www.akm-music.com/shop.html">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Shop Musical Instruments - AKM Music Abu Dhabi">
+  <meta property="og:description" content="🎵 1,500+ instruments: guitars, pianos, drums, amps & accessories. Premium brands, WhatsApp ordering, UAE delivery.">
+  <meta property="og:image" content="assets/Banners_images/3D274.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.akm-music.com/shop.html">
+  <meta property="og:site_name" content="AKM Music Abu Dhabi">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="master-design.css?v=20260612a">
+  <link rel="stylesheet" href="fixes.css?v=20260612a">
+  <link rel="stylesheet" href="shop.css?v=20260612a">
+
+  <!-- PWA & Icons -->
+  <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="AKM Music Home">
+        <img src="assets/Logo & Icons/logo.png" alt="AKM Music Logo" class="logo">
+        <div class="brand-text">
+          <span class="brand-title">AKM MUSIC</span>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="shop.html" class="nav-link active" aria-current="page">🛒 Shop</a>
+        <a href="tools.html" class="nav-link">🛠️ Tools</a>
+        <a href="blog.html" class="nav-link">📝 Blog</a>
+        <a href="about.html" class="nav-link">📖 About</a>
+        <a href="contact.html" class="nav-link">📞 Contact</a>
+      </nav>
+      <div class="header-actions">
+        <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Shop Hero -->
+  <section class="shop-hero">
+    <h1>AKM MUSIC STORE</h1>
+    <p>1,500+ instruments &amp; accessories from the world's best brands — delivered across the UAE</p>
+    <div class="shop-search-wrap">
+      <i class="fas fa-search"></i>
+      <input type="search" id="shopSearch" placeholder="Search guitars, pianos, strings, brands…" autocomplete="off">
+    </div>
+    <div class="shop-departments" id="deptChips"></div>
+  </section>
+
+  <!-- Catalog -->
+  <main class="container" style="padding-bottom: 4rem;">
+    <div class="shop-toolbar">
+      <select id="categoryFilter" aria-label="Filter by category"></select>
+      <select id="brandFilter" aria-label="Filter by brand"></select>
+      <select id="sortFilter" aria-label="Sort products">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name">Name: A–Z</option>
+      </select>
+      <label class="stock-toggle"><input type="checkbox" id="stockFilter"> In stock only</label>
+      <span class="shop-count" id="shopCount">Loading…</span>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <div class="shop-empty">Loading catalog…</div>
+    </div>
+    <div class="shop-empty" id="shopEmpty" style="display:none;">
+      <i class="fas fa-search" style="font-size:2rem;opacity:.3"></i>
+      <p>No products match your filters. Try a different search or category.</p>
+    </div>
+    <button class="btn btn-primary shop-loadmore" id="loadMore" style="display:none;">Load More Products</button>
+  </main>
+
+  <!-- Product Modal -->
+  <div class="product-modal-overlay" id="productModalOverlay">
+    <div class="product-modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose" aria-label="Close"><i class="fas fa-times"></i></button>
+      <div class="modal-image"><img id="modalImg" src="" alt="Product image"></div>
+      <div class="modal-details">
+        <span class="product-brand" id="modalBrand"></span>
+        <h2 id="modalName"></h2>
+        <div class="product-price" id="modalPrice"></div>
+        <div class="modal-meta" id="modalMeta"></div>
+        <div class="qty-row">
+          <span>Quantity</span>
+          <div class="qty-control">
+            <button id="modalQtyDec" aria-label="Decrease quantity">−</button>
+            <span id="modalQty">1</span>
+            <button id="modalQtyInc" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="modalAddCart"><i class="fas fa-cart-plus"></i>&nbsp; Add to Cart</button>
+          <button class="btn-whatsapp" id="modalWhatsApp"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button>
+        </div>
+        <p class="cart-note">Prices include our showroom support, setup &amp; after-sales service in Abu Dhabi.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart -->
+  <button class="cart-fab" id="cartFab" aria-label="Open cart">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count" id="cartCount" style="display:none;">0</span>
+  </button>
+  <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-header">
+      <h3><i class="fas fa-shopping-cart"></i>&nbsp; Your Cart</h3>
+      <button id="cartClose" aria-label="Close cart"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total-row"><span>Total</span><span id="cartTotal">AED 0</span></div>
+      <button class="btn-whatsapp" id="cartCheckout" style="width:100%;" disabled>
+        <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+      </button>
+      <p class="cart-note">We'll confirm availability, payment &amp; delivery on WhatsApp — no online payment needed.</p>
+    </div>
+  </aside>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h4>AKM Music</h4>
+        <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="tools.html">Tools</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <p>📍 Abu Dhabi, UAE</p>
+        <p>📞 +971 2 621 9929</p>
+        <p>📧 Sales@akm-music.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-social-row">
+          <a href="https://wa.me/97126219929" target="_blank" rel="noopener" class="footer-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://m.facebook.com/akmmusiccenter/" target="_blank" rel="noopener" class="footer-icon" title="Facebook"><i class="fab fa-facebook"></i></a>
+          <a href="https://www.instagram.com/akm.music" target="_blank" rel="noopener" class="footer-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://m.me/akmmusiccenter" target="_blank" rel="noopener" class="footer-icon" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+        </div>
+        <div class="footer-copy">© 2026 AKM Music Abu Dhabi. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="google-analytics.js?v=20260612a"></script>
+  <script src="script.js?v=20260612a"></script>
+  <script src="analytics.js?v=20260612a"></script>
+  <script src="pwa.js?v=20260612a"></script>
+  <script src="shop.js?v=20260612a"></script>
+</body>
+</html>

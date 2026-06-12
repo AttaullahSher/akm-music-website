@@ -1,0 +1,35 @@
+name: Sync Supplier Catalog
+
+on:
+  schedule:
+    # Every Monday and Thursday at 03:00 UAE time (23:00 UTC prev day)
+    - cron: '0 23 * * 0,3'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run catalog sync
+        run: node scripts/sync-supplier-catalog.js
+
+      - name: Commit updated catalog
+        run: |
+          git config user.name "akm-catalog-bot"
+          git config user.email "sales@akm-music.com"
+          if git diff --quiet products.json; then
+            echo "No catalog changes."
+          else
+            git add products.json
+            git commit -m "chore: refresh product catalog (prices & stock)"
+            git push
+          fi
