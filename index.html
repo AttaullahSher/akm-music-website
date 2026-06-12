@@ -49,8 +49,9 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   
   <!-- Styles - Simplified & Unified -->
-  <link rel="stylesheet" href="master-design.css?v=20251108c">
-  <link rel="stylesheet" href="fixes.css?v=20251108c">
+  <link rel="stylesheet" href="master-design.css?v=20260612a">
+  <link rel="stylesheet" href="fixes.css?v=20260612a">
+  <link rel="stylesheet" href="shop.css?v=20260612a">
   
   <!-- PWA & Icons -->
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
@@ -69,6 +70,7 @@
       </a>
       <nav class="nav" aria-label="Main navigation">
         <a href="index.html" class="nav-link active" aria-current="page">🏠 Home</a>
+        <a href="shop.html" class="nav-link">🛒 Shop</a>
         <a href="tools.html" class="nav-link">🛠️ Tools</a>
         <a href="blog.html" class="nav-link">📝 Blog</a>
         <a href="about.html" class="nav-link">📖 About</a>
@@ -94,7 +96,7 @@
         </div>
         <h2 class="hero-tagline">PREMIUM MUSIC SERVICES</h2>
         <p class="hero-description">
-          Discover professional music services, rentals, repairs, and innovative music tools.
+          Shop 1,500+ premium instruments online, plus professional services, rentals, repairs, and music tools.
           From beginner-friendly options to expert support - elevate your musical experience in Abu Dhabi.
         </p>
         <div class="hero-actions">
@@ -111,7 +113,14 @@
       <p class="qa-sub">Instant access to the most-used features</p>
     </div>
     <div class="qa-grid">
-      <!-- Removed Instant Checkout -->
+      <a class="qa-card qa--shop" href="shop.html" data-aos="fade-up" data-aos-delay="50">
+        <div class="qa-icon"><i class="fas fa-store"></i></div>
+        <div class="qa-content">
+          <div class="qa-title-sm">Shop Instruments</div>
+          <div class="qa-desc">Browse 1,500+ instruments &amp; accessories online</div>
+        </div>
+        <div class="qa-cta"><i class="fas fa-arrow-right"></i></div>
+      </a>
 
       <a class="qa-card qa--wa" href="https://api.whatsapp.com/send?phone=97126219929&text=Hello%20AKM%20Music!%20I%20need%20assistance." target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="100">
         <div class="qa-icon"><i class="fab fa-whatsapp"></i></div>
@@ -152,6 +161,29 @@
       <!-- Removed Payment Options -->
     </div>
   </section>
+
+  <!-- Featured Products -->
+  <section class="featured-section container">
+    <div class="section-header" data-aos="fade-up">
+      <h2 class="section-title">Featured Instruments</h2>
+      <p class="section-subtitle">Hand-picked from our online store — premium brands, showroom-backed service</p>
+    </div>
+    <div class="product-grid" id="featuredGrid"></div>
+    <div class="featured-cta" data-aos="fade-up">
+      <a href="shop.html" class="btn btn-primary btn-lg">Browse All Products <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </section>
+
+  <!-- Brands -->
+  <section class="brand-strip">
+    <div class="container">
+      <h2 class="section-title">Brands We Carry</h2>
+      <div class="brand-strip-logos">
+        <span>IBANEZ</span><span>KAWAI</span><span>KORG</span><span>TAMA</span><span>ALHAMBRA</span><span>ZILDJIAN</span><span>VOX</span><span>LANEY</span><span>HOHNER</span><span>ERNIE BALL</span><span>D'ADDARIO</span><span>EVANS</span>
+      </div>
+    </div>
+  </section>
+
   <!-- Services Cards -->
   <section class="services-section container">
     <div class="section-header" data-aos="fade-up">
@@ -237,6 +269,7 @@
         <h4>Quick Links</h4>
         <ul>
           <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
           <li><a href="tools.html">Tools</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="about.html">About</a></li>
@@ -271,7 +304,38 @@
   <script src="pwa.js?v=20251027e"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 700, once: true });
+    if (window.AOS) AOS.init({ duration: 700, once: true });
+  </script>
+  <script>
+    // Featured products — a rotating daily pick of in-stock items from the store catalog
+    (async function () {
+      const grid = document.getElementById('featuredGrid');
+      if (!grid) return;
+      try {
+        const res = await fetch('products.json?v=' + new Date().toISOString().slice(0, 10), { cache: 'no-cache' });
+        const data = await res.json();
+        const pool = data.products.filter(p => p.inStock && p.price >= 300);
+        const daySeed = Math.floor(Date.now() / 86400000);
+        const picks = [];
+        for (let i = 0; i < 8 && pool.length; i++) {
+          picks.push(pool.splice((daySeed * 2654435761 + i * 97) % pool.length, 1)[0]);
+        }
+        const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        grid.innerHTML = picks.map(p => `
+          <a class="product-card" href="shop.html?q=${encodeURIComponent(p.name.split(' ').slice(0, 3).join(' '))}">
+            <div class="product-image">
+              <img src="${p.image}" alt="${esc(p.name)}" loading="lazy">
+            </div>
+            <div class="product-info">
+              <span class="product-brand">${esc(p.brand)}</span>
+              <span class="product-name">${esc(p.name)}</span>
+              <div class="product-price"><span class="currency">AED</span>${p.price.toLocaleString('en-AE')}</div>
+            </div>
+          </a>`).join('');
+      } catch (e) {
+        document.querySelector('.featured-section').style.display = 'none';
+      }
+    })();
   </script>
 </body>
 </html>

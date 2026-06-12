@@ -42,7 +42,8 @@ if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then
 ## 📁 File Structure
 
 ```
-├── index.html              # Home page
+├── index.html              # Home page (featured products + brands)
+├── shop.html               # Online store (catalog, cart, WhatsApp checkout)
 ├── tools.html              # Music tools page
 ├── blog.html               # Blog listing
 ├── about.html              # About page
@@ -51,12 +52,30 @@ if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then
 ├── 404.html                # Error page
 ├── master-design.css       # Main styles
 ├── tools-master.css        # Tools page styles
+├── shop.css                # Store + featured products styles
 ├── fixes.css               # Design consistency fixes
 ├── script.js               # Main JavaScript
+├── shop.js                 # Store logic (filters, cart, checkout)
 ├── tools.js                # Tools functionality
+├── products.json           # Product catalog (auto-synced)
+├── scripts/
+│   └── sync-supplier-catalog.js  # Catalog sync from supplier storefront
+├── .github/workflows/
+│   └── sync-products.yml   # Scheduled catalog refresh (Mon & Thu)
 ├── service-worker.js       # PWA offline support
 └── assets/                 # Images and icons
 ```
+
+## 🛒 Online Store
+
+`shop.html` renders `products.json` — a catalog synced from our supplier's
+storefront (Harmony House, authorized dealer pricing):
+
+- Run manually: `node scripts/sync-supplier-catalog.js`
+- Runs automatically Mon & Thu via GitHub Actions (prices & stock refresh)
+- Checkout is via WhatsApp (+971 2 621 9929) — no payment gateway needed
+- Product images are served from the supplier CDN; prices match supplier
+  retail (our margin = dealer discount)
 
 ## 🎨 Design System
 
