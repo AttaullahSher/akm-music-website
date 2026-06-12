@@ -19,17 +19,14 @@
 // TIP: this is the same object as FIREBASE_CONFIG in your AKM-POS config.js —
 // you can copy it from there if you use the same project.
 
-window.AKM_FIREBASE_CONFIG = null;
-/* Example:
 window.AKM_FIREBASE_CONFIG = {
-  apiKey: "AIza................",
-  authDomain: "akm-pos.firebaseapp.com",
-  projectId: "akm-pos",
-  storageBucket: "akm-pos.firebasestorage.app",
-  messagingSenderId: "................",
-  appId: "1:................:web:................"
+  apiKey: "AIzaSyAWHqcDguGttqYrFa3ps6tB2x-MsZbl_PM",
+  authDomain: "akm-pos-480210.firebaseapp.com",
+  projectId: "akm-pos-480210",
+  storageBucket: "akm-pos-480210.firebasestorage.app",
+  messagingSenderId: "694436741738",
+  appId: "1:694436741738:web:02da7d16964e75bdc00013"
 };
-*/
 
 // Who can open admin.html and edit listings/orders (must match firestore.rules)
 window.AKM_ADMIN_EMAILS = ['sales@akm-music.com'];
