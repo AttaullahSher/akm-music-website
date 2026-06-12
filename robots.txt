@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
 Disallow: /test-cache.html
 Disallow: /design-guide.html
 Disallow: /css_backup_legacy/

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Admin - AKM Music</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="master-design.css?v=20260612c">
+  <link rel="icon" href="assets/Logo & Icons/favicon.ico">
+  <style>
+    body { background: var(--bg-section-light); padding-top: 0; }
+    .admin-shell { max-width: 1100px; margin: 0 auto; padding: var(--space-lg); }
+    .admin-topbar {
+      display: flex; align-items: center; gap: var(--space-md);
+      background: var(--bg-card); border-radius: var(--border-radius-lg);
+      padding: var(--space-md) var(--space-lg); box-shadow: var(--shadow-sm);
+      margin: var(--space-lg) 0;
+    }
+    .admin-topbar img { height: 38px; }
+    .admin-topbar h1 { font-size: var(--font-size-xl); margin: 0; flex: 1; }
+    .admin-user { font-size: var(--font-size-sm); color: var(--text-muted); }
+    .admin-tabs { display: flex; gap: var(--space-sm); margin-bottom: var(--space-lg); flex-wrap: wrap; }
+    .admin-tab {
+      padding: 10px 22px; border-radius: 999px; border: 1px solid var(--border-color);
+      background: var(--bg-card); font-family: var(--font-family); font-weight: 600;
+      font-size: var(--font-size-sm); cursor: pointer; color: var(--text-secondary);
+    }
+    .admin-tab.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+    .admin-panel { background: var(--bg-card); border-radius: var(--border-radius-lg); padding: var(--space-lg); box-shadow: var(--shadow-sm); }
+    .gate { text-align: center; padding: var(--space-3xl) var(--space-lg); }
+    .gate .btn-google {
+      display: inline-flex; align-items: center; gap: 10px; padding: 12px 26px;
+      border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);
+      background: white; font-family: var(--font-family); font-weight: 700;
+      font-size: var(--font-size-base); cursor: pointer; box-shadow: var(--shadow-sm);
+    }
+    .gate .hint { color: var(--text-muted); font-size: var(--font-size-sm); margin-top: var(--space-md); }
+    .listing-toolbar { display: flex; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: var(--space-md); }
+    .listing-toolbar input, .listing-toolbar select {
+      padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+      font-family: var(--font-family); font-size: var(--font-size-sm); flex: 1; min-width: 180px;
+    }
+    .listing-stats { font-size: var(--font-size-sm); color: var(--text-muted); margin-bottom: var(--space-md); }
+    .listing-row {
+      display: flex; align-items: center; gap: var(--space-md);
+      padding: 10px 6px; border-bottom: 1px solid var(--color-gray-100);
+    }
+    .listing-row img { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border-color); background: white; }
+    .listing-name { flex: 1; min-width: 0; font-size: var(--font-size-sm); }
+    .listing-name .sub { color: var(--text-muted); font-size: var(--font-size-xs); }
+    .listing-row.off { opacity: 0.45; }
+    .switch { position: relative; width: 46px; height: 26px; flex-shrink: 0; cursor: pointer; }
+    .switch input { display: none; }
+    .switch .track { position: absolute; inset: 0; border-radius: 999px; background: var(--color-gray-300); transition: background .2s; }
+    .switch input:checked + .track { background: var(--color-success); }
+    .switch .knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: white; transition: left .2s; box-shadow: var(--shadow-sm); }
+    .switch input:checked ~ .knob { left: 23px; }
+    .bulk-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: var(--space-sm) 0 var(--space-md); }
+    .bulk-chip {
+      font-size: var(--font-size-xs); padding: 6px 12px; border-radius: 999px;
+      border: 1px solid var(--border-color); background: var(--bg-section-light);
+      cursor: pointer; font-family: var(--font-family);
+    }
+    .bulk-chip.off { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+    .record { border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: var(--space-md); margin-bottom: var(--space-md); }
+    .record-head { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: 6px; }
+    .record-head .when { color: var(--text-muted); font-size: var(--font-size-xs); }
+    .record-head .total { margin-left: auto; font-weight: 800; color: var(--color-primary); }
+    .record ul { margin: 6px 0 0 18px; padding: 0; font-size: var(--font-size-sm); }
+    .badge { font-size: var(--font-size-xs); font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+    .badge.new { background: #dbeafe; color: #1e40af; }
+    .badge.done { background: #d1fae5; color: #065f46; }
+    .mark-btn { margin-left: 8px; font-size: var(--font-size-xs); border: none; background: none; color: var(--color-primary); cursor: pointer; font-family: var(--font-family); }
+    .empty-msg { text-align: center; color: var(--text-muted); padding: var(--space-2xl); }
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--color-gray-800); color: white; padding: 10px 22px;
+      border-radius: 999px; font-size: var(--font-size-sm); opacity: 0; transition: opacity .25s; z-index: 99;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="admin-shell">
+    <div class="admin-topbar">
+      <img src="assets/Logo & Icons/logo.png" alt="AKM">
+      <h1>AKM Admin</h1>
+      <span class="admin-user" id="adminUser"></span>
+      <button class="btn btn-secondary btn-sm" id="signOutBtn" style="display:none;">Sign out</button>
+    </div>
+
+    <!-- Sign-in gate -->
+    <div class="admin-panel gate" id="gate">
+      <h2 style="margin-top:0;">Store Management</h2>
+      <p style="color:var(--text-muted);">Listings, website orders &amp; bookings</p>
+      <button class="btn-google" id="signInBtn"><i class="fab fa-google" style="color:#4285f4;"></i> Sign in with Google</button>
+      <p class="hint" id="gateHint">Only sales@akm-music.com can access this page.</p>
+    </div>
+
+    <!-- App -->
+    <div id="app" style="display:none;">
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="listings"><i class="fas fa-toggle-on"></i> Listings</button>
+        <button class="admin-tab" data-tab="orders"><i class="fas fa-shopping-cart"></i> Orders</button>
+        <button class="admin-tab" data-tab="bookings"><i class="fas fa-calendar-check"></i> Bookings</button>
+      </div>
+
+      <div class="admin-panel" id="panel-listings">
+        <div class="listing-toolbar">
+          <input type="search" id="adminSearch" placeholder="Search products…">
+          <select id="adminCatFilter"><option value="">All categories</option></select>
+          <select id="adminShowFilter">
+            <option value="all">Show all</option>
+            <option value="off">Disabled only</option>
+          </select>
+        </div>
+        <div class="listing-stats" id="listingStats"></div>
+        <details>
+          <summary style="cursor:pointer; font-size:var(--font-size-sm); font-weight:600;">Bulk: disable whole categories / brands</summary>
+          <div style="font-size:var(--font-size-xs); color:var(--text-muted); margin-top:6px;">Click to toggle — red = hidden from the shop</div>
+          <div class="bulk-chips" id="bulkCats"></div>
+          <div class="bulk-chips" id="bulkBrands"></div>
+        </details>
+        <div id="listingRows"></div>
+        <button class="btn btn-primary" id="listingMore" style="margin:var(--space-md) auto 0; display:none;">Show more</button>
+      </div>
+
+      <div class="admin-panel" id="panel-orders" style="display:none;">
+        <div id="ordersList" class="empty-msg">Loading…</div>
+      </div>
+
+      <div class="admin-panel" id="panel-bookings" style="display:none;">
+        <div id="bookingsList" class="empty-msg">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="firebase-config.js?v=20260612c"></script>
+  <script type="module" src="admin.js?v=20260612c"></script>
+</body>
+</html>
