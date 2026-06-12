@@ -45,9 +45,20 @@
 
   // ---------- data ----------
   async function loadProducts() {
-    const res = await fetch('products.json?v=' + new Date().toISOString().slice(0, 10), { cache: 'no-cache' });
+    const [res, overrides] = await Promise.all([
+      fetch('products.json?v=' + new Date().toISOString().slice(0, 10), { cache: 'no-cache' }),
+      window.AKM ? window.AKM.getCatalogOverrides() : Promise.resolve(null)
+    ]);
     const data = await res.json();
-    state.products = data.products.map(p => Object.assign({ dept: departmentFor(p.category) }, p));
+    let products = data.products;
+    // Admin can disable listings from admin.html (stored in Firestore)
+    if (overrides) {
+      const offCats = new Set(overrides.disabledCategories);
+      const offBrands = new Set(overrides.disabledBrands);
+      products = products.filter(p =>
+        !overrides.disabledIds[p.id] && !offCats.has(p.category) && !offBrands.has(p.brand));
+    }
+    state.products = products.map(p => Object.assign({ dept: departmentFor(p.category) }, p));
   }
 
   // ---------- filtering ----------
@@ -238,6 +249,14 @@
 
   function checkoutWhatsApp() {
     if (!cart.length) return;
+    // Capture the order in Firestore (fire-and-forget) — checkout itself stays WhatsApp
+    if (window.AKM) {
+      window.AKM.saveOrder({
+        items: cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty })),
+        total: Math.round(cartTotal() * 100) / 100,
+        currency: 'AED'
+      });
+    }
     const lines = ['Hello AKM Music! I would like to order:', ''];
     cart.forEach(i => lines.push(`• ${i.name} ×${i.qty} — AED ${fmtPrice(i.price * i.qty)} (Ref: ${i.id})`));
     lines.push('', `Total: AED ${fmtPrice(cartTotal())}`, '', 'Please confirm availability and delivery. Thank you!');

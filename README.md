@@ -96,3 +96,14 @@ storefront (Harmony House, authorized dealer pricing):
 - All markdown documentation files have been removed
 - Legacy CSS files moved to `css_backup_legacy/`
 - Service worker aggressively clears old caches on update
+
+## 🔥 Firebase Backend (orders, bookings, listing control, Gemini)
+
+See **SETUP-FIREBASE.md** for the 5-minute setup. After configuring
+`firebase-config.js`:
+
+- `admin.html` — sign in with sales@akm-music.com to enable/disable
+  listings (per product, category or brand) and view website orders & bookings
+- Checkouts and service bookings are captured in Firestore *in addition to*
+  the unchanged WhatsApp flow
+- "Ask AKM" Gemini shopping assistant appears on the shop page

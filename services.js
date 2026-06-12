@@ -36,6 +36,11 @@
     try { if (window.gtag) gtag('event', name, params || {}); } catch (_) {}
   }
 
+  // Capture booking in Firestore (fire-and-forget) — WhatsApp remains the channel
+  function capture(type, fields) {
+    try { if (window.AKM) window.AKM.saveBooking({ type, ...fields }); } catch (_) {}
+  }
+
   // ---------- Repairs ----------
   const repairBtn = document.getElementById('repairSubmit');
   if (repairBtn) repairBtn.addEventListener('click', () => {
@@ -50,6 +55,7 @@
       'I will drop the instrument at your showroom (Hamdan Road No 5, Behind Millennium Hotel, Abu Dhabi).',
       'Please confirm receiving hours. Thank you!'
     ].join('\n');
+    capture('repair', { name: val('repairName'), phone: val('repairPhone'), instrument: val('repairInstrument'), issue: val('repairIssue') });
     track('repair_booking', { instrument: val('repairInstrument') });
     wa(msg);
   });
@@ -70,6 +76,7 @@
       'Plan: AED 525/month — 8 sessions, 45 min each, twice a week.',
       'Please have the teacher contact me to confirm the schedule. Thank you!'
     ].join('\n');
+    capture('class', { name: val('className'), age: val('classAge'), phone: val('classPhone'), instrument: val('classInstrument'), level: val('classLevel'), preference: val('classPreference'), plan: 'AED 525/month - 8x45min' });
     track('class_registration', { instrument: val('classInstrument') });
     wa(msg);
   });
@@ -133,6 +140,7 @@
       '',
       'Please confirm availability. Thank you!'
     ].join('\n');
+    capture('studio', { name: val('studioName'), phone: val('studioPhone'), session: studioType, price: studioType === 'band' ? 150 : 100, date: val('studioDate'), time: val('studioTime'), notes: val('studioNotes') });
     track('studio_booking', { type: studioType });
     wa(msg);
   });
@@ -150,6 +158,7 @@
       '',
       'Please share pricing and availability. Thank you!'
     ].join('\n');
+    capture('rental', { name: val('rentalName'), phone: val('rentalPhone'), instrument: val('rentalInstrument'), period: val('rentalPeriod') });
     track('rental_request', { instrument: val('rentalInstrument') });
     wa(msg);
   });
