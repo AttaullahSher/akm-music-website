@@ -498,9 +498,16 @@
 /* fixes.css forces `a` color with !important — anchor buttons need the same force */
 a.btn.btn-primary, a.btn.btn-primary:hover { color: var(--color-white) !important; }
 .featured-section { padding: var(--space-3xl) 0; }
+/* Compact cards on the home page */
 .featured-section .product-grid {
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-md);
 }
+.featured-section .product-info { padding: var(--space-sm) var(--space-md) var(--space-md); gap: 4px; }
+.featured-section .product-name { font-size: var(--font-size-xs); min-height: 2.6em; }
+.featured-section .product-brand { font-size: 10px; }
+.featured-section .product-price { font-size: var(--font-size-base); }
+.featured-section .product-image img { padding: var(--space-xs); }
 .featured-cta { text-align: center; margin-top: var(--space-xl); }
 
 /* --- Brand strip (home page) --- */

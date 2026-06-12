@@ -1613,3 +1613,95 @@ body { padding-top: var(--header-height) !important; }
   background-clip: text !important;
   color: transparent !important;
 }
+
+/* ============================================================
+   APP EXPERIENCE LAYER (2026 redesign)
+   Mobile bottom tab bar, iOS polish, home hero animations
+   ============================================================ */
+
+/* iOS / PWA polish */
+html { -webkit-tap-highlight-color: transparent; }
+body { overscroll-behavior-y: none; -webkit-font-smoothing: antialiased; }
+input, select, textarea { font-size: 16px; } /* prevents iOS zoom-on-focus */
+
+/* --- Mobile bottom tab bar --- */
+.app-tabbar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1300;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--color-gray-200);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.app-tabbar .tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 0 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-gray-500) !important;
+  text-decoration: none;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.app-tabbar .tab-item i { font-size: 19px; }
+.app-tabbar .tab-item.active { color: var(--color-primary) !important; }
+.app-tabbar .tab-item:active { transform: scale(0.92); }
+
+@media (max-width: 768px) {
+  .app-tabbar { display: flex; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .cart-fab { bottom: calc(80px + env(safe-area-inset-bottom)); }
+}
+
+/* --- Home hero: animated gradient + floating notes --- */
+.hero-modern {
+  position: relative;
+  overflow: hidden;
+}
+.hero-modern .hero-bg {
+  background: linear-gradient(-45deg, #1e40af, #2563eb, #3b82f6, #1d4ed8);
+  background-size: 400% 400%;
+  animation: akmGradient 14s ease infinite;
+}
+@keyframes akmGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-note {
+  position: absolute;
+  bottom: -60px;
+  color: rgba(255, 255, 255, 0.14);
+  font-size: 2.2rem;
+  animation: akmFloat linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes akmFloat {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
+}
+.hero-text > * {
+  animation: akmRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-text > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-text > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-text > *:nth-child(4) { animation-delay: 0.45s; }
+@keyframes akmRise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-modern .hero-bg, .hero-note, .hero-text > * { animation: none; }
+}

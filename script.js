@@ -105,6 +105,43 @@ document.addEventListener('DOMContentLoaded', ()=> {
     window.updateCustomerBadge(existing);
   } catch {}
 
+  // Mobile app-style bottom tab bar (injected on every page)
+  try {
+    const page = (location.pathname.split('/').pop() || 'index.html');
+    const tabs = [
+      ['index.html', 'fa-house', 'Home'],
+      ['shop.html', 'fa-store', 'Shop'],
+      ['services.html', 'fa-music', 'Services'],
+      ['tools.html', 'fa-screwdriver-wrench', 'Tools'],
+      ['contact.html', 'fa-phone', 'Contact']
+    ];
+    const bar = document.createElement('nav');
+    bar.className = 'app-tabbar';
+    bar.setAttribute('aria-label', 'App navigation');
+    bar.innerHTML = tabs.map(([href, icon, label]) =>
+      `<a class="tab-item ${page === href ? 'active' : ''}" href="${href}"><i class="fas ${icon}"></i><span>${label}</span></a>`
+    ).join('');
+    document.body.appendChild(bar);
+  } catch {}
+
+  // Floating music notes in the home hero
+  try {
+    const hero = document.querySelector('.hero-modern');
+    if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const glyphs = ['♪', '♫', '♩', '♬'];
+      for (let i = 0; i < 7; i++) {
+        const n = document.createElement('span');
+        n.className = 'hero-note';
+        n.textContent = glyphs[i % glyphs.length];
+        n.style.left = (5 + i * 14) + '%';
+        n.style.animationDuration = (9 + (i % 4) * 3) + 's';
+        n.style.animationDelay = (i * 1.7) + 's';
+        n.style.fontSize = (1.6 + (i % 3) * 0.6) + 'rem';
+        hero.appendChild(n);
+      }
+    }
+  } catch {}
+
   // Remove unwanted home cards by title/link text (robust across cached variants)
   try {
     const grid = document.querySelector('.services-grid');

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /test-cache.html
+Disallow: /design-guide.html
+Disallow: /css_backup_legacy/
+
+Sitemap: https://www.akm-music.com/sitemap.xml

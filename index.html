@@ -40,6 +40,68 @@
   <meta name="twitter:description" content="🎵 Leading music store in Abu Dhabi since 1984. Premium instruments & professional services.">
   <meta name="twitter:image" content="assets/Banners_images/3D274.png">
 
+  <!-- Structured data: local business + site search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "MusicStore",
+        "@id": "https://www.akm-music.com/#store",
+        "name": "AKM Music Abu Dhabi",
+        "alternateName": "AKM Music Center",
+        "description": "Leading music store in Abu Dhabi since 1984. 1,500+ musical instruments, repairs, music classes, studio rental and instrument rentals.",
+        "url": "https://www.akm-music.com/",
+        "logo": "https://www.akm-music.com/assets/Logo & Icons/logo.png",
+        "image": "https://www.akm-music.com/assets/Banners_images/3D274.png",
+        "telephone": "+97126219929",
+        "email": "sales@akm-music.com",
+        "foundingDate": "1984",
+        "priceRange": "AED 3 - AED 95,000",
+        "currenciesAccepted": "AED",
+        "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Hamdan Road No 5, Behind Millennium Hotel",
+          "addressLocality": "Abu Dhabi",
+          "addressCountry": "AE"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": 24.495314, "longitude": 54.370049 },
+        "openingHoursSpecification": [
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"], "opens": "09:00", "closes": "21:00" },
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "16:30", "closes": "21:00" }
+        ],
+        "sameAs": [
+          "https://www.facebook.com/akmmusiccenter",
+          "https://www.instagram.com/akm.music"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Musical Instruments & Services",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Instrument Repairs" } },
+            { "@type": "Offer", "price": "525", "priceCurrency": "AED", "itemOffered": { "@type": "Service", "name": "Music Classes (monthly, 8 sessions)" } },
+            { "@type": "Offer", "price": "100", "priceCurrency": "AED", "itemOffered": { "@type": "Service", "name": "Studio Session - Solo (60 min)" } },
+            { "@type": "Offer", "price": "150", "priceCurrency": "AED", "itemOffered": { "@type": "Service", "name": "Studio Session - Band (60 min)" } }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.akm-music.com/#website",
+        "url": "https://www.akm-music.com/",
+        "name": "AKM Music Abu Dhabi",
+        "publisher": { "@id": "https://www.akm-music.com/#store" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": { "@type": "EntryPoint", "urlTemplate": "https://www.akm-music.com/shop.html?q={search_term_string}" },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,9 +111,9 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   
   <!-- Styles - Simplified & Unified -->
-  <link rel="stylesheet" href="master-design.css?v=20260612a">
-  <link rel="stylesheet" href="fixes.css?v=20260612a">
-  <link rel="stylesheet" href="shop.css?v=20260612a">
+  <link rel="stylesheet" href="master-design.css?v=20260612b">
+  <link rel="stylesheet" href="fixes.css?v=20260612b">
+  <link rel="stylesheet" href="shop.css?v=20260612b">
   
   <!-- PWA & Icons -->
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
@@ -71,6 +133,7 @@
       <nav class="nav" aria-label="Main navigation">
         <a href="index.html" class="nav-link active" aria-current="page">🏠 Home</a>
         <a href="shop.html" class="nav-link">🛒 Shop</a>
+        <a href="services.html" class="nav-link">🎵 Services</a>
         <a href="tools.html" class="nav-link">🛠️ Tools</a>
         <a href="blog.html" class="nav-link">📝 Blog</a>
         <a href="about.html" class="nav-link">📖 About</a>
@@ -202,7 +265,7 @@
         <div class="service-content">
           <h3 class="service-title">Expert Repairs</h3>
           <p class="service-description">Professional repair and maintenance services for all instruments</p>
-          <a href="https://api.whatsapp.com/send?phone=97126219929&text=Hello%20AKM%20Music!%20I%20need%20instrument%20repair%20services." target="_blank" rel="noopener" class="service-link">
+          <a href="services.html#repairs" class="service-link">
             Book Service <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -217,8 +280,8 @@
         </div>
         <div class="service-content">
           <h3 class="service-title">Music Classes</h3>
-          <p class="service-description">Learn from experienced instructors - all ages and skill levels welcome</p>
-          <a href="https://api.whatsapp.com/send?phone=97126219929&text=Hello%20AKM%20Music!%20I%20want%20to%20enroll%20in%20music%20classes." target="_blank" rel="noopener" class="service-link">
+          <p class="service-description">AED 525/month — 8 sessions of 45 min, twice a week. All ages & levels</p>
+          <a href="services.html#classes" class="service-link">
             Enroll Now <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -234,7 +297,7 @@
         <div class="service-content">
           <h3 class="service-title">Rentals</h3>
           <p class="service-description">Flexible rental options for events, practice, or trying before buying</p>
-          <a href="https://api.whatsapp.com/send?phone=97126219929&text=Hello%20AKM%20Music!%20I%20need%20instrument%20rental%20information." target="_blank" rel="noopener" class="service-link">
+          <a href="services.html#rentals" class="service-link">
             View Rentals <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -249,8 +312,8 @@
         </div>
         <div class="service-content">
           <h3 class="service-title">Studio Rental</h3>
-          <p class="service-description">Professional recording and rehearsal studios with state-of-the-art equipment</p>
-          <a href="https://api.whatsapp.com/send?phone=97126219929&text=Hello%20AKM%20Music!%20I%20want%20to%20book%20a%20studio%20rental." target="_blank" rel="noopener" class="service-link">
+          <p class="service-description">Solo AED 100 · Band AED 150 per 60-min session, equipment included</p>
+          <a href="services.html#studio" class="service-link">
             Book Studio <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -270,6 +333,7 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="shop.html">Shop</a></li>
+          <li><a href="services.html">Services</a></li>
           <li><a href="tools.html">Tools</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="about.html">About</a></li>
@@ -297,11 +361,11 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="google-analytics.js?v=20251027e"></script>
+  <script src="google-analytics.js?v=20260612b"></script>
 
-  <script src="script.js?v=20251108c"></script>
-  <script src="analytics.js?v=20251027e"></script>
-  <script src="pwa.js?v=20251027e"></script>
+  <script src="script.js?v=20260612b"></script>
+  <script src="analytics.js?v=20260612b"></script>
+  <script src="pwa.js?v=20260612b"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     if (window.AOS) AOS.init({ duration: 700, once: true });
