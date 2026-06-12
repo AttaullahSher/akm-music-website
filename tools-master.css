@@ -768,3 +768,45 @@
     flex-direction: column;
   }
 }
+
+/* ============================================
+   Free Learning Resources (downloads)
+   ============================================ */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+.resource-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -8px rgba(37, 99, 235, 0.25);
+  border-color: var(--color-primary, #2563eb);
+}
+.resource-icon { font-size: 2rem; flex-shrink: 0; }
+.resource-body h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  color: var(--text-primary, #111827);
+}
+.resource-body p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted, #6b7280);
+  line-height: 1.45;
+}
+.resource-dl {
+  margin-left: auto;
+  color: var(--color-primary, #2563eb);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}

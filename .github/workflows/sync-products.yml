@@ -22,14 +22,17 @@ jobs:
       - name: Run catalog sync
         run: node scripts/sync-supplier-catalog.js
 
+      - name: Download new product images
+        run: node scripts/download-product-images.js
+
       - name: Commit updated catalog
         run: |
           git config user.name "akm-catalog-bot"
           git config user.email "sales@akm-music.com"
-          if git diff --quiet products.json; then
+          git add products.json assets/products
+          if git diff --cached --quiet; then
             echo "No catalog changes."
           else
-            git add products.json
-            git commit -m "chore: refresh product catalog (prices & stock)"
+            git commit -m "chore: refresh product catalog (prices, stock & images)"
             git push
           fi

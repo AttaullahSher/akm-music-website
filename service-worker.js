@@ -1,15 +1,16 @@
 // AKM Music Service Worker
 // Provides offline functionality and PWA features
 
-const CACHE_NAME = 'akm-music-v4.1.0';
-const STATIC_CACHE = 'akm-static-v4.1.0';
-const DYNAMIC_CACHE = 'akm-dynamic-v4.1.0';
+const CACHE_NAME = 'akm-music-v4.2.0';
+const STATIC_CACHE = 'akm-static-v4.2.0';
+const DYNAMIC_CACHE = 'akm-dynamic-v4.2.0';
 
 // Files to cache for offline functionality (relative paths for GitHub Pages)
 // Updated to only include current CSS files
 const CACHE_ASSETS = [
   'index.html',
   'shop.html',
+  'services.html',
   'tools.html',
   'blog.html',
   'about.html',
@@ -20,8 +21,10 @@ const CACHE_ASSETS = [
   'tools-master.css',
   'fixes.css',
   'shop.css',
+  'services.css',
   'script.js',
   'shop.js',
+  'services.js',
   'tools.js',
   'blog.js',
   'analytics.js',
