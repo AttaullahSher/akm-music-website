@@ -111,9 +111,9 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   
   <!-- Styles - Simplified & Unified -->
-  <link rel="stylesheet" href="master-design.css?v=20260612c">
-  <link rel="stylesheet" href="fixes.css?v=20260612c">
-  <link rel="stylesheet" href="shop.css?v=20260612c">
+  <link rel="stylesheet" href="master-design.css?v=20260613a">
+  <link rel="stylesheet" href="fixes.css?v=20260613a">
+  <link rel="stylesheet" href="shop.css?v=20260613a">
   
   <!-- PWA & Icons -->
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
@@ -148,26 +148,27 @@
     </div>
   </header>
 
-  <!-- Modern Hero Section -->
-  <section class="hero-modern">
-    <div class="hero-bg">
+  <!-- Banner Carousel (replace files in assets/banners/ with your own — keep the names) -->
+  <section class="banner-carousel" aria-label="Promotions">
+    <div class="banner-track" id="bannerTrack">
+      <a class="banner-slide" href="shop.html"><img src="assets/banners/banner-1.svg" alt="Shop 1,500+ instruments online at AKM Music" fetchpriority="high"></a>
+      <a class="banner-slide" href="services.html#classes"><img src="assets/banners/banner-2.svg" alt="Music classes at AKM Music — AED 525 per month" loading="lazy"></a>
+      <a class="banner-slide" href="services.html#studio"><img src="assets/banners/banner-3.svg" alt="Book the AKM studio — solo or band sessions" loading="lazy"></a>
     </div>
-    <div class="hero-content">
-      <div class="hero-text">
-        <div class="hero-brand-logo">
-          <h1 class="hero-title-main">AKM MUSIC</h1>
-        </div>
-        <h2 class="hero-tagline">PREMIUM MUSIC SERVICES</h2>
-        <p class="hero-description">
-          Shop 1,500+ premium instruments online, plus professional services, rentals, repairs, and music tools.
-          From beginner-friendly options to expert support - elevate your musical experience in Abu Dhabi.
-        </p>
-        <div class="hero-actions">
-          <!-- Removed CTA button per request -->
-        </div>
-      </div>
-    </div>
+    <button class="banner-arrow prev" id="bannerPrev" aria-label="Previous banner"><i class="fas fa-chevron-left"></i></button>
+    <button class="banner-arrow next" id="bannerNext" aria-label="Next banner"><i class="fas fa-chevron-right"></i></button>
+    <div class="banner-dots" id="bannerDots"></div>
   </section>
+
+  <!-- USP strip -->
+  <div class="usp-strip">
+    <div class="container">
+      <span><i class="fas fa-store"></i> Abu Dhabi showroom since 1984</span>
+      <span><i class="fas fa-truck"></i> UAE-wide delivery</span>
+      <span><i class="fab fa-whatsapp"></i> WhatsApp ordering &amp; support</span>
+      <span><i class="fas fa-tools"></i> In-house repairs &amp; setup</span>
+    </div>
+  </div>
 
   <!-- Quick Actions -->
   <section class="quick-actions">
@@ -381,39 +382,82 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="google-analytics.js?v=20260612c"></script>
+  <script src="google-analytics.js?v=20260613a"></script>
 
-  <script src="script.js?v=20260612c"></script>
-  <script src="analytics.js?v=20260612c"></script>
-  <script src="pwa.js?v=20260612c"></script>
+  <script src="script.js?v=20260613a"></script>
+  <script src="analytics.js?v=20260613a"></script>
+  <script src="pwa.js?v=20260613a"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     if (window.AOS) AOS.init({ duration: 700, once: true });
   </script>
   <script>
-    // Featured products — a rotating daily pick of in-stock items from the store catalog
+    // Banner carousel — auto-rotates, swipe-friendly
+    (function () {
+      const track = document.getElementById('bannerTrack');
+      if (!track) return;
+      const n = track.children.length;
+      const dots = document.getElementById('bannerDots');
+      let idx = 0, timer;
+      for (let i = 0; i < n; i++) {
+        const b = document.createElement('button');
+        b.setAttribute('aria-label', 'Banner ' + (i + 1));
+        b.addEventListener('click', () => go(i));
+        dots.appendChild(b);
+      }
+      function go(i) {
+        idx = (i + n) % n;
+        track.style.transform = 'translateX(-' + idx * 100 + '%)';
+        [...dots.children].forEach((d, j) => d.classList.toggle('active', j === idx));
+        restart();
+      }
+      function restart() { clearInterval(timer); timer = setInterval(() => go(idx + 1), 6000); }
+      document.getElementById('bannerPrev').addEventListener('click', e => { e.preventDefault(); go(idx - 1); });
+      document.getElementById('bannerNext').addEventListener('click', e => { e.preventDefault(); go(idx + 1); });
+      let x0 = null;
+      track.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', e => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) go(idx + (dx < 0 ? 1 : -1));
+        x0 = null;
+      }, { passive: true });
+      go(0);
+    })();
+  </script>
+  <script>
+    // Featured products — admin-picked first (admin.html → Featured), topped up with daily picks
     (async function () {
       const grid = document.getElementById('featuredGrid');
       if (!grid) return;
       try {
-        const res = await fetch('products.json?v=' + new Date().toISOString().slice(0, 10), { cache: 'no-cache' });
+        const [res, overrides, own] = await Promise.all([
+          fetch('products.json?v=' + new Date().toISOString().slice(0, 10), { cache: 'no-cache' }),
+          window.AKM ? window.AKM.getCatalogOverrides() : Promise.resolve(null),
+          window.AKM ? window.AKM.getOwnProducts() : Promise.resolve([])
+        ]);
         const data = await res.json();
-        const pool = data.products.filter(p => p.inStock && p.price >= 300);
-        const daySeed = Math.floor(Date.now() / 86400000);
+        const all = data.products.concat((own || []).filter(p => p && p.id && p.name));
+        const byId = Object.fromEntries(all.map(p => [String(p.id), p]));
         const picks = [];
-        for (let i = 0; i < 8 && pool.length; i++) {
+        for (const id of (overrides?.featuredIds || [])) {
+          if (byId[id] && picks.length < 12) picks.push(byId[id]);
+        }
+        const pool = all.filter(p => p.inStock && p.price >= 300 && !picks.includes(p));
+        const daySeed = Math.floor(Date.now() / 86400000);
+        for (let i = 0; picks.length < 12 && pool.length; i++) {
           picks.push(pool.splice((daySeed * 2654435761 + i * 97) % pool.length, 1)[0]);
         }
         const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         grid.innerHTML = picks.map(p => `
           <a class="product-card" href="shop.html?q=${encodeURIComponent(p.name.split(' ').slice(0, 3).join(' '))}">
             <div class="product-image">
-              <img src="${p.image}" alt="${esc(p.name)}" loading="lazy">
+              <img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">
             </div>
             <div class="product-info">
-              <span class="product-brand">${esc(p.brand)}</span>
+              <span class="product-brand">${esc(p.brand || 'AKM')}</span>
               <span class="product-name">${esc(p.name)}</span>
-              <div class="product-price"><span class="currency">AED</span>${p.price.toLocaleString('en-AE')}</div>
+              <div class="product-price"><span class="currency">AED</span>${Number(p.price).toLocaleString('en-AE')}</div>
             </div>
           </a>`).join('');
       } catch (e) {
@@ -421,5 +465,8 @@
       }
     })();
   </script>
+  <script src="firebase-config.js?v=20260613a"></script>
+  <script src="firebase-backend.js?v=20260613a"></script>
+  <script src="assistant.js?v=20260613a"></script>
 </body>
 </html>

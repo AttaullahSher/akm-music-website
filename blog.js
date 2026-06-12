@@ -51,7 +51,7 @@ function loadBlogPosts() {
             id: 'ultimate-piano-buying-guide-uae',
             title: 'Ultimate Piano Buying Guide in UAE (Expert Tips from AKM Music)',
             category: 'guides',
-            date: '2024-12-13',
+            date: '2026-03-19',
             readTime: '7 min',
             excerpt: 'Choosing between digital, upright, and grand pianos? Our Abu Dhabi experts explain tone, touch, space, and budget to help you buy with confidence.',
             image: 'assets/Blog_images/piano-buying-guide-uae.jpg',
@@ -59,7 +59,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Ultimate Piano Buying Guide in UAE (Expert Tips from AKM Music)</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> December 13, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 7 min read</span>
                     <span class="post-category">Guide</span>
                 </div>
@@ -94,7 +93,7 @@ function loadBlogPosts() {
             id: 'piano-rental-uae',
             title: 'Piano Rental in UAE — Affordable Options for Events & Practice',
             category: 'guides',
-            date: '2024-12-12',
+            date: '2026-02-16',
             readTime: '5 min',
             excerpt: 'Concert, wedding, or studio session? Rent upright or grand pianos across the UAE with delivery, setup, and tuning from our pro team.',
             image: 'assets/Blog_images/piano-rental-uae.jpg',
@@ -102,7 +101,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Piano Rental in UAE — Affordable Options for Events & Practice</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> December 12, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 5 min read</span>
                     <span class="post-category">Guide</span>
                 </div>
@@ -117,7 +115,6 @@ function loadBlogPosts() {
                         <li>Option to buy or extend later</li>
                         <li>Professional dismantling, shifting, and reassembly</li>
                     </ul>
-                    <p class="muted">Keywords: piano rental Abu Dhabi, wedding piano hire, concert piano UAE, Yamaha piano rental</p>
                 </div>
             `
         },
@@ -125,7 +122,7 @@ function loadBlogPosts() {
             id: 'choose-right-instrument-kids',
             title: 'How to Choose the Right Instrument for Your Child',
             category: 'guides',
-            date: '2024-11-20',
+            date: '2026-04-07',
             readTime: '6 min',
             excerpt: 'Match your child’s age and interest to the right instrument — piano, violin, guitar, vocals, or drums — with teacher-backed advice.',
             image: 'assets/Blog_images/choose-right-instrument-kids.jpg',
@@ -133,7 +130,6 @@ function loadBlogPosts() {
             content: `
                 <h2>How to Choose the Right Instrument for Your Child</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> November 20, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 6 min read</span>
                     <span class="post-category">Guide</span>
                 </div>
@@ -145,7 +141,6 @@ function loadBlogPosts() {
                         <li><strong>Ages 7–10:</strong> Try guitar or violin for coordination and ear training.</li>
                         <li><strong>Teens:</strong> Explore vocals, drums, or multi-instrument paths.</li>
                     </ul>
-                    <p class="muted">Keywords: kids music lessons, beginner instruments UAE, piano for kids Abu Dhabi</p>
                 </div>
             `
         },
@@ -155,7 +150,7 @@ function loadBlogPosts() {
             id: 'trinity-exams-akm-music-abu-dhabi',
             title: 'Trinity College London Exams Now at AKM Music Centre',
             category: 'news',
-            date: '2024-12-01',
+            date: '2026-01-13',
             readTime: '4 min',
             excerpt: 'AKM Music Centre is now an official venue for Trinity College London exams. Prepare, practice, and certify in Abu Dhabi.',
             image: 'assets/Blog_images/trinity-exams-akm-music-abu-dhabi.jpg',
@@ -163,7 +158,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Trinity College London Exams Now at AKM Music Centre</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> December 1, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 4 min read</span>
                     <span class="post-category">News</span>
                 </div>
@@ -178,7 +172,7 @@ function loadBlogPosts() {
             id: 'music-workshops-recitals-abu-dhabi',
             title: 'Upcoming Music Workshops & Recitals in Abu Dhabi',
             category: 'news',
-            date: '2024-11-25',
+            date: '2026-05-10',
             readTime: '3 min',
             excerpt: 'Join our student performances and masterclasses designed to build confidence and showcase progress.',
             image: 'assets/Blog_images/music-workshops-recitals-abu-dhabi.jpg',
@@ -186,7 +180,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Upcoming Music Workshops & Recitals in Abu Dhabi</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> November 25, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 3 min read</span>
                     <span class="post-category">News</span>
                 </div>
@@ -204,7 +197,7 @@ function loadBlogPosts() {
             id: 'musical-instruments-new-arrivals-uae',
             title: 'New Arrivals: Musical Instruments in UAE',
             category: 'news',
-            date: '2024-11-10',
+            date: '2026-03-26',
             readTime: '4 min',
             excerpt: 'From Yamaha keyboards to Kawai uprights and guitar bundles — discover what’s new at AKM Music Centre.',
             image: 'assets/Blog_images/musical-instruments-new-arrivals-uae.jpg',
@@ -212,7 +205,6 @@ function loadBlogPosts() {
             content: `
                 <h2>New Arrivals: Musical Instruments in UAE</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> November 10, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 4 min read</span>
                     <span class="post-category">News</span>
                 </div>
@@ -232,7 +224,7 @@ function loadBlogPosts() {
             id: 'piano-tuning-maintenance-uae',
             title: 'How to Keep Your Piano in Perfect Tune in UAE Weather',
             category: 'tips',
-            date: '2024-10-28',
+            date: '2026-02-23',
             readTime: '6 min',
             excerpt: 'Humidity and AC airflow affect tuning and wood. Use our pro care checklist to protect your piano year‑round.',
             image: 'assets/Blog_images/piano-tuning-maintenance-uae.jpg',
@@ -240,7 +232,6 @@ function loadBlogPosts() {
             content: `
                 <h2>How to Keep Your Piano in Perfect Tune in UAE Weather</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> October 28, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 6 min read</span>
                     <span class="post-category">Tips</span>
                 </div>
@@ -258,7 +249,7 @@ function loadBlogPosts() {
             id: 'music-practice-tips-students',
             title: '5 Essential Practice Habits for Music Students',
             category: 'tips',
-            date: '2024-10-15',
+            date: '2026-01-20',
             readTime: '4 min',
             excerpt: 'Set routines, focus on one skill, record progress, take breaks, and celebrate wins — here’s how to practice smarter.',
             image: 'assets/Blog_images/music-practice-tips-students.jpg',
@@ -266,7 +257,6 @@ function loadBlogPosts() {
             content: `
                 <h2>5 Essential Practice Habits for Music Students</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> October 15, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 4 min read</span>
                     <span class="post-category">Tips</span>
                 </div>
@@ -286,7 +276,7 @@ function loadBlogPosts() {
             id: 'buy-musical-instruments-smart-uae',
             title: 'Saving Money on Music Gear — Buy Smart in UAE',
             category: 'tips',
-            date: '2024-10-08',
+            date: '2026-05-17',
             readTime: '5 min',
             excerpt: 'Buy verified used instruments, choose bundles, and use our trade‑in offers to stretch your budget.',
             image: 'assets/Blog_images/buy-musical-instruments-smart-uae.jpg',
@@ -294,7 +284,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Saving Money on Music Gear — Buy Smart in UAE</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> October 8, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 5 min read</span>
                     <span class="post-category">Tips</span>
                 </div>
@@ -314,7 +303,7 @@ function loadBlogPosts() {
             id: 'music-education-benefits-uae',
             title: 'Why Music Education Matters for Every Child',
             category: 'education',
-            date: '2024-09-20',
+            date: '2026-04-14',
             readTime: '5 min',
             excerpt: 'Music builds discipline, memory, and confidence. Here’s why lessons create lifelong benefits for students.',
             image: 'assets/Blog_images/music-education-benefits-uae.jpg',
@@ -322,7 +311,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Why Music Education Matters for Every Child</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> September 20, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 5 min read</span>
                     <span class="post-category">Education</span>
                 </div>
@@ -336,7 +324,7 @@ function loadBlogPosts() {
             id: 'trinity-exam-preparation-guide',
             title: 'How to Prepare for Trinity College Music Exams',
             category: 'education',
-            date: '2024-09-10',
+            date: '2026-03-11',
             readTime: '6 min',
             excerpt: 'Know your syllabus, practice scales daily, take mock exams, and focus on musicality — your step-by-step success plan.',
             image: 'assets/Blog_images/trinity-exam-preparation-guide.jpg',
@@ -344,7 +332,6 @@ function loadBlogPosts() {
             content: `
                 <h2>How to Prepare for Trinity College Music Exams</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> September 10, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 6 min read</span>
                     <span class="post-category">Education</span>
                 </div>
@@ -364,7 +351,7 @@ function loadBlogPosts() {
             id: 'group-vs-private-music-lessons',
             title: 'Choosing Between Group and Private Music Lessons',
             category: 'education',
-            date: '2024-09-01',
+            date: '2026-02-08',
             readTime: '5 min',
             excerpt: 'Group is social and motivating, private is personalized and flexible. Choose one — or mix both for faster progress.',
             image: 'assets/Blog_images/group-vs-private-music-lessons.jpg',
@@ -372,7 +359,6 @@ function loadBlogPosts() {
             content: `
                 <h2>Choosing Between Group and Private Music Lessons</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> September 1, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 5 min read</span>
                     <span class="post-category">Education</span>
                 </div>
@@ -388,7 +374,7 @@ function loadBlogPosts() {
             id: 'akm-music-centre-abu-dhabi',
             title: 'About AKM Music Centre Abu Dhabi',
             category: 'news',
-            date: '2024-08-20',
+            date: '2026-01-05',
             readTime: '4 min',
             excerpt: 'AKM Music Centre is a hub for learning, performing, and buying quality instruments in Abu Dhabi since 1984.',
             image: 'assets/Blog_images/akm-music-centre-abu-dhabi.jpg',
@@ -396,7 +382,6 @@ function loadBlogPosts() {
             content: `
                 <h2>About AKM Music Centre Abu Dhabi</h2>
                 <div class="post-meta">
-                    <span class="post-date"><i class="fas fa-calendar"></i> August 20, 2024</span>
                     <span class="read-time"><i class="fas fa-clock"></i> 4 min read</span>
                     <span class="post-category">About</span>
                 </div>

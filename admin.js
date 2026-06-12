@@ -72,25 +72,31 @@ function main() {
   // ---------- tabs ----------
   document.querySelectorAll('.admin-tab').forEach(tab => tab.addEventListener('click', () => {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t === tab));
-    for (const name of ['listings', 'orders', 'bookings']) {
+    for (const name of ['listings', 'own', 'featured', 'orders', 'bookings']) {
       document.getElementById('panel-' + name).style.display = tab.dataset.tab === name ? 'block' : 'none';
     }
     if (tab.dataset.tab === 'orders') loadRecords('orders', 'ordersList');
     if (tab.dataset.tab === 'bookings') loadRecords('bookings', 'bookingsList');
+    if (tab.dataset.tab === 'own') renderOwn();
+    if (tab.dataset.tab === 'featured') renderFeatured();
   }));
 
   // ---------- listings ----------
+  const OWNDOC = doc(db, 'siteConfig', 'ownProducts');
+  const SUBCATEGORIES = ['Acoustic Guitars','Classical & Flamenco','Electric Guitars','Bass Guitars','Ukulele, Violin & Folk','Guitar Pickups','Acoustic Pianos','Digital Pianos','Keyboards & Synths','Keyboard Stands & Benches','Drum Kits','Cymbals','Snares & Toms','Drum Heads','Pedals & Hardware','Sticks & Brushes','Hand Percussion','Drum Bags & Cases','Guitar Amplifiers','Bass Amplifiers','Drum & Keyboard Amps','Pedals & Effects','PA Speakers','Mixers','Recording Gear','Headphones','Stands, Cables & Wireless','Harmonicas','Melodicas & Recorders','Reeds & Accessories','Guitar Strings','Violin & Oud Strings','Picks & Capos','Straps & Stands','Cases & Bags','Tuners & Metronomes','Care, Parts & Tools','Merch & Gifts','General Accessories'];
   let products = [];
-  let ov = { disabledIds: {}, disabledCategories: [], disabledBrands: [] };
+  let ownProducts = [];
+  let ov = { disabledIds: {}, disabledCategories: [], disabledBrands: [], featuredIds: [] };
   let shown = 60;
   let started = false;
 
   async function start() {
     if (started) return;
     started = true;
-    const [res, snap] = await Promise.all([
+    const [res, snap, ownSnap] = await Promise.all([
       fetch('products.json?v=' + Date.now(), { cache: 'no-cache' }),
-      getDoc(CATALOG)
+      getDoc(CATALOG),
+      getDoc(OWNDOC)
     ]);
     products = (await res.json()).products;
     if (snap.exists()) {
@@ -98,14 +104,17 @@ function main() {
       ov = {
         disabledIds: d.disabledIds || {},
         disabledCategories: d.disabledCategories || [],
-        disabledBrands: d.disabledBrands || []
+        disabledBrands: d.disabledBrands || [],
+        featuredIds: d.featuredIds || []
       };
     } else {
-      await setDoc(CATALOG, { disabledIds: {}, disabledCategories: [], disabledBrands: [] });
+      await setDoc(CATALOG, { disabledIds: {}, disabledCategories: [], disabledBrands: [], featuredIds: [] });
     }
+    ownProducts = ownSnap.exists() ? (ownSnap.data().products || []) : [];
     const cats = [...new Set(products.map(p => p.category))].sort();
     document.getElementById('adminCatFilter').innerHTML =
       '<option value="">All categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join('');
+    document.getElementById('subcatList').innerHTML = SUBCATEGORIES.map(s => `<option>${esc(s)}</option>`).join('');
     renderBulk();
     renderListings();
   }
@@ -195,6 +204,236 @@ function main() {
     } catch (err) {
       toast('Save failed: ' + err.message);
     }
+  });
+
+  // ---------- our products ----------
+  let editingRef = null;
+  let uploadedImage = null;
+
+  function nextRef() {
+    let max = 0;
+    for (const p of ownProducts) {
+      const m = /^AKM-(\d+)$/.exec(p.id || '');
+      if (m) max = Math.max(max, parseInt(m[1], 10));
+    }
+    return 'AKM-' + String(max + 1).padStart(4, '0');
+  }
+
+  async function saveOwn() {
+    await setDoc(OWNDOC, { products: ownProducts, updatedAt: new Date().toISOString() });
+  }
+
+  function docSizeKB() {
+    return Math.round(JSON.stringify(ownProducts).length / 1024);
+  }
+
+  function renderOwn() {
+    const el = document.getElementById('ownRows');
+    document.getElementById('ownStats').textContent =
+      `${ownProducts.length} products · storage ${docSizeKB()} / 900 KB`;
+    if (!ownProducts.length) {
+      el.innerHTML = '<div class="empty-msg">No own products yet — click "Add Product" or import an Excel file.</div>';
+      return;
+    }
+    el.classList.remove('empty-msg');
+    el.innerHTML = ownProducts.map(p => `
+      <div class="listing-row ${p.inStock === false ? 'off' : ''}">
+        <img src="${esc(p.image || '')}" loading="lazy" alt="" onerror="this.style.visibility='hidden'">
+        <div class="listing-name">
+          <div>${esc(p.name)}</div>
+          <div class="sub">${esc(p.id)} · ${esc(p.brand || 'AKM')} · ${esc(p.category)} · AED ${p.price}${p.inStock === false ? ' · out of stock' : ''}</div>
+        </div>
+        <button class="mark-btn" data-own-edit="${esc(p.id)}"><i class="fas fa-pen"></i> Edit</button>
+        <button class="mark-btn" style="color:var(--color-accent);" data-own-del="${esc(p.id)}"><i class="fas fa-trash-alt"></i></button>
+      </div>`).join('');
+  }
+
+  function openOwnForm(p) {
+    editingRef = p ? p.id : null;
+    uploadedImage = null;
+    document.getElementById('ownForm').style.display = 'block';
+    document.getElementById('ownRef').value = p ? p.id : nextRef();
+    document.getElementById('ownName').value = p ? p.name : '';
+    document.getElementById('ownBrand').value = p ? (p.brand || '') : '';
+    document.getElementById('ownCategory').value = p ? (p.category || '') : '';
+    document.getElementById('ownPrice').value = p ? p.price : '';
+    document.getElementById('ownStock').value = p && p.inStock === false ? 'no' : 'yes';
+    document.getElementById('ownImageUrl').value = p && p.image && !String(p.image).startsWith('data:') ? p.image : '';
+    document.getElementById('ownImageInfo').textContent =
+      p && String(p.image || '').startsWith('data:') ? 'Current: uploaded photo (kept unless you change it)' : '';
+    document.getElementById('ownImageFile').value = '';
+    document.getElementById('ownForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  document.getElementById('ownAddBtn').addEventListener('click', () => openOwnForm(null));
+  document.getElementById('ownCancelBtn').addEventListener('click', () => {
+    document.getElementById('ownForm').style.display = 'none';
+  });
+
+  // Compress uploads so the single-document catalog stays small
+  document.getElementById('ownImageFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 420 / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      uploadedImage = canvas.toDataURL('image/webp', 0.78);
+      const kb = Math.round(uploadedImage.length / 1024);
+      document.getElementById('ownImageInfo').textContent =
+        kb > 90 ? `Compressed to ${kb} KB — quite large; a link is lighter.` : `Compressed to ${kb} KB ✓`;
+      URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+
+  document.getElementById('ownSaveBtn').addEventListener('click', async () => {
+    const name = document.getElementById('ownName').value.trim();
+    const category = document.getElementById('ownCategory').value.trim();
+    const price = parseFloat(document.getElementById('ownPrice').value);
+    if (!name || !category || !(price >= 0)) { toast('Name, category and price are required.'); return; }
+    const ref = document.getElementById('ownRef').value || nextRef();
+    const image = uploadedImage || document.getElementById('ownImageUrl').value.trim() ||
+      (editingRef ? (ownProducts.find(x => x.id === editingRef)?.image || '') : '');
+    const item = {
+      id: ref, name,
+      brand: document.getElementById('ownBrand').value.trim().toUpperCase() || 'AKM',
+      category, price: Math.round(price * 100) / 100,
+      inStock: document.getElementById('ownStock').value === 'yes',
+      image
+    };
+    const i = ownProducts.findIndex(x => x.id === ref);
+    if (i > -1) ownProducts[i] = item; else ownProducts.push(item);
+    if (docSizeKB() > 900) {
+      ownProducts.splice(ownProducts.findIndex(x => x.id === ref), i > -1 ? 0 : 1);
+      toast('Storage limit reached — use image links instead of uploads.');
+      return;
+    }
+    try {
+      await saveOwn();
+      toast('Saved ' + ref);
+      document.getElementById('ownForm').style.display = 'none';
+      renderOwn();
+    } catch (err) { toast('Save failed: ' + err.message); }
+  });
+
+  document.getElementById('ownRows').addEventListener('click', async e => {
+    const edit = e.target.closest('[data-own-edit]');
+    const del = e.target.closest('[data-own-del]');
+    if (edit) openOwnForm(ownProducts.find(x => x.id === edit.dataset.ownEdit));
+    if (del && confirm('Delete ' + del.dataset.ownDel + '? This cannot be undone.')) {
+      ownProducts = ownProducts.filter(x => x.id !== del.dataset.ownDel);
+      try { await saveOwn(); toast('Deleted'); renderOwn(); }
+      catch (err) { toast('Delete failed: ' + err.message); }
+    }
+  });
+
+  // Excel export / import (SheetJS)
+  document.getElementById('ownExportBtn').addEventListener('click', () => {
+    const rows = ownProducts.map(p => ({
+      'Ref': p.id, 'Name': p.name, 'Brand': p.brand || 'AKM', 'Category': p.category,
+      'Price': p.price, 'In Stock': p.inStock === false ? 'NO' : 'YES',
+      'Image URL': String(p.image || '').startsWith('data:') ? '(uploaded photo)' : (p.image || '')
+    }));
+    const ws = XLSX.utils.json_to_sheet(rows.length ? rows : [{ 'Ref': '', 'Name': '', 'Brand': '', 'Category': '', 'Price': '', 'In Stock': 'YES', 'Image URL': '' }]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'AKM Products');
+    XLSX.writeFile(wb, 'akm-products.xlsx');
+  });
+
+  document.getElementById('ownImportBtn').addEventListener('click', () => document.getElementById('ownImportFile').click());
+  document.getElementById('ownImportFile').addEventListener('change', async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const wb = XLSX.read(await file.arrayBuffer());
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+      let added = 0, updated = 0, skipped = 0;
+      for (const r of rows) {
+        const name = String(r['Name'] || '').trim();
+        const category = String(r['Category'] || '').trim();
+        const price = parseFloat(r['Price']);
+        if (!name || !category || !(price >= 0)) { skipped++; continue; }
+        let ref = String(r['Ref'] || '').trim().toUpperCase();
+        const imgCell = String(r['Image URL'] || '').trim();
+        const existing = ref ? ownProducts.find(x => x.id === ref) : null;
+        const item = {
+          id: ref && /^AKM-/.test(ref) ? ref : nextRef(),
+          name,
+          brand: String(r['Brand'] || 'AKM').trim().toUpperCase() || 'AKM',
+          category,
+          price: Math.round(price * 100) / 100,
+          inStock: !/^no$/i.test(String(r['In Stock'] || 'YES').trim()),
+          image: imgCell === '(uploaded photo)' ? (existing?.image || '') : imgCell
+        };
+        const i = ownProducts.findIndex(x => x.id === item.id);
+        if (i > -1) { ownProducts[i] = item; updated++; } else { ownProducts.push(item); added++; }
+      }
+      if (docSizeKB() > 900) { toast('Import too large for storage — reduce rows or use links.'); return; }
+      await saveOwn();
+      toast(`Imported: ${added} added, ${updated} updated, ${skipped} skipped`);
+      renderOwn();
+    } catch (err) { toast('Import failed: ' + err.message); }
+    e.target.value = '';
+  });
+
+  // ---------- featured ----------
+  function allProducts() {
+    return products.map(p => ({ ...p, _src: 'supplier' }))
+      .concat(ownProducts.map(p => ({ ...p, _src: 'akm' })));
+  }
+
+  function renderFeatured() {
+    const byId = Object.fromEntries(allProducts().map(p => [String(p.id), p]));
+    const picked = document.getElementById('featPicked');
+    picked.innerHTML = '<strong style="font-size:var(--font-size-sm);">Featured now (' + ov.featuredIds.length + '):</strong>' +
+      (ov.featuredIds.length ? ov.featuredIds.map(id => {
+        const p = byId[id];
+        return `<div class="listing-row">
+          <img src="${esc(p?.image || '')}" alt="" onerror="this.style.visibility='hidden'">
+          <div class="listing-name"><div>${esc(p?.name || id + ' (no longer in catalog)')}</div>
+          <div class="sub">${esc(id)}${p ? ' · AED ' + p.price : ''}</div></div>
+          <button class="mark-btn" style="color:var(--color-accent);" data-feat-rm="${esc(id)}"><i class="fas fa-times"></i> Remove</button>
+        </div>`;
+      }).join('') : '<div class="empty-msg" style="padding:1rem;">Nothing featured — home page shows automatic daily picks.</div>');
+    renderFeatResults();
+  }
+
+  function renderFeatResults() {
+    const q = document.getElementById('featSearch').value.trim().toLowerCase();
+    const el = document.getElementById('featResults');
+    if (!q) { el.innerHTML = ''; return; }
+    const list = allProducts().filter(p =>
+      !ov.featuredIds.includes(String(p.id)) &&
+      (p.name + ' ' + (p.brand || '') + ' ' + p.id).toLowerCase().includes(q)).slice(0, 20);
+    el.innerHTML = list.map(p => `
+      <div class="listing-row">
+        <img src="${esc(p.image || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+        <div class="listing-name"><div>${esc(p.name)}</div>
+        <div class="sub">${esc(String(p.id))} · ${p._src === 'akm' ? 'our product' : 'supplier'} · AED ${p.price}</div></div>
+        <button class="mark-btn" data-feat-add="${esc(String(p.id))}"><i class="fas fa-star"></i> Feature</button>
+      </div>`).join('') || '<div class="empty-msg" style="padding:1rem;">No matches.</div>';
+  }
+
+  document.getElementById('featSearch').addEventListener('input', renderFeatResults);
+  document.addEventListener('click', async e => {
+    const add = e.target.closest('[data-feat-add]');
+    const rm = e.target.closest('[data-feat-rm]');
+    if (!add && !rm) return;
+    try {
+      if (add) {
+        await updateDoc(CATALOG, { featuredIds: arrayUnion(add.dataset.featAdd) });
+        ov.featuredIds.push(add.dataset.featAdd);
+      } else {
+        await updateDoc(CATALOG, { featuredIds: arrayRemove(rm.dataset.featRm) });
+        ov.featuredIds = ov.featuredIds.filter(x => x !== rm.dataset.featRm);
+      }
+      renderFeatured();
+      toast('Featured list updated');
+    } catch (err) { toast('Update failed: ' + err.message); }
   });
 
   // ---------- orders & bookings ----------

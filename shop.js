@@ -14,6 +14,147 @@
       '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" font-family="sans-serif" font-size="60" fill="#9ca3af" text-anchor="middle" dominant-baseline="central">🎵</text></svg>'
     );
 
+  // Curated two-level catalog tree: raw supplier category → [department, subcategory].
+  // Unmapped categories fall back to keyword rules below.
+  const CATEGORY_MAP = {
+    // Guitars & Basses
+    'Acoustic Guitar': ['Guitars & Basses', 'Acoustic Guitars'],
+    'Acoustic Guitars': ['Guitars & Basses', 'Acoustic Guitars'],
+    '12 String Acoustic Guitar': ['Guitars & Basses', 'Acoustic Guitars'],
+    'Acoustic Guitar Packs': ['Guitars & Basses', 'Acoustic Guitars'],
+    'Acoustic Electric': ['Guitars & Basses', 'Acoustic Guitars'],
+    'Classical Guitar': ['Guitars & Basses', 'Classical & Flamenco'],
+    '3/4 Size Classical Guitar': ['Guitars & Basses', 'Classical & Flamenco'],
+    'Electric Classical': ['Guitars & Basses', 'Classical & Flamenco'],
+    'Flamenco Guitar': ['Guitars & Basses', 'Classical & Flamenco'],
+    'Electric Guitar': ['Guitars & Basses', 'Electric Guitars'],
+    'Electric Guitars': ['Guitars & Basses', 'Electric Guitars'],
+    '7 String Guitar': ['Guitars & Basses', 'Electric Guitars'],
+    'Headless Guitar': ['Guitars & Basses', 'Electric Guitars'],
+    'Hollow and Semi-Hollow Body Guitars': ['Guitars & Basses', 'Electric Guitars'],
+    'Bass Guitar': ['Guitars & Basses', 'Bass Guitars'],
+    'Electric Bass Guitar': ['Guitars & Basses', 'Bass Guitars'],
+    '5 Strings Bass Guitars': ['Guitars & Basses', 'Bass Guitars'],
+    '6 Strings Bass Guitars': ['Guitars & Basses', 'Bass Guitars'],
+    'Ukulele': ['Guitars & Basses', 'Ukulele, Violin & Folk'],
+    'Violin': ['Guitars & Basses', 'Ukulele, Violin & Folk'],
+    'Stringed Instrument': ['Guitars & Basses', 'Ukulele, Violin & Folk'],
+    'Acoustic Guitar Pickups': ['Guitars & Basses', 'Guitar Pickups'],
+    'Electric Guitar Pickups': ['Guitars & Basses', 'Guitar Pickups'],
+    // Pianos & Keyboards
+    'Grand Piano': ['Pianos & Keyboards', 'Acoustic Pianos'],
+    'Upright Piano': ['Pianos & Keyboards', 'Acoustic Pianos'],
+    'Pianos': ['Pianos & Keyboards', 'Acoustic Pianos'],
+    'Digital Pianos': ['Pianos & Keyboards', 'Digital Pianos'],
+    'Stage Piano': ['Pianos & Keyboards', 'Digital Pianos'],
+    '88 Key': ['Pianos & Keyboards', 'Digital Pianos'],
+    '76 Key': ['Pianos & Keyboards', 'Digital Pianos'],
+    'Arranger': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    'Performance Keyboards': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    'Synth': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    'Workstation': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    '61 Key': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    'Midi Keyboard': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    'Drum Machine': ['Pianos & Keyboards', 'Keyboards & Synths'],
+    'Keyboard Stands': ['Pianos & Keyboards', 'Keyboard Stands & Benches'],
+    // Drums & Percussion
+    'Acoustic Drum': ['Drums & Percussion', 'Drum Kits'],
+    'Drum Kits': ['Drums & Percussion', 'Drum Kits'],
+    'Shell Packs': ['Drums & Percussion', 'Drum Kits'],
+    'Complete Sets': ['Drums & Percussion', 'Drum Kits'],
+    'Sets': ['Drums & Percussion', 'Drum Kits'],
+    'Cymbals': ['Drums & Percussion', 'Cymbals'],
+    'Crash': ['Drums & Percussion', 'Cymbals'],
+    'Ride': ['Drums & Percussion', 'Cymbals'],
+    'China': ['Drums & Percussion', 'Cymbals'],
+    'Hi-Hat': ['Drums & Percussion', 'Cymbals'],
+    'Snares': ['Drums & Percussion', 'Snares & Toms'],
+    'Floor Toms': ['Drums & Percussion', 'Snares & Toms'],
+    'Rack Toms': ['Drums & Percussion', 'Snares & Toms'],
+    'Bass Drums': ['Drums & Percussion', 'Snares & Toms'],
+    'Batter': ['Drums & Percussion', 'Drum Heads'],
+    'Resonant': ['Drums & Percussion', 'Drum Heads'],
+    'Hardware': ['Drums & Percussion', 'Pedals & Hardware'],
+    'Double Kick': ['Drums & Percussion', 'Pedals & Hardware'],
+    'Single Kick': ['Drums & Percussion', 'Pedals & Hardware'],
+    'Thrones': ['Drums & Percussion', 'Pedals & Hardware'],
+    'Practice Pad': ['Drums & Percussion', 'Pedals & Hardware'],
+    'Sticks': ['Drums & Percussion', 'Sticks & Brushes'],
+    'Brushes': ['Drums & Percussion', 'Sticks & Brushes'],
+    'Hand Percussion': ['Drums & Percussion', 'Hand Percussion'],
+    'Mutes': ['Drums & Percussion', 'Pedals & Hardware'],
+    'Hardware Bags': ['Drums & Percussion', 'Drum Bags & Cases'],
+    // Amplifiers & Effects
+    'Electric Guitar Amplifier': ['Amps & Effects', 'Guitar Amplifiers'],
+    'Guitar Combo Amps': ['Amps & Effects', 'Guitar Amplifiers'],
+    'Guitar Head and Cabinet Amp': ['Amps & Effects', 'Guitar Amplifiers'],
+    'Acoustic Guitar Amplifier': ['Amps & Effects', 'Guitar Amplifiers'],
+    'Battery Amplifier': ['Amps & Effects', 'Guitar Amplifiers'],
+    'Bass Combo Amp': ['Amps & Effects', 'Bass Amplifiers'],
+    'Bass Head and Cabinet Amplifier': ['Amps & Effects', 'Bass Amplifiers'],
+    'Drum Amplifier': ['Amps & Effects', 'Drum & Keyboard Amps'],
+    'Guitar Pedals': ['Amps & Effects', 'Pedals & Effects'],
+    'Effects': ['Amps & Effects', 'Pedals & Effects'],
+    'Pedals': ['Amps & Effects', 'Pedals & Effects'],
+    // Studio, PA & Audio
+    'PA Active Speakers': ['Studio, PA & Audio', 'PA Speakers'],
+    'PA Subwoofers': ['Studio, PA & Audio', 'PA Speakers'],
+    'Line Arrays Active': ['Studio, PA & Audio', 'PA Speakers'],
+    'Line Arrays Passive': ['Studio, PA & Audio', 'PA Speakers'],
+    'Ceiling Speakers': ['Studio, PA & Audio', 'PA Speakers'],
+    'Portable Bluetooth Speaker': ['Studio, PA & Audio', 'PA Speakers'],
+    'Analog Mixers': ['Studio, PA & Audio', 'Mixers'],
+    'PA Mixers': ['Studio, PA & Audio', 'Mixers'],
+    'Audio Interfaces': ['Studio, PA & Audio', 'Recording Gear'],
+    'Portable Recorders': ['Studio, PA & Audio', 'Recording Gear'],
+    'Headphones': ['Studio, PA & Audio', 'Headphones'],
+    'Closed Back': ['Studio, PA & Audio', 'Headphones'],
+    'Microphone and Other Stands': ['Studio, PA & Audio', 'Stands, Cables & Wireless'],
+    'Equipment Stands': ['Studio, PA & Audio', 'Stands, Cables & Wireless'],
+    'Cables': ['Studio, PA & Audio', 'Stands, Cables & Wireless'],
+    'Accessories / Cables': ['Studio, PA & Audio', 'Stands, Cables & Wireless'],
+    'Guitar Wireless System': ['Studio, PA & Audio', 'Stands, Cables & Wireless'],
+    // Wind Instruments
+    'Harmonica': ['Wind Instruments', 'Harmonicas'],
+    'Harmonica Accessories': ['Wind Instruments', 'Harmonicas'],
+    'Melodicas': ['Wind Instruments', 'Melodicas & Recorders'],
+    'Recorders': ['Wind Instruments', 'Melodicas & Recorders'],
+    'Tenor': ['Wind Instruments', 'Melodicas & Recorders'],
+    'Reeds': ['Wind Instruments', 'Reeds & Accessories'],
+    'Wind Instruments': ['Wind Instruments', 'Reeds & Accessories'],
+    // Strings & Accessories
+    'Acoustic Guitar Strings': ['Strings & Accessories', 'Guitar Strings'],
+    'Electric Guitar Strings': ['Strings & Accessories', 'Guitar Strings'],
+    'Classical Guitar Strings': ['Strings & Accessories', 'Guitar Strings'],
+    'Bass Guitar Strings': ['Strings & Accessories', 'Guitar Strings'],
+    'Guitar Strings': ['Strings & Accessories', 'Guitar Strings'],
+    'Single String': ['Strings & Accessories', 'Guitar Strings'],
+    'Strings': ['Strings & Accessories', 'Guitar Strings'],
+    'Violin Strings': ['Strings & Accessories', 'Violin & Oud Strings'],
+    'Oud Strings': ['Strings & Accessories', 'Violin & Oud Strings'],
+    'Other Instruments Strings': ['Strings & Accessories', 'Violin & Oud Strings'],
+    'Guitar Picks': ['Strings & Accessories', 'Picks & Capos'],
+    'Capos': ['Strings & Accessories', 'Picks & Capos'],
+    'Guitar Straps and Locks': ['Strings & Accessories', 'Straps & Stands'],
+    'Guitar Stand': ['Strings & Accessories', 'Straps & Stands'],
+    'Bags': ['Strings & Accessories', 'Cases & Bags'],
+    'Gig and Soft Bags': ['Strings & Accessories', 'Cases & Bags'],
+    'Hard Cases': ['Strings & Accessories', 'Cases & Bags'],
+    'Tuners': ['Strings & Accessories', 'Tuners & Metronomes'],
+    'Metronome': ['Strings & Accessories', 'Tuners & Metronomes'],
+    'Guitar Machine Head ( Tuners )': ['Strings & Accessories', 'Tuners & Metronomes'],
+    'Guitar Tools': ['Strings & Accessories', 'Care, Parts & Tools'],
+    'Polishes and Cleaning Kits': ['Strings & Accessories', 'Care, Parts & Tools'],
+    'Humidifiers': ['Strings & Accessories', 'Care, Parts & Tools'],
+    'Parts': ['Strings & Accessories', 'Care, Parts & Tools'],
+    'Other Guitar Accessories And Parts': ['Strings & Accessories', 'Care, Parts & Tools'],
+    'Clothing and Merch': ['Strings & Accessories', 'Merch & Gifts'],
+    'Accessories': ['Strings & Accessories', 'General Accessories'],
+    'Packs': ['Strings & Accessories', 'General Accessories'],
+    'Other': ['Strings & Accessories', 'General Accessories'],
+    'Others': ['Strings & Accessories', 'General Accessories']
+  };
+
   // Ordered keyword rules — first match wins.
   const DEPARTMENTS = [
     { name: 'Guitars & Basses', match: /flamenco|classical guitar$|acoustic electric|electric guitar$|bass guitar$|^acoustic$|ukulele|banjo|mandolin/i },
@@ -25,15 +166,23 @@
     { name: 'Strings & Accessories', match: /string|pick|strap|capo|tuner|case|bag|stand|tool|accessor|merch|part|lock|care|book/i }
   ];
 
+  // Own products use curated subcategory names directly — map those back to departments.
+  const SUB_TO_DEPT = {};
+  for (const [dept, sub] of Object.values(CATEGORY_MAP)) SUB_TO_DEPT[sub] = dept;
+
   function departmentFor(category) {
-    for (const d of DEPARTMENTS) if (d.match.test(category)) return d.name;
-    return 'Strings & Accessories';
+    if (CATEGORY_MAP[category]) return CATEGORY_MAP[category];
+    if (SUB_TO_DEPT[category]) return [SUB_TO_DEPT[category], category];
+    for (const d of DEPARTMENTS) if (d.match.test(category)) return [d.name, category];
+    return ['Strings & Accessories', category || 'General Accessories'];
   }
+  window.AKM_SUBCATEGORIES = Object.keys(SUB_TO_DEPT).sort();
 
   const state = {
     products: [],
+    featuredIds: [],
     dept: 'All',
-    category: 'All',
+    category: 'All', // subcategory filter
     brand: 'All',
     query: '',
     sort: 'featured',
@@ -45,20 +194,38 @@
 
   // ---------- data ----------
   async function loadProducts() {
-    const [res, overrides] = await Promise.all([
+    const [res, overrides, own] = await Promise.all([
       fetch('products.json?v=' + new Date().toISOString().slice(0, 10), { cache: 'no-cache' }),
-      window.AKM ? window.AKM.getCatalogOverrides() : Promise.resolve(null)
+      window.AKM ? window.AKM.getCatalogOverrides() : Promise.resolve(null),
+      window.AKM ? window.AKM.getOwnProducts() : Promise.resolve([])
     ]);
     const data = await res.json();
-    let products = data.products;
+    let products = data.products.map(p => Object.assign({ source: 'supplier' }, p));
+    // AKM's own products (managed in admin.html) join the catalog
+    for (const p of (own || [])) {
+      if (p && p.id && p.name && p.price != null) {
+        products.push({
+          id: p.id, name: p.name, brand: p.brand || 'AKM',
+          category: p.category || 'General Accessories',
+          price: Number(p.price), currency: 'AED',
+          inStock: p.inStock !== false,
+          image: p.image || '', imageLarge: p.imageLarge || p.image || '',
+          source: 'akm'
+        });
+      }
+    }
     // Admin can disable listings from admin.html (stored in Firestore)
     if (overrides) {
       const offCats = new Set(overrides.disabledCategories);
       const offBrands = new Set(overrides.disabledBrands);
       products = products.filter(p =>
         !overrides.disabledIds[p.id] && !offCats.has(p.category) && !offBrands.has(p.brand));
+      state.featuredIds = overrides.featuredIds || [];
     }
-    state.products = products.map(p => Object.assign({ dept: departmentFor(p.category) }, p));
+    state.products = products.map(p => {
+      const [dept, sub] = departmentFor(p.category);
+      return Object.assign({ dept, sub }, p);
+    });
   }
 
   // ---------- filtering ----------
@@ -67,11 +234,11 @@
     const terms = q ? q.split(/\s+/) : [];
     let list = state.products.filter(p => {
       if (state.dept !== 'All' && p.dept !== state.dept) return false;
-      if (state.category !== 'All' && p.category !== state.category) return false;
+      if (state.category !== 'All' && p.sub !== state.category) return false;
       if (state.brand !== 'All' && p.brand !== state.brand) return false;
       if (state.inStockOnly && !p.inStock) return false;
       if (terms.length) {
-        const hay = (p.name + ' ' + p.category + ' ' + p.brand).toLowerCase();
+        const hay = (p.name + ' ' + p.sub + ' ' + p.category + ' ' + p.brand).toLowerCase();
         if (!terms.every(t => hay.includes(t))) return false;
       }
       return true;
@@ -80,7 +247,11 @@
       case 'price-asc': list.sort((a, b) => a.price - b.price); break;
       case 'price-desc': list.sort((a, b) => b.price - a.price); break;
       case 'name': list.sort((a, b) => a.name.localeCompare(b.name)); break;
-      default: list.sort((a, b) => (b.inStock - a.inStock) || a.name.localeCompare(b.name));
+      default: {
+        const feat = new Set(state.featuredIds);
+        list.sort((a, b) =>
+          (feat.has(b.id) - feat.has(a.id)) || (b.inStock - a.inStock) || a.name.localeCompare(b.name));
+      }
     }
     return list;
   }
@@ -137,12 +308,12 @@
         .map(d => `<button class="dept-chip ${state.dept === d.name ? 'active' : ''}" data-dept="${d.name}">${d.name}</button>`)
         .join('');
 
-    // Category options depend on the selected department.
+    // Subcategory options depend on the selected department.
     const pool = state.dept === 'All' ? state.products : state.products.filter(p => p.dept === state.dept);
     const cats = {};
     const brands = {};
     pool.forEach(p => {
-      cats[p.category] = (cats[p.category] || 0) + 1;
+      cats[p.sub] = (cats[p.sub] || 0) + 1;
       brands[p.brand] = (brands[p.brand] || 0) + 1;
     });
 
@@ -176,7 +347,7 @@
     document.getElementById('modalName').textContent = p.name;
     document.getElementById('modalPrice').innerHTML = '<span class="currency">AED</span>' + fmtPrice(p.price);
     document.getElementById('modalMeta').textContent =
-      p.category + (p.inStock ? ' · In stock in Abu Dhabi' : ' · Available on order — ask us for lead time');
+      p.sub + (p.inStock ? ' · In stock in Abu Dhabi' : ' · Available on order — ask us for lead time');
     document.getElementById('modalQty').textContent = '1';
     document.getElementById('productModalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -398,6 +569,7 @@
       document.getElementById('shopSearch').value = state.query;
     }
     if (params.get('dept')) state.dept = params.get('dept');
+    if (params.get('cat')) state.category = params.get('cat');
     renderFilters();
     render();
   });

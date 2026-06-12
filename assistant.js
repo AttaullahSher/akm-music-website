@@ -13,7 +13,7 @@
   // ---------- UI ----------
   const fab = document.createElement('button');
   fab.className = 'ai-fab';
-  fab.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i><span>Ask AKM</span>';
+  fab.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i><span class="ai-fab-label">Ask AKM</span>';
   fab.setAttribute('aria-label', 'Ask AKM assistant');
 
   const panel = document.createElement('div');
@@ -90,12 +90,22 @@
         `- ${p.name} | ${p.brand} | ${p.category} | AED ${p.price} | ${p.inStock ? 'in stock' : 'on order'}`).join('\n');
 
       const prompt =
-`You are the friendly in-store assistant of AKM Music, a musical instrument shop in Abu Dhabi (since 1984). A customer asks: "${q}"
+`You are the friendly in-store assistant of AKM Music, a musical instrument shop in Abu Dhabi. A visitor asks: "${q}"
 
-Here are matching products from our catalog (only recommend from this list; if nothing fits, say so and suggest asking on WhatsApp):
-${ctx || '(no close matches found)'}
+STORE FACTS (use these for any question about us):
+- AKM Music Abu Dhabi (Ajmal Khan Mohammed Music Centre LLC), serving musicians since 1984
+- Location: Hamdan Road No 5, Behind Millennium Hotel, Abu Dhabi, UAE — directions: https://www.google.com/maps?q=24.495314,54.370049
+- Hours: Sat-Thu 9 AM-9 PM, Fri 4:30-9 PM
+- Phone/WhatsApp: +971 2 621 9929 (also +971 50 641 8963) — https://wa.me/97126219929
+- Email: sales@akm-music.com
+- Facebook: facebook.com/akmmusiccenter · Instagram: instagram.com/akm.music
+- Services: instrument repairs (drop-off at showroom), music classes (AED 525/month, 8 sessions of 45 min, twice a week), studio booking (solo AED 100/hr, band AED 150/hr), instrument rentals — book at services.html
+- Online store: shop.html (1,500+ products, WhatsApp checkout) · Free learning resources: tools.html
 
-Reply in under 120 words, warm and helpful. Mention 1-3 specific products with their AED prices. Currency is AED. Do not invent products or prices. End by inviting them to add to cart or ask us on WhatsApp.`;
+MATCHING PRODUCTS from our catalog (recommend only from this list; if nothing fits, say so and point to WhatsApp):
+${ctx || '(no close matches — if the question is about products, suggest the search bar or WhatsApp)'}
+
+Reply in under 110 words, warm and helpful. For product questions mention 1-3 specific products with AED prices — never invent products or prices. For questions about location/hours/contact/services, answer from the store facts with the relevant link. End with a short invitation (visit, WhatsApp, or add to cart).`;
 
       const answer = await window.AKM.askGemini(prompt);
       thinking.remove();
