@@ -27,7 +27,7 @@
   <!-- Enhanced Open Graph -->
   <meta property="og:title" content="AKM Music Abu Dhabi - Premium Musical Instruments Since 1984">
   <meta property="og:description" content="🎵 Discover premium musical instruments, professional services, and music education at AKM Music Abu Dhabi. Shop online with WhatsApp ordering!">
-  <meta property="og:image" content="assets/Banners_images/3D274.png">
+  <meta property="og:image" content="https://www.akm-music.com/assets/Banners_images/3D274.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
@@ -38,7 +38,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AKM Music Abu Dhabi - Premium Musical Instruments">
   <meta name="twitter:description" content="🎵 Leading music store in Abu Dhabi since 1984. Premium instruments & professional services.">
-  <meta name="twitter:image" content="assets/Banners_images/3D274.png">
+  <meta name="twitter:image" content="https://www.akm-music.com/assets/Banners_images/3D274.png">
 
   <!-- Structured data: local business + site search -->
   <script type="application/ld+json">
@@ -111,15 +111,16 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   
   <!-- Styles - Simplified & Unified -->
-  <link rel="stylesheet" href="master-design.css?v=20260613b">
-  <link rel="stylesheet" href="fixes.css?v=20260613b">
-  <link rel="stylesheet" href="shop.css?v=20260613b">
-  <link rel="stylesheet" href="services.css?v=20260613b">
+  <link rel="stylesheet" href="master-design.css?v=20260613c">
+  <link rel="stylesheet" href="fixes.css?v=20260613c">
+  <link rel="stylesheet" href="shop.css?v=20260613c">
+  <link rel="stylesheet" href="services.css?v=20260613c">
   
   <!-- PWA & Icons -->
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
   <link rel="apple-touch-icon" href="assets/Logo & Icons/logo.png">
   <link rel="manifest" href="manifest.json">
+  <meta property="og:locale" content="en_AE">
 </head>
 <body>
   <!-- Header -->
@@ -575,20 +576,29 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="google-analytics.js?v=20260613b"></script>
+  <script src="google-analytics.js?v=20260613c"></script>
 
-  <script src="script.js?v=20260613b"></script>
-  <script src="analytics.js?v=20260613b"></script>
-  <script src="pwa.js?v=20260613b"></script>
+  <script src="script.js?v=20260613c"></script>
+  <script src="analytics.js?v=20260613c"></script>
+  <script src="pwa.js?v=20260613c"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     if (window.AOS) AOS.init({ duration: 700, once: true });
   </script>
   <script>
     // Banner carousel — auto-rotates, swipe-friendly
-    (function () {
+    (async function () {
       const track = document.getElementById('bannerTrack');
       if (!track) return;
+      // Custom banners from admin.html → Banners tab (fallback: bundled designs)
+      try {
+        const custom = window.AKM ? await window.AKM.getBanners() : [];
+        if (custom.length) {
+          const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+          track.innerHTML = custom.map(b =>
+            `<a class="banner-slide" href="${esc(b.link || 'shop.html')}"><img src="${esc(b.image)}" alt="${esc(b.alt || 'AKM Music promotion')}" loading="lazy"></a>`).join('');
+        }
+      } catch (e) { /* keep bundled banners */ }
       const n = track.children.length;
       const dots = document.getElementById('bannerDots');
       let idx = 0, timer;
@@ -630,7 +640,8 @@
           window.AKM ? window.AKM.getOwnProducts() : Promise.resolve([])
         ]);
         const data = await res.json();
-        const all = data.products.concat((own || []).filter(p => p && p.id && p.name));
+        const supplierOn = !overrides || overrides.supplierEnabled !== false;
+        const all = (supplierOn ? data.products : []).concat((own || []).filter(p => p && p.id && p.name));
         const byId = Object.fromEntries(all.map(p => [String(p.id), p]));
         const picks = [];
         for (const id of (overrides?.featuredIds || [])) {
@@ -664,10 +675,10 @@
       }
     })();
   </script>
-  <script src="firebase-config.js?v=20260613b"></script>
-  <script src="firebase-backend.js?v=20260613b"></script>
-  <script src="services.js?v=20260613b"></script>
-  <script src="assistant.js?v=20260613b"></script>
+  <script src="firebase-config.js?v=20260613c"></script>
+  <script src="firebase-backend.js?v=20260613c"></script>
+  <script src="services.js?v=20260613c"></script>
+  <script src="assistant.js?v=20260613c"></script>
   <script>
     document.addEventListener('click', function (e) {
       const open = e.target.closest('[data-svc-open]');

@@ -72,31 +72,39 @@ function main() {
   // ---------- tabs ----------
   document.querySelectorAll('.admin-tab').forEach(tab => tab.addEventListener('click', () => {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t === tab));
-    for (const name of ['listings', 'own', 'featured', 'orders', 'bookings']) {
+    for (const name of ['listings', 'own', 'featured', 'blog', 'banners', 'orders', 'bookings']) {
       document.getElementById('panel-' + name).style.display = tab.dataset.tab === name ? 'block' : 'none';
     }
     if (tab.dataset.tab === 'orders') loadRecords('orders', 'ordersList');
     if (tab.dataset.tab === 'bookings') loadRecords('bookings', 'bookingsList');
     if (tab.dataset.tab === 'own') renderOwn();
     if (tab.dataset.tab === 'featured') renderFeatured();
+    if (tab.dataset.tab === 'blog') renderBlog();
+    if (tab.dataset.tab === 'banners') renderBanners();
   }));
 
   // ---------- listings ----------
   const OWNDOC = doc(db, 'siteConfig', 'ownProducts');
+  const BLOGDOC = doc(db, 'siteConfig', 'blog');
+  const BANNERDOC = doc(db, 'siteConfig', 'banners');
   const SUBCATEGORIES = ['Acoustic Guitars','Classical & Flamenco','Electric Guitars','Bass Guitars','Ukulele, Violin & Folk','Guitar Pickups','Acoustic Pianos','Digital Pianos','Keyboards & Synths','Keyboard Stands & Benches','Drum Kits','Cymbals','Snares & Toms','Drum Heads','Pedals & Hardware','Sticks & Brushes','Hand Percussion','Drum Bags & Cases','Guitar Amplifiers','Bass Amplifiers','Drum & Keyboard Amps','Pedals & Effects','PA Speakers','Mixers','Recording Gear','Headphones','Stands, Cables & Wireless','Harmonicas','Melodicas & Recorders','Reeds & Accessories','Guitar Strings','Violin & Oud Strings','Picks & Capos','Straps & Stands','Cases & Bags','Tuners & Metronomes','Care, Parts & Tools','Merch & Gifts','General Accessories'];
   let products = [];
   let ownProducts = [];
-  let ov = { disabledIds: {}, disabledCategories: [], disabledBrands: [], featuredIds: [] };
+  let blogPosts = [];
+  let banners = [];
+  let ov = { disabledIds: {}, disabledCategories: [], disabledBrands: [], featuredIds: [], supplierEnabled: true };
   let shown = 60;
   let started = false;
 
   async function start() {
     if (started) return;
     started = true;
-    const [res, snap, ownSnap] = await Promise.all([
+    const [res, snap, ownSnap, blogSnap, bannerSnap] = await Promise.all([
       fetch('products.json?v=' + Date.now(), { cache: 'no-cache' }),
       getDoc(CATALOG),
-      getDoc(OWNDOC)
+      getDoc(OWNDOC),
+      getDoc(BLOGDOC),
+      getDoc(BANNERDOC)
     ]);
     products = (await res.json()).products;
     if (snap.exists()) {
@@ -105,12 +113,17 @@ function main() {
         disabledIds: d.disabledIds || {},
         disabledCategories: d.disabledCategories || [],
         disabledBrands: d.disabledBrands || [],
-        featuredIds: d.featuredIds || []
+        featuredIds: d.featuredIds || [],
+        supplierEnabled: d.supplierEnabled !== false
       };
+      document.getElementById('homeBrandsInput').value = (d.homeBrands || []).join(', ');
     } else {
-      await setDoc(CATALOG, { disabledIds: {}, disabledCategories: [], disabledBrands: [], featuredIds: [] });
+      await setDoc(CATALOG, { disabledIds: {}, disabledCategories: [], disabledBrands: [], featuredIds: [], supplierEnabled: true });
     }
+    document.getElementById('supplierMaster').checked = ov.supplierEnabled;
     ownProducts = ownSnap.exists() ? (ownSnap.data().products || []) : [];
+    blogPosts = blogSnap.exists() ? (blogSnap.data().posts || []) : [];
+    banners = bannerSnap.exists() ? (bannerSnap.data().banners || []) : [];
     const cats = [...new Set(products.map(p => p.category))].sort();
     document.getElementById('adminCatFilter').innerHTML =
       '<option value="">All categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join('');
@@ -441,6 +454,224 @@ function main() {
       }
       renderFeatured();
       toast('Featured list updated');
+    } catch (err) { toast('Update failed: ' + err.message); }
+  });
+
+  // ---------- supplier master switch ----------
+  document.getElementById('supplierMaster').addEventListener('change', async e => {
+    try {
+      await updateDoc(CATALOG, { supplierEnabled: e.target.checked });
+      ov.supplierEnabled = e.target.checked;
+      toast(e.target.checked ? 'Supplier catalog ON' : 'Supplier catalog hidden — shop shows only Our Products');
+    } catch (err) {
+      toast('Save failed: ' + err.message);
+      e.target.checked = !e.target.checked;
+    }
+  });
+
+  // ---------- shared image compressor ----------
+  function compressImage(file, maxSide, quality, cb) {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      cb(canvas.toDataURL('image/webp', quality));
+      URL.revokeObjectURL(img.src);
+    };
+    img.src = URL.createObjectURL(file);
+  }
+
+  // ---------- blog ----------
+  let editingPost = null;
+  let blogCover = null;
+
+  const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  const saveBlog = () => setDoc(BLOGDOC, { posts: blogPosts, updatedAt: new Date().toISOString() });
+  const blogKB = () => Math.round(JSON.stringify(blogPosts).length / 1024);
+
+  function renderBlog() {
+    document.getElementById('blogStats').textContent =
+      `${blogPosts.length} admin posts · storage ${blogKB()} / 900 KB`;
+    const el = document.getElementById('blogRows');
+    if (!blogPosts.length) {
+      el.innerHTML = '<div class="empty-msg">No posts yet — click "Write Post". Posts appear on the blog instantly, newest first, alongside the built-in articles.</div>';
+      return;
+    }
+    el.classList.remove('empty-msg');
+    el.innerHTML = blogPosts.map(p => `
+      <div class="listing-row">
+        <img src="${esc(p.cover || '')}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+        <div class="listing-name">
+          <div>${esc(p.title)}</div>
+          <div class="sub">${esc(p.date)} · ${esc(p.category)} · ${esc(p.author || 'AKM Music')}</div>
+        </div>
+        <a class="mark-btn" href="blog.html?post=${encodeURIComponent(p.id)}" target="_blank"><i class="fas fa-eye"></i> View</a>
+        <button class="mark-btn" data-bp-edit="${esc(p.id)}"><i class="fas fa-pen"></i> Edit</button>
+        <button class="mark-btn" style="color:var(--color-accent);" data-bp-del="${esc(p.id)}"><i class="fas fa-trash-alt"></i></button>
+      </div>`).join('');
+  }
+
+  function openBlogForm(p) {
+    editingPost = p ? p.id : null;
+    blogCover = null;
+    document.getElementById('blogForm').style.display = 'block';
+    document.getElementById('bpTitle').value = p ? p.title : '';
+    document.getElementById('bpCategory').value = p ? p.category : 'news';
+    document.getElementById('bpAuthor').value = p ? (p.author || '') : '';
+    document.getElementById('bpCoverUrl').value = p && p.cover && !p.cover.startsWith('data:') ? p.cover : '';
+    document.getElementById('bpCoverInfo').textContent =
+      p && (p.cover || '').startsWith('data:') ? 'Current: uploaded cover (kept unless you change it)' : '';
+    document.getElementById('bpCoverFile').value = '';
+    document.getElementById('bpBody').value = p ? p.body : '';
+    document.getElementById('blogForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.getElementById('blogAddBtn').addEventListener('click', () => openBlogForm(null));
+  document.getElementById('blogCancelBtn').addEventListener('click', () => {
+    document.getElementById('blogForm').style.display = 'none';
+  });
+  document.getElementById('bpCoverFile').addEventListener('change', e => {
+    if (!e.target.files[0]) return;
+    compressImage(e.target.files[0], 900, 0.75, dataUrl => {
+      blogCover = dataUrl;
+      document.getElementById('bpCoverInfo').textContent = 'Compressed to ' + Math.round(dataUrl.length / 1024) + ' KB ✓';
+    });
+  });
+  document.getElementById('blogSaveBtn').addEventListener('click', async () => {
+    const title = document.getElementById('bpTitle').value.trim();
+    const body = document.getElementById('bpBody').value.trim();
+    if (!title || !body) { toast('Heading and article text are required.'); return; }
+    const existing = editingPost ? blogPosts.find(x => x.id === editingPost) : null;
+    const post = {
+      id: existing ? existing.id : slugify(title) + '-' + Date.now().toString(36),
+      title,
+      category: document.getElementById('bpCategory').value,
+      author: document.getElementById('bpAuthor').value.trim() || 'AKM Music',
+      date: existing ? existing.date : new Date().toISOString().slice(0, 10),
+      cover: blogCover || document.getElementById('bpCoverUrl').value.trim() || (existing ? existing.cover : ''),
+      body
+    };
+    const i = blogPosts.findIndex(x => x.id === post.id);
+    if (i > -1) blogPosts[i] = post; else blogPosts.unshift(post);
+    if (blogKB() > 900) {
+      if (i > -1) blogPosts[i] = existing; else blogPosts.shift();
+      toast('Storage limit reached — use cover links instead of uploads, or shorten the article.');
+      return;
+    }
+    try {
+      await saveBlog();
+      toast('Published — live on the blog now');
+      document.getElementById('blogForm').style.display = 'none';
+      renderBlog();
+    } catch (err) { toast('Save failed: ' + err.message); }
+  });
+  document.getElementById('blogRows').addEventListener('click', async e => {
+    const edit = e.target.closest('[data-bp-edit]');
+    const del = e.target.closest('[data-bp-del]');
+    if (edit) openBlogForm(blogPosts.find(x => x.id === edit.dataset.bpEdit));
+    if (del && confirm('Delete this post permanently?')) {
+      blogPosts = blogPosts.filter(x => x.id !== del.dataset.bpDel);
+      try { await saveBlog(); toast('Post deleted'); renderBlog(); }
+      catch (err) { toast('Delete failed: ' + err.message); }
+    }
+  });
+
+  // ---------- banners ----------
+  let editingBanner = -1;
+  let bannerImage = null;
+  const saveBanners = () => setDoc(BANNERDOC, { banners, updatedAt: new Date().toISOString() });
+  const bannerKB = () => Math.round(JSON.stringify(banners).length / 1024);
+
+  function renderBanners() {
+    document.getElementById('bannerStats').textContent =
+      `${banners.length} / 5 banners · storage ${bannerKB()} / 900 KB`;
+    const el = document.getElementById('bannerRows');
+    if (!banners.length) {
+      el.innerHTML = '<div class="empty-msg">No custom banners — the home page shows the built-in designs. Add one to replace them.</div>';
+      return;
+    }
+    el.classList.remove('empty-msg');
+    el.innerHTML = banners.map((b, i) => `
+      <div class="listing-row">
+        <img src="${esc(b.image)}" alt="" style="width:120px; height:32px; object-fit:cover;" onerror="this.style.visibility='hidden'">
+        <div class="listing-name">
+          <div>${esc(b.alt || 'Banner ' + (i + 1))}</div>
+          <div class="sub">links to ${esc(b.link || 'shop.html')}</div>
+        </div>
+        ${i > 0 ? `<button class="mark-btn" data-bn-up="${i}"><i class="fas fa-arrow-up"></i></button>` : ''}
+        <button class="mark-btn" data-bn-edit="${i}"><i class="fas fa-pen"></i> Edit</button>
+        <button class="mark-btn" style="color:var(--color-accent);" data-bn-del="${i}"><i class="fas fa-trash-alt"></i></button>
+      </div>`).join('');
+  }
+
+  function openBannerForm(i) {
+    editingBanner = i;
+    bannerImage = null;
+    const b = i > -1 ? banners[i] : null;
+    document.getElementById('bannerForm').style.display = 'block';
+    document.getElementById('bnImageUrl').value = b && b.image && !b.image.startsWith('data:') ? b.image : '';
+    document.getElementById('bnImageInfo').textContent =
+      b && (b.image || '').startsWith('data:') ? 'Current: uploaded image (kept unless you change it)' : '';
+    document.getElementById('bnImageFile').value = '';
+    document.getElementById('bnLink').value = b ? (b.link || '') : 'shop.html';
+    document.getElementById('bnAlt').value = b ? (b.alt || '') : '';
+  }
+
+  document.getElementById('bannerAddBtn').addEventListener('click', () => {
+    if (banners.length >= 5) { toast('Maximum 5 banners — delete one first.'); return; }
+    openBannerForm(-1);
+  });
+  document.getElementById('bannerCancelBtn').addEventListener('click', () => {
+    document.getElementById('bannerForm').style.display = 'none';
+  });
+  document.getElementById('bnImageFile').addEventListener('change', e => {
+    if (!e.target.files[0]) return;
+    compressImage(e.target.files[0], 1600, 0.72, dataUrl => {
+      bannerImage = dataUrl;
+      document.getElementById('bnImageInfo').textContent = 'Compressed to ' + Math.round(dataUrl.length / 1024) + ' KB ✓';
+    });
+  });
+  document.getElementById('bannerSaveBtn').addEventListener('click', async () => {
+    const image = bannerImage || document.getElementById('bnImageUrl').value.trim() ||
+      (editingBanner > -1 ? banners[editingBanner].image : '');
+    if (!image) { toast('A banner image (link or upload) is required.'); return; }
+    const item = {
+      image,
+      link: document.getElementById('bnLink').value.trim() || 'shop.html',
+      alt: document.getElementById('bnAlt').value.trim() || 'AKM Music promotion'
+    };
+    const prev = editingBanner > -1 ? banners[editingBanner] : null;
+    if (editingBanner > -1) banners[editingBanner] = item; else banners.push(item);
+    if (bannerKB() > 900) {
+      if (prev) banners[editingBanner] = prev; else banners.pop();
+      toast('Storage limit reached — use image links for some banners.');
+      return;
+    }
+    try {
+      await saveBanners();
+      toast('Banner saved — live on the home page');
+      document.getElementById('bannerForm').style.display = 'none';
+      renderBanners();
+    } catch (err) { toast('Save failed: ' + err.message); }
+  });
+  document.getElementById('bannerRows').addEventListener('click', async e => {
+    const up = e.target.closest('[data-bn-up]');
+    const edit = e.target.closest('[data-bn-edit]');
+    const del = e.target.closest('[data-bn-del]');
+    try {
+      if (up) {
+        const i = +up.dataset.bnUp;
+        [banners[i - 1], banners[i]] = [banners[i], banners[i - 1]];
+        await saveBanners(); renderBanners();
+      } else if (edit) {
+        openBannerForm(+edit.dataset.bnEdit);
+      } else if (del && confirm('Delete this banner?')) {
+        banners.splice(+del.dataset.bnDel, 1);
+        await saveBanners(); toast('Banner deleted'); renderBanners();
+      }
     } catch (err) { toast('Update failed: ' + err.message); }
   });
 

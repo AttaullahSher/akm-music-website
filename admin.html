@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="master-design.css?v=20260613b">
+  <link rel="stylesheet" href="master-design.css?v=20260613c">
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
   <style>
     body { background: var(--bg-section-light); padding-top: 0; }
@@ -108,11 +108,23 @@
         <button class="admin-tab active" data-tab="listings"><i class="fas fa-toggle-on"></i> Supplier Listings</button>
         <button class="admin-tab" data-tab="own"><i class="fas fa-box-open"></i> Our Products</button>
         <button class="admin-tab" data-tab="featured"><i class="fas fa-star"></i> Featured</button>
+        <button class="admin-tab" data-tab="blog"><i class="fas fa-pen-nib"></i> Blog</button>
+        <button class="admin-tab" data-tab="banners"><i class="fas fa-image"></i> Banners</button>
         <button class="admin-tab" data-tab="orders"><i class="fas fa-shopping-cart"></i> Orders</button>
         <button class="admin-tab" data-tab="bookings"><i class="fas fa-calendar-check"></i> Bookings</button>
       </div>
 
       <div class="admin-panel" id="panel-listings">
+        <div style="display:flex; align-items:center; gap:12px; padding:10px 12px; background:var(--bg-section-light); border-radius:10px; margin-bottom:var(--space-md);">
+          <label class="switch" title="Master switch for the entire supplier catalog">
+            <input type="checkbox" id="supplierMaster" checked>
+            <span class="track"></span><span class="knob"></span>
+          </label>
+          <div style="font-size:var(--font-size-sm);">
+            <strong>Supplier catalog on the shop</strong>
+            <div style="font-size:var(--font-size-xs); color:var(--text-muted);">Auto-imported twice a week. Turn off to sell only Our Products — individual toggles below still apply when on.</div>
+          </div>
+        </div>
         <div class="listing-toolbar">
           <input type="search" id="adminSearch" placeholder="Search products…">
           <select id="adminCatFilter"><option value="">All categories</option></select>
@@ -183,6 +195,68 @@
         <button class="btn btn-primary btn-sm" id="homeBrandsSave" style="margin-top:8px;">Save Brands</button>
       </div>
 
+      <div class="admin-panel" id="panel-blog" style="display:none;">
+        <div class="listing-toolbar">
+          <button class="btn btn-primary btn-sm" id="blogAddBtn"><i class="fas fa-plus"></i> Write Post</button>
+          <span class="listing-stats" id="blogStats" style="margin:0 0 0 auto;"></span>
+        </div>
+        <div id="blogForm" style="display:none; border:1px solid var(--border-color); border-radius:var(--border-radius-md); padding:var(--space-md); margin-bottom:var(--space-md);">
+          <div style="display:grid; gap:10px;">
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Heading *<input type="text" id="bpTitle" maxlength="110" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <label style="font-size:var(--font-size-xs); font-weight:600;">Category
+                <select id="bpCategory" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;">
+                  <option value="news">News</option><option value="tips">Tips</option>
+                  <option value="guides">Guide</option><option value="education">Education</option>
+                </select>
+              </label>
+              <label style="font-size:var(--font-size-xs); font-weight:600;">Author<input type="text" id="bpAuthor" placeholder="AKM Music" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+            </div>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Cover photo — paste a link OR upload (auto-compressed, shows in a fixed 16:9 frame)
+              <input type="url" id="bpCoverUrl" placeholder="https://… image link (optional)" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:6px;">
+              <input type="file" id="bpCoverFile" accept="image/*">
+              <span id="bpCoverInfo" style="color:var(--text-muted);"></span>
+            </label>
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Article text * — separate paragraphs with a blank line; lines starting with ## become subheadings
+              <textarea id="bpBody" rows="12" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:8px; font-family:var(--font-family); font-size:var(--font-size-sm);"></textarea>
+            </label>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" id="blogSaveBtn">Publish Post</button>
+            <button class="btn btn-secondary btn-sm" id="blogCancelBtn">Cancel</button>
+          </div>
+        </div>
+        <div id="blogRows" class="empty-msg">Loading…</div>
+      </div>
+
+      <div class="admin-panel" id="panel-banners" style="display:none;">
+        <p style="font-size:var(--font-size-sm); color:var(--text-muted); margin:0 0 12px;">
+          Home page banner covers (up to 5, shown in order). Ideal size <strong>1600×400</strong> — uploads are auto-fitted to the fixed banner frame, so any photo works. Leave empty to use the built-in designs.
+        </p>
+        <div class="listing-toolbar">
+          <button class="btn btn-primary btn-sm" id="bannerAddBtn"><i class="fas fa-plus"></i> Add Banner</button>
+          <span class="listing-stats" id="bannerStats" style="margin:0 0 0 auto;"></span>
+        </div>
+        <div id="bannerForm" style="display:none; border:1px solid var(--border-color); border-radius:var(--border-radius-md); padding:var(--space-md); margin-bottom:var(--space-md);">
+          <div style="display:grid; gap:10px;">
+            <label style="font-size:var(--font-size-xs); font-weight:600;">Banner image — paste a link OR upload *
+              <input type="url" id="bnImageUrl" placeholder="https://… image link (optional)" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px; margin-bottom:6px;">
+              <input type="file" id="bnImageFile" accept="image/*">
+              <span id="bnImageInfo" style="color:var(--text-muted);"></span>
+            </label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <label style="font-size:var(--font-size-xs); font-weight:600;">Click goes to<input type="text" id="bnLink" placeholder="shop.html" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+              <label style="font-size:var(--font-size-xs); font-weight:600;">Alt text (SEO)<input type="text" id="bnAlt" placeholder="e.g. Summer sale on guitars" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:8px;"></label>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:12px;">
+            <button class="btn btn-primary btn-sm" id="bannerSaveBtn">Save Banner</button>
+            <button class="btn btn-secondary btn-sm" id="bannerCancelBtn">Cancel</button>
+          </div>
+        </div>
+        <div id="bannerRows" class="empty-msg">Loading…</div>
+      </div>
+
       <div class="admin-panel" id="panel-orders" style="display:none;">
         <div id="ordersList" class="empty-msg">Loading…</div>
       </div>
@@ -196,7 +270,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script src="firebase-config.js?v=20260613b"></script>
-  <script type="module" src="admin.js?v=20260613b"></script>
+  <script src="firebase-config.js?v=20260613c"></script>
+  <script type="module" src="admin.js?v=20260613c"></script>
 </body>
 </html>

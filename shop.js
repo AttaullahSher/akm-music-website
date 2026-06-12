@@ -200,7 +200,10 @@
       window.AKM ? window.AKM.getOwnProducts() : Promise.resolve([])
     ]);
     const data = await res.json();
-    let products = data.products.map(p => Object.assign({ source: 'supplier' }, p));
+    // Master switch (admin → Supplier Listings): hide the whole supplier catalog
+    let products = (overrides && overrides.supplierEnabled === false)
+      ? []
+      : data.products.map(p => Object.assign({ source: 'supplier' }, p));
     // AKM's own products (managed in admin.html) join the catalog
     for (const p of (own || [])) {
       if (p && p.id && p.name && p.price != null) {

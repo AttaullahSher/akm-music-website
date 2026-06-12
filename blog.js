@@ -17,12 +17,78 @@ const BLOG_PAGE_SIZE = 6; // 6 cards per page
 function initializeBlog() {
     loadBlogPosts();
     setupEventListeners();
+    mergeAdminPosts();
 
-    
     // Add loading animation
     setTimeout(() => {
         document.body.classList.add('blog-loaded');
     }, 100);
+}
+
+// Posts written in admin.html (stored in Firestore) join the static posts,
+// newest first. Each gets a shareable ?post= URL with its own SEO meta.
+async function mergeAdminPosts() {
+    try {
+        const adminPosts = window.AKM ? await window.AKM.getBlogPosts() : [];
+        if (adminPosts.length) {
+            const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+            const toHtml = body => esc(body).split(/\n\s*\n/).map(par =>
+                par.startsWith('## ')
+                    ? '<h3>' + par.slice(3).trim() + '</h3>'
+                    : '<p>' + par.replace(/\n/g, '<br>') + '</p>'
+            ).join('');
+            const converted = adminPosts.map(p => ({
+                id: p.id,
+                title: p.title,
+                category: p.category || 'news',
+                date: p.date,
+                readTime: Math.max(1, Math.round(p.body.split(/\s+/).length / 200)) + ' min',
+                excerpt: p.body.replace(/\s+/g, ' ').slice(0, 150).trim() + '…',
+                image: p.cover || 'assets/Banners_images/3D274.png',
+                tags: [],
+                author: p.author || 'AKM Music',
+                content: `
+                    <h2>${esc(p.title)}</h2>
+                    ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(p.title)}" class="post-hero-image">` : ''}
+                    <div class="post-content">${toHtml(p.body)}</div>`
+            }));
+            blogPosts = converted.concat(blogPosts);
+            renderBlogPosts();
+        }
+    } catch (e) { /* blog works fine without admin posts */ }
+
+    // Deep link: blog.html?post=<id> — open the post and set per-post SEO meta
+    try {
+        const id = new URLSearchParams(location.search).get('post');
+        if (!id) return;
+        const post = blogPosts.find(p => p.id === id);
+        if (!post) return;
+        document.title = post.title + ' | AKM Music Abu Dhabi';
+        const desc = document.querySelector('meta[name="description"]');
+        if (desc) desc.setAttribute('content', post.excerpt);
+        let canon = document.querySelector('link[rel="canonical"]');
+        if (canon) canon.setAttribute('href', 'https://www.akm-music.com/blog.html?post=' + encodeURIComponent(id));
+        const ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            datePublished: post.date,
+            image: new URL(post.image, location.origin).href,
+            author: { '@type': 'Organization', name: post.author || 'AKM Music Abu Dhabi' },
+            publisher: { '@id': 'https://www.akm-music.com/#store' },
+            mainEntityOfPage: 'https://www.akm-music.com/blog.html?post=' + encodeURIComponent(id)
+        });
+        document.head.appendChild(ld);
+        setTimeout(() => {
+            const card = document.querySelector(`.blog-card[data-post-id="${CSS.escape(id)}"]`);
+            if (card) {
+                togglePost(id);
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 400);
+    } catch (e) { /* non-fatal */ }
 }
 
 // Setup Event Listeners
