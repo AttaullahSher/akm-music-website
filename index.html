@@ -111,9 +111,10 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   
   <!-- Styles - Simplified & Unified -->
-  <link rel="stylesheet" href="master-design.css?v=20260613a">
-  <link rel="stylesheet" href="fixes.css?v=20260613a">
-  <link rel="stylesheet" href="shop.css?v=20260613a">
+  <link rel="stylesheet" href="master-design.css?v=20260613b">
+  <link rel="stylesheet" href="fixes.css?v=20260613b">
+  <link rel="stylesheet" href="shop.css?v=20260613b">
+  <link rel="stylesheet" href="services.css?v=20260613b">
   
   <!-- PWA & Icons -->
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
@@ -131,13 +132,13 @@
         </div>
       </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="index.html" class="nav-link active" aria-current="page">🏠 Home</a>
-        <a href="shop.html" class="nav-link">🛒 Shop</a>
-        <a href="services.html" class="nav-link">🎵 Services</a>
-        <a href="tools.html" class="nav-link">🛠️ Tools</a>
-        <a href="blog.html" class="nav-link">📝 Blog</a>
-        <a href="about.html" class="nav-link">📖 About</a>
-        <a href="contact.html" class="nav-link">📞 Contact</a>
+        <a href="index.html" class="nav-link active" aria-current="page">Home</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="resources.html" class="nav-link">Resources</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="header-actions">
         <span class="customer-badge" id="customerBadge" title="Saved profile"></span>
@@ -240,7 +241,7 @@
       <a class="dept-tile" href="shop.html?dept=Studio%2C%20PA%20%26%20Audio" data-aos="fade-up" data-aos-delay="250"><span class="dept-emoji">🎙️</span>Studio, PA &amp; Audio</a>
       <a class="dept-tile" href="shop.html?dept=Wind%20Instruments" data-aos="fade-up" data-aos-delay="300"><span class="dept-emoji">🎷</span>Wind Instruments</a>
       <a class="dept-tile" href="shop.html?dept=Strings%20%26%20Accessories" data-aos="fade-up" data-aos-delay="350"><span class="dept-emoji">🧰</span>Strings &amp; Accessories</a>
-      <a class="dept-tile" href="tools.html#resources" data-aos="fade-up" data-aos-delay="400"><span class="dept-emoji">📚</span>Free Resources</a>
+      <a class="dept-tile" href="resources.html#resources" data-aos="fade-up" data-aos-delay="400"><span class="dept-emoji">📚</span>Free Resources</a>
     </div>
   </section>
 
@@ -260,9 +261,9 @@
   <section class="brand-strip">
     <div class="container">
       <h2 class="section-title">Brands We Carry</h2>
-      <div class="brand-strip-logos">
-        <span>IBANEZ</span><span>KAWAI</span><span>KORG</span><span>TAMA</span><span>ALHAMBRA</span><span>ZILDJIAN</span><span>VOX</span><span>LANEY</span><span>HOHNER</span><span>ERNIE BALL</span><span>D'ADDARIO</span><span>EVANS</span>
-      </div>
+    </div>
+    <div class="brand-marquee" aria-label="Our brands">
+      <div class="brand-marquee-track" id="brandTrack"></div>
     </div>
   </section>
 
@@ -284,7 +285,7 @@
         <div class="service-content">
           <h3 class="service-title">Expert Repairs</h3>
           <p class="service-description">Professional repair and maintenance services for all instruments</p>
-          <a href="services.html#repairs" class="service-link">
+          <a href="#" data-svc-open="repairs" class="service-link">
             Book Service <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -300,7 +301,7 @@
         <div class="service-content">
           <h3 class="service-title">Music Classes</h3>
           <p class="service-description">AED 525/month — 8 sessions of 45 min, twice a week. All ages & levels</p>
-          <a href="services.html#classes" class="service-link">
+          <a href="#" data-svc-open="classes" class="service-link">
             Enroll Now <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -316,7 +317,7 @@
         <div class="service-content">
           <h3 class="service-title">Rentals</h3>
           <p class="service-description">Flexible rental options for events, practice, or trying before buying</p>
-          <a href="services.html#rentals" class="service-link">
+          <a href="#" data-svc-open="rentals" class="service-link">
             View Rentals <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -332,7 +333,7 @@
         <div class="service-content">
           <h3 class="service-title">Studio Rental</h3>
           <p class="service-description">Solo AED 100 · Band AED 150 per 60-min session, equipment included</p>
-          <a href="services.html#studio" class="service-link">
+          <a href="#" data-svc-open="studio" class="service-link">
             Book Studio <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -341,52 +342,244 @@
   </section>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container footer-content">
-      <div class="footer-section">
-        <h4>AKM Music</h4>
-        <p>Leading music store in Abu Dhabi since 1984. Premium instruments and professional services for music enthusiasts.</p>
+  
+  <div class="akm-modal" id="svc-modal-repairs" aria-hidden="true" role="dialog" aria-label="Expert Instrument Repairs">
+    <div class="akm-modal-card">
+      <button class="akm-modal-close" data-svc-close aria-label="Close"><i class="fas fa-times"></i></button>
+      <div style="padding: 1.4rem 1.6rem 0.4rem;">
+        <h2 style="margin:0 0 .5rem; font-size:1.3rem;">Expert Instrument Repairs</h2>
+        <p style="margin:0; color:var(--text-secondary); font-size:.9rem; line-height:1.65;">Bring any instrument back to life — our workshop has handled guitars, pianos, violins, ouds, drums and wind instruments for over 40 years. Free assessment, honest quotes, genuine parts. Drop your instrument at the showroom or ask us about pickup for large items.</p>
       </div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="shop.html">Shop</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="tools.html">Tools</a></li>
-          <li><a href="tools.html#resources">Free Resources</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Contact Info</h4>
-        <p>📍 Abu Dhabi, UAE</p>
-        <p>📞 +971 2 621 9929</p>
-        <p>📧 Sales@akm-music.com</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">
-        <div class="footer-social-row">
-          <a href="https://wa.me/97126219929" target="_blank" rel="noopener" class="footer-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://m.facebook.com/akmmusiccenter/" target="_blank" rel="noopener" class="footer-icon" title="Facebook"><i class="fab fa-facebook"></i></a>
-          <a href="https://www.instagram.com/akm.music" target="_blank" rel="noopener" class="footer-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://m.me/akmmusiccenter" target="_blank" rel="noopener" class="footer-icon" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+      <div class="booking-card">
+        <div class="booking-info">
+          <h2><i class="fas fa-tools"></i> Expert Repairs</h2>
+          <p>Professional repair and maintenance for all instruments — guitars, pianos, violins, drums, wind instruments and more. Free assessment at the showroom.</p>
+          <div class="dropoff-box" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.3);color:#fff;">
+            <strong style="color:#fff;">📍 Drop-off at our showroom:</strong><br>
+            Hamdan Road No 5, Behind Millennium Hotel, Abu Dhabi<br>
+            <strong style="color:#fff;">📞 Contact:</strong> +971 2 621 9929 · +971 56 781 6655<br>
+            <strong style="color:#fff;">🕘 Receiving hours:</strong> Sat–Thu 9 AM–9 PM, Fri 4:30–9 PM
+          </div>
+          <ul>
+            <li><i class="fas fa-check"></i> Free diagnosis &amp; quote before any work</li>
+            <li><i class="fas fa-check"></i> Genuine parts &amp; strings in stock</li>
+            <li><i class="fas fa-check"></i> 40+ years of workshop experience</li>
+          </ul>
         </div>
-        <div class="footer-copy">© 2025 AKM Music Abu Dhabi. All rights reserved.</div>
+        <div class="booking-form">
+          <label>Your Name *<input type="text" id="repairName" placeholder="Full name" autocomplete="name"></label>
+          <label>Contact Number (WhatsApp) *<input type="tel" id="repairPhone" placeholder="+971 5x xxx xxxx" autocomplete="tel"></label>
+          <label>Instrument *
+            <select id="repairInstrument">
+              <option value="">Select instrument…</option>
+              <option>Acoustic Guitar</option>
+              <option>Electric Guitar</option>
+              <option>Bass Guitar</option>
+              <option>Classical Guitar / Oud</option>
+              <option>Piano (Acoustic)</option>
+              <option>Digital Piano / Keyboard</option>
+              <option>Violin / Viola / Cello</option>
+              <option>Drums / Percussion</option>
+              <option>Wind Instrument (Flute, Sax, Clarinet…)</option>
+              <option>Amplifier / Audio Equipment</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Describe the issue<textarea id="repairIssue" placeholder="e.g. buzzing on low E string, broken key, needs setup…"></textarea></label>
+          <button class="btn-whatsapp" id="repairSubmit"><i class="fab fa-whatsapp"></i> Book Repair on WhatsApp</button>
+          <p class="booking-note">After sending, drop your instrument at the showroom — or ask us about pickup for large items like pianos.</p>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="akm-modal" id="svc-modal-classes" aria-hidden="true" role="dialog" aria-label="Music Classes — AED 525/month">
+    <div class="akm-modal-card">
+      <button class="akm-modal-close" data-svc-close aria-label="Close"><i class="fas fa-times"></i></button>
+      <div style="padding: 1.4rem 1.6rem 0.4rem;">
+        <h2 style="margin:0 0 .5rem; font-size:1.3rem;">Music Classes — AED 525/month</h2>
+        <p style="margin:0; color:var(--text-secondary); font-size:.9rem; line-height:1.65;">Structured one-on-one lessons with experienced teachers for piano, guitar, violin, drums, vocals and more. AED 525/month covers 8 sessions of 45 minutes, twice a week — flexible scheduling within our working hours, all ages and levels. Register below and our teacher will call you back to confirm your slot.</p>
+      </div>
+      <div class="booking-card">
+        <div class="booking-info">
+          <h2><i class="fas fa-music"></i> Music Classes</h2>
+          <p>Learn any instrument with our experienced teachers — all ages and levels welcome, from absolute beginners to advanced players.</p>
+          <div class="booking-price">
+            <span class="amount">AED 525<span style="font-size:1rem;font-weight:600;">/month</span></span>
+            <span class="detail">8 sessions · 45 minutes each · twice a week</span>
+          </div>
+          <ul>
+            <li><i class="fas fa-check"></i> Piano, guitar, violin, drums, vocals &amp; more</li>
+            <li><i class="fas fa-check"></i> One-on-one attention from expert teachers</li>
+            <li><i class="fas fa-check"></i> Flexible scheduling within working hours</li>
+            <li><i class="fas fa-check"></i> Our teacher contacts you to confirm your slot</li>
+          </ul>
+        </div>
+        <div class="booking-form">
+          <label>Student Name *<input type="text" id="className" placeholder="Full name" autocomplete="name"></label>
+          <div class="form-row">
+            <label>Age<input type="number" id="classAge" placeholder="e.g. 12" min="3" max="99"></label>
+            <label>Contact (WhatsApp) *<input type="tel" id="classPhone" placeholder="+971 5x xxx xxxx" autocomplete="tel"></label>
+          </div>
+          <label>Instrument *
+            <select id="classInstrument">
+              <option value="">Select instrument…</option>
+              <option>Piano / Keyboard</option>
+              <option>Acoustic Guitar</option>
+              <option>Electric Guitar</option>
+              <option>Violin</option>
+              <option>Drums</option>
+              <option>Vocals / Singing</option>
+              <option>Ukulele</option>
+              <option>Oud</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <div class="form-row">
+            <label>Level
+              <select id="classLevel">
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </label>
+            <label>Preferred days / time<input type="text" id="classPreference" placeholder="e.g. Mon & Wed evenings"></label>
+          </div>
+          <button class="btn-whatsapp" id="classSubmit"><i class="fab fa-whatsapp"></i> Register on WhatsApp</button>
+          <p class="booking-note">Your registration goes straight to our WhatsApp — the teacher will contact you back to confirm schedule and start date.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="akm-modal" id="svc-modal-studio" aria-hidden="true" role="dialog" aria-label="Studio Booking">
+    <div class="akm-modal-card">
+      <button class="akm-modal-close" data-svc-close aria-label="Close"><i class="fas fa-times"></i></button>
+      <div style="padding: 1.4rem 1.6rem 0.4rem;">
+        <h2 style="margin:0 0 .5rem; font-size:1.3rem;">Studio Booking</h2>
+        <p style="margin:0; color:var(--text-secondary); font-size:.9rem; line-height:1.65;">A fully equipped rehearsal and recording space in the heart of Abu Dhabi — drums, amps, PA and monitoring included. Solo session AED 100/hour, full band AED 150/hour. Pick your preferred date and time below and we will confirm on WhatsApp.</p>
+      </div>
+      <div class="booking-card">
+        <div class="booking-info">
+          <h2><i class="fas fa-microphone"></i> Studio Booking</h2>
+          <p>Professional recording and rehearsal studio with quality backline, mics and monitoring — in the heart of Abu Dhabi.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Solo session — AED 100 / 60 minutes</li>
+            <li><i class="fas fa-check"></i> Band session — AED 150 / 60 minutes</li>
+            <li><i class="fas fa-check"></i> Open Sat–Thu 9 AM–9 PM, Fri 4:30–9 PM</li>
+            <li><i class="fas fa-check"></i> Drums, amps &amp; PA included</li>
+          </ul>
+        </div>
+        <div class="booking-form">
+          <span style="font-size: var(--font-size-sm); font-weight: 600;">Session Type *</span>
+          <div class="option-pills">
+            <button type="button" class="option-pill" data-studio="solo">
+              <span class="pill-title">🎤 Solo Player</span>
+              <span class="pill-price">AED 100</span>
+              <span class="pill-sub">60 minutes</span>
+            </button>
+            <button type="button" class="option-pill" data-studio="band">
+              <span class="pill-title">🥁 Band</span>
+              <span class="pill-price">AED 150</span>
+              <span class="pill-sub">60 minutes</span>
+            </button>
+          </div>
+          <div class="form-row">
+            <label>Your Name *<input type="text" id="studioName" placeholder="Full name" autocomplete="name"></label>
+            <label>Contact (WhatsApp) *<input type="tel" id="studioPhone" placeholder="+971 5x xxx xxxx" autocomplete="tel"></label>
+          </div>
+          <div class="form-row">
+            <label>Preferred Date *<input type="date" id="studioDate"></label>
+            <label>Preferred Time *
+              <select id="studioTime"><option value="">Pick a date first…</option></select>
+            </label>
+          </div>
+          <label>Notes<textarea id="studioNotes" placeholder="e.g. recording vocals, 4-piece band rehearsal…"></textarea></label>
+          <button class="btn-whatsapp" id="studioSubmit"><i class="fab fa-whatsapp"></i> Book Studio on WhatsApp</button>
+          <p class="booking-note">Times shown follow our working hours (Sat–Thu 9 AM–9 PM, Fri 4:30–9 PM). We'll confirm your slot on WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="akm-modal" id="svc-modal-rentals" aria-hidden="true" role="dialog" aria-label="Instrument Rentals">
+    <div class="akm-modal-card">
+      <button class="akm-modal-close" data-svc-close aria-label="Close"><i class="fas fa-times"></i></button>
+      <div style="padding: 1.4rem 1.6rem 0.4rem;">
+        <h2 style="margin:0 0 .5rem; font-size:1.3rem;">Instrument Rentals</h2>
+        <p style="margin:0; color:var(--text-secondary); font-size:.9rem; line-height:1.65;">Rent instead of buying — pianos, guitars, drum kits, PA systems and more for events, school terms, or try-before-you-buy. Daily, weekly and monthly rates; rental fees are deductible if you decide to buy later.</p>
+      </div>
+      <div class="booking-card">
+        <div class="booking-info">
+          <h2><i class="fas fa-handshake"></i> Instrument Rentals</h2>
+          <p>Flexible rentals for events, practice, school terms, or try-before-you-buy. Daily, weekly and monthly rates available.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Pianos, guitars, drums, PA systems &amp; more</li>
+            <li><i class="fas fa-check"></i> Event &amp; school packages</li>
+            <li><i class="fas fa-check"></i> Rental fee deductible if you buy later</li>
+          </ul>
+        </div>
+        <div class="booking-form">
+          <div class="form-row">
+            <label>Your Name *<input type="text" id="rentalName" placeholder="Full name" autocomplete="name"></label>
+            <label>Contact (WhatsApp) *<input type="tel" id="rentalPhone" placeholder="+971 5x xxx xxxx" autocomplete="tel"></label>
+          </div>
+          <label>Instrument *
+            <select id="rentalInstrument">
+              <option value="">Select instrument…</option>
+              <option>Digital Piano / Keyboard</option>
+              <option>Acoustic Piano</option>
+              <option>Acoustic Guitar</option>
+              <option>Electric Guitar + Amp</option>
+              <option>Drum Kit</option>
+              <option>Violin</option>
+              <option>PA / Sound System</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Rental period<input type="text" id="rentalPeriod" placeholder="e.g. 1 month, weekend event…"></label>
+          <button class="btn-whatsapp" id="rentalSubmit"><i class="fab fa-whatsapp"></i> Request Rental on WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer compact">
+    <div class="container footer-flex">
+      <div class="footer-brand-col">
+        <strong>AKM MUSIC</strong>
+        <span>Abu Dhabi's music store since 1984</span>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="resources.html">Resources</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="footer-contact-col">
+        <a href="https://www.google.com/maps?q=24.495314,54.370049" target="_blank" rel="noopener">Hamdan Road No 5, Abu Dhabi</a>
+        <a href="tel:+97126219929">+971 2 621 9929</a>
+        <a href="mailto:sales@akm-music.com">sales@akm-music.com</a>
+      </div>
+      <div class="footer-social-col">
+        <a href="https://wa.me/97126219929" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://m.facebook.com/akmmusiccenter/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/akm.music" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://m.me/akmmusiccenter" target="_blank" rel="noopener" aria-label="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+      </div>
+    </div>
+    <div class="footer-copy-line">© 2026 AKM Music — Ajmal Khan Mohammed Music Centre LLC, Abu Dhabi</div>
   </footer>
 
   <!-- Scripts -->
-  <script src="google-analytics.js?v=20260613a"></script>
+  <script src="google-analytics.js?v=20260613b"></script>
 
-  <script src="script.js?v=20260613a"></script>
-  <script src="analytics.js?v=20260613a"></script>
-  <script src="pwa.js?v=20260613a"></script>
+  <script src="script.js?v=20260613b"></script>
+  <script src="analytics.js?v=20260613b"></script>
+  <script src="pwa.js?v=20260613b"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     if (window.AOS) AOS.init({ duration: 700, once: true });
@@ -449,6 +642,12 @@
           picks.push(pool.splice((daySeed * 2654435761 + i * 97) % pool.length, 1)[0]);
         }
         const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        // Brand marquee — editable in admin.html → Featured tab
+        const brands = (overrides && overrides.homeBrands && overrides.homeBrands.length)
+          ? overrides.homeBrands
+          : ['IBANEZ','KAWAI','KORG','TAMA','ALHAMBRA','ZILDJIAN','VOX','LANEY','HOHNER','ERNIE BALL',"D'ADDARIO",'EVANS','DUNLOP','SUZUKI'];
+        const track = document.getElementById('brandTrack');
+        if (track) track.innerHTML = brands.concat(brands).map(b => '<span>' + esc(b) + '</span>').join('');
         grid.innerHTML = picks.map(p => `
           <a class="product-card" href="shop.html?q=${encodeURIComponent(p.name.split(' ').slice(0, 3).join(' '))}">
             <div class="product-image">
@@ -465,8 +664,31 @@
       }
     })();
   </script>
-  <script src="firebase-config.js?v=20260613a"></script>
-  <script src="firebase-backend.js?v=20260613a"></script>
-  <script src="assistant.js?v=20260613a"></script>
+  <script src="firebase-config.js?v=20260613b"></script>
+  <script src="firebase-backend.js?v=20260613b"></script>
+  <script src="services.js?v=20260613b"></script>
+  <script src="assistant.js?v=20260613b"></script>
+  <script>
+    document.addEventListener('click', function (e) {
+      const open = e.target.closest('[data-svc-open]');
+      if (open) {
+        e.preventDefault();
+        document.getElementById('svc-modal-' + open.dataset.svcOpen).setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      const close = e.target.closest('[data-svc-close]');
+      const overlay = e.target.classList && e.target.classList.contains('akm-modal') ? e.target : null;
+      if (close || overlay) {
+        (close ? close.closest('.akm-modal') : overlay).setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') document.querySelectorAll('.akm-modal[aria-hidden="false"]').forEach(m => {
+        m.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
+    });
+  </script>
 </body>
 </html>

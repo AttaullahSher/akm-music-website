@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="master-design.css?v=20260613a">
+  <link rel="stylesheet" href="master-design.css?v=20260613b">
   <link rel="icon" href="assets/Logo & Icons/favicon.ico">
   <style>
     body { background: var(--bg-section-light); padding-top: 0; }
@@ -176,6 +176,11 @@
         <div class="listing-toolbar"><input type="search" id="featSearch" placeholder="Search products to feature…"></div>
         <div id="featPicked" style="margin-bottom:var(--space-md);"></div>
         <div id="featResults"></div>
+        <hr style="border:none; border-top:1px solid var(--border-color); margin:var(--space-lg) 0;">
+        <label style="font-size:var(--font-size-sm); font-weight:600;">Home page brand marquee (comma-separated)
+          <textarea id="homeBrandsInput" rows="2" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:8px; font-family:var(--font-family); font-size:var(--font-size-sm); margin-top:6px;" placeholder="IBANEZ, KAWAI, KORG, …"></textarea>
+        </label>
+        <button class="btn btn-primary btn-sm" id="homeBrandsSave" style="margin-top:8px;">Save Brands</button>
       </div>
 
       <div class="admin-panel" id="panel-orders" style="display:none;">
@@ -191,7 +196,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script src="firebase-config.js?v=20260613a"></script>
-  <script type="module" src="admin.js?v=20260613a"></script>
+  <script src="firebase-config.js?v=20260613b"></script>
+  <script type="module" src="admin.js?v=20260613b"></script>
 </body>
 </html>

@@ -298,15 +298,39 @@
   }
 
   function renderFilters() {
+    // Sidebar: departments with expandable subcategory lists (desktop),
+    // plus a department select for mobile.
     const deptCounts = {};
-    state.products.forEach(p => { deptCounts[p.dept] = (deptCounts[p.dept] || 0) + 1; });
+    const subCounts = {};
+    state.products.forEach(p => {
+      deptCounts[p.dept] = (deptCounts[p.dept] || 0) + 1;
+      (subCounts[p.dept] = subCounts[p.dept] || {})[p.sub] = (subCounts[p.dept][p.sub] || 0) + 1;
+    });
+    const deptNames = DEPARTMENTS.map(d => d.name).filter(n => deptCounts[n]);
 
-    const deptWrap = document.getElementById('deptChips');
-    deptWrap.innerHTML =
-      `<button class="dept-chip ${state.dept === 'All' ? 'active' : ''}" data-dept="All">All Products</button>` +
-      DEPARTMENTS.filter(d => deptCounts[d.name])
-        .map(d => `<button class="dept-chip ${state.dept === d.name ? 'active' : ''}" data-dept="${d.name}">${d.name}</button>`)
-        .join('');
+    const sidebar = document.getElementById('shopSidebar');
+    if (sidebar) {
+      sidebar.innerHTML =
+        `<div class="sidebar-title">Categories</div>
+         <button class="sidebar-all ${state.dept === 'All' ? 'active' : ''}" data-side-dept="All">All Products <span>${state.products.length}</span></button>` +
+        deptNames.map(d => `
+          <details class="sidebar-group" ${state.dept === d ? 'open' : ''}>
+            <summary>
+              <button class="sidebar-dept ${state.dept === d && state.category === 'All' ? 'active' : ''}" data-side-dept="${escapeHtml(d)}">${escapeHtml(d)}</button>
+              <span class="count">${deptCounts[d]}</span>
+            </summary>
+            <ul>${Object.keys(subCounts[d]).sort().map(s => `
+              <li><button class="sidebar-sub ${state.dept === d && state.category === s ? 'active' : ''}"
+                data-side-dept="${escapeHtml(d)}" data-side-sub="${escapeHtml(s)}">${escapeHtml(s)} <span>${subCounts[d][s]}</span></button></li>`).join('')}
+            </ul>
+          </details>`).join('');
+    }
+
+    const deptSel = document.getElementById('deptFilter');
+    if (deptSel) {
+      deptSel.innerHTML = `<option value="All">All Departments</option>` +
+        deptNames.map(d => `<option value="${escapeHtml(d)}" ${d === state.dept ? 'selected' : ''}>${escapeHtml(d)} (${deptCounts[d]})</option>`).join('');
+    }
 
     // Subcategory options depend on the selected department.
     const pool = state.dept === 'All' ? state.products : state.products.filter(p => p.dept === state.dept);
@@ -451,10 +475,22 @@
       render();
     });
 
-    document.getElementById('deptChips').addEventListener('click', e => {
-      const btn = e.target.closest('[data-dept]');
+    const sidebar = document.getElementById('shopSidebar');
+    if (sidebar) sidebar.addEventListener('click', e => {
+      const btn = e.target.closest('[data-side-dept]');
       if (!btn) return;
-      state.dept = btn.dataset.dept;
+      e.preventDefault();
+      state.dept = btn.dataset.sideDept;
+      state.category = btn.dataset.sideSub || 'All';
+      state.brand = 'All';
+      state.shown = PAGE_SIZE;
+      renderFilters();
+      render();
+    });
+
+    const deptSel = document.getElementById('deptFilter');
+    if (deptSel) deptSel.addEventListener('change', e => {
+      state.dept = e.target.value;
       state.category = 'All';
       state.brand = 'All';
       state.shown = PAGE_SIZE;

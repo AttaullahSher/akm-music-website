@@ -419,6 +419,14 @@ function main() {
   }
 
   document.getElementById('featSearch').addEventListener('input', renderFeatResults);
+  document.getElementById('homeBrandsSave').addEventListener('click', async () => {
+    const brands = document.getElementById('homeBrandsInput').value
+      .split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+    try {
+      await updateDoc(CATALOG, { homeBrands: brands });
+      toast('Brand marquee updated (' + brands.length + ' brands)');
+    } catch (err) { toast('Save failed: ' + err.message); }
+  });
   document.addEventListener('click', async e => {
     const add = e.target.closest('[data-feat-add]');
     const rm = e.target.closest('[data-feat-rm]');

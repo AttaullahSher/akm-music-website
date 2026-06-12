@@ -49,7 +49,8 @@
         disabledIds: d.disabledIds || {},
         disabledCategories: d.disabledCategories || [],
         disabledBrands: d.disabledBrands || [],
-        featuredIds: d.featuredIds || []
+        featuredIds: d.featuredIds || [],
+        homeBrands: d.homeBrands || []
       };
     } catch (err) {
       console.warn('overrides unavailable:', err.message);
