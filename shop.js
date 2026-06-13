@@ -378,6 +378,10 @@
     document.getElementById('modalQty').textContent = '1';
     document.getElementById('productModalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+    if (window.akmPixel) window.akmPixel('ViewContent', {
+      content_name: p.name, content_ids: [String(p.id)], content_type: 'product',
+      value: p.price, currency: 'AED'
+    });
   }
 
   function closeModal() {
@@ -400,6 +404,10 @@
     else cart.push({ id: p.id, name: p.name, price: p.price, image: p.image, qty });
     saveCart();
     openCart();
+    if (window.akmPixel) window.akmPixel('AddToCart', {
+      content_name: p.name, content_ids: [String(p.id)], content_type: 'product',
+      value: p.price * qty, currency: 'AED'
+    });
   }
   function cartTotal() {
     return cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -462,12 +470,19 @@
     lines.push('', `Total: AED ${fmtPrice(cartTotal())}`, '', 'Please confirm availability and delivery. Thank you!');
     window.open(waLink(lines.join('\n')), '_blank', 'noopener');
     if (window.gtag) gtag('event', 'begin_checkout', { value: cartTotal(), currency: 'AED', items_count: cart.length });
+    if (window.akmPixel) {
+      window.akmPixel('InitiateCheckout', { value: cartTotal(), currency: 'AED', num_items: cart.length });
+      window.akmPixel('Contact');
+    }
   }
 
   function orderSingleWhatsApp(p, qty) {
     const msg = `Hello AKM Music! I'm interested in:\n\n• ${p.name} ×${qty || 1} — AED ${fmtPrice(p.price * (qty || 1))} (Ref: ${p.id})\n\nPlease confirm availability. Thank you!`;
     window.open(waLink(msg), '_blank', 'noopener');
     if (window.gtag) gtag('event', 'select_item', { item_id: p.id, item_name: p.name });
+    if (window.akmPixel) window.akmPixel('Contact', {
+      content_name: p.name, content_ids: [String(p.id)], value: p.price, currency: 'AED'
+    });
   }
 
   // ---------- events ----------
