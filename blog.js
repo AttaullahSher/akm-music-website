@@ -17,12 +17,78 @@ const BLOG_PAGE_SIZE = 6; // 6 cards per page
 function initializeBlog() {
     loadBlogPosts();
     setupEventListeners();
+    mergeAdminPosts();
 
-    
     // Add loading animation
     setTimeout(() => {
         document.body.classList.add('blog-loaded');
     }, 100);
+}
+
+// Posts written in admin.html (stored in Firestore) join the static posts,
+// newest first. Each gets a shareable ?post= URL with its own SEO meta.
+async function mergeAdminPosts() {
+    try {
+        const adminPosts = window.AKM ? await window.AKM.getBlogPosts() : [];
+        if (adminPosts.length) {
+            const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+            const toHtml = body => esc(body).split(/\n\s*\n/).map(par =>
+                par.startsWith('## ')
+                    ? '<h3>' + par.slice(3).trim() + '</h3>'
+                    : '<p>' + par.replace(/\n/g, '<br>') + '</p>'
+            ).join('');
+            const converted = adminPosts.map(p => ({
+                id: p.id,
+                title: p.title,
+                category: p.category || 'news',
+                date: p.date,
+                readTime: Math.max(1, Math.round(p.body.split(/\s+/).length / 200)) + ' min',
+                excerpt: p.body.replace(/\s+/g, ' ').slice(0, 150).trim() + '…',
+                image: p.cover || 'assets/Banners_images/3D274.png',
+                tags: [],
+                author: p.author || 'AKM Music',
+                content: `
+                    <h2>${esc(p.title)}</h2>
+                    ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(p.title)}" class="post-hero-image">` : ''}
+                    <div class="post-content">${toHtml(p.body)}</div>`
+            }));
+            blogPosts = converted.concat(blogPosts);
+            renderBlogPosts();
+        }
+    } catch (e) { /* blog works fine without admin posts */ }
+
+    // Deep link: blog.html?post=<id> — open the post and set per-post SEO meta
+    try {
+        const id = new URLSearchParams(location.search).get('post');
+        if (!id) return;
+        const post = blogPosts.find(p => p.id === id);
+        if (!post) return;
+        document.title = post.title + ' | AKM Music Abu Dhabi';
+        const desc = document.querySelector('meta[name="description"]');
+        if (desc) desc.setAttribute('content', post.excerpt);
+        let canon = document.querySelector('link[rel="canonical"]');
+        if (canon) canon.setAttribute('href', 'https://www.akm-music.com/blog.html?post=' + encodeURIComponent(id));
+        const ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            datePublished: post.date,
+            image: new URL(post.image, location.origin).href,
+            author: { '@type': 'Organization', name: post.author || 'AKM Music Abu Dhabi' },
+            publisher: { '@id': 'https://www.akm-music.com/#store' },
+            mainEntityOfPage: 'https://www.akm-music.com/blog.html?post=' + encodeURIComponent(id)
+        });
+        document.head.appendChild(ld);
+        setTimeout(() => {
+            const card = document.querySelector(`.blog-card[data-post-id="${CSS.escape(id)}"]`);
+            if (card) {
+                togglePost(id);
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 400);
+    } catch (e) { /* non-fatal */ }
 }
 
 // Setup Event Listeners
@@ -46,6 +112,159 @@ function setupEventListeners() {
 // Blog Posts Data
 function loadBlogPosts() {
     blogPosts = [
+        {
+            id: 'best-beginner-guitars-uae-2026',
+            title: 'Best Beginner Guitars in the UAE (2026): Acoustic, Classical & Electric',
+            category: 'guides',
+            date: '2026-06-10',
+            readTime: '6 min',
+            excerpt: 'Starting guitar in 2026? Our Abu Dhabi experts compare acoustic, classical and electric starters, what to spend, and the exact models we recommend from our shelves.',
+            image: 'assets/Blog_images/piano-buying-guide-uae.jpg',
+            tags: ['beginner guitar UAE','buy guitar abu dhabi','best first guitar','classical guitar for beginners','electric guitar starter UAE'],
+            content: `
+                <h2>Best Beginner Guitars in the UAE (2026)</h2>
+                <div class="post-content">
+                    <p>The best first guitar is the one you will actually pick up every day. At <strong>AKM Music Abu Dhabi</strong> we put hundreds of beginners on the right instrument every year — here is the honest version of the advice we give in the showroom.</p>
+                    <h3>Classical, acoustic or electric?</h3>
+                    <ul>
+                        <li><strong>Classical (nylon strings)</strong> — softest on the fingers, ideal for kids and school programs. Great starters from <a href="shop.html?dept=Guitars%20%26%20Basses&cat=Classical%20%26%20Flamenco">our classical range</a> begin around AED 400.</li>
+                        <li><strong>Acoustic (steel strings)</strong> — the singer-songwriter sound. Expect AED 500–1,200 for a quality starter in <a href="shop.html?dept=Guitars%20%26%20Basses&cat=Acoustic%20Guitars">acoustic guitars</a>.</li>
+                        <li><strong>Electric</strong> — easiest necks and quietest practice with headphones. Ibanez starters in <a href="shop.html?dept=Guitars%20%26%20Basses&cat=Electric%20Guitars">our electric range</a> start near AED 800 plus a small amp.</li>
+                    </ul>
+                    <h3>What actually matters</h3>
+                    <p>Correct size (3/4 for under-12s), low string action, and a setup check — every guitar we sell is inspected and set up in our workshop before it leaves. Skip the unbranded marketplace guitars: high action teaches bad habits and hurts.</p>
+                    <h3>Our 2026 picks</h3>
+                    <ul>
+                        <li>Budget classical: Alhambra 1C — the school standard</li>
+                        <li>Acoustic all-rounder: Ibanez acoustic-electric starters</li>
+                        <li>Electric: Ibanez GRX series + a Vox Pathfinder amp</li>
+                    </ul>
+                    <p>Pair any of them with a tuner, spare strings and our <a href="resources.html">free chord charts</a>, and you are set for the first year.</p>
+                    <div class="cta-section"><div class="cta-buttons">
+                        <a href="shop.html?dept=Guitars%20%26%20Basses" class="cta-btn primary">Browse Guitars</a>
+                        <a href="https://wa.me/97126219929" class="cta-btn secondary">Ask Us on WhatsApp</a>
+                    </div></div>
+                </div>
+            `
+        },
+        {
+            id: 'keyboard-61-76-88-keys-guide',
+            title: '61 vs 76 vs 88 Keys: Which Keyboard Should You Buy?',
+            category: 'guides',
+            date: '2026-06-02',
+            readTime: '5 min',
+            excerpt: 'Confused by key counts? Here is exactly who should buy a 61-key arranger, a 76-key performer, or a full 88-key digital piano — with UAE prices.',
+            image: 'assets/Blog_images/piano-buying-guide-uae.jpg',
+            tags: ['keyboard abu dhabi','61 key vs 88 key','digital piano UAE','korg keyboard UAE','beginner keyboard'],
+            content: `
+                <h2>61 vs 76 vs 88 Keys: Which Keyboard Should You Buy?</h2>
+                <div class="post-content">
+                    <p>Key count is the first decision and the most common place buyers overspend or under-buy. Here is the showroom truth:</p>
+                    <h3>61 keys — the smart start</h3>
+                    <p>Perfect for absolute beginners, school requirements and producers. Light, portable, hundreds of sounds and rhythms. See <a href="shop.html?dept=Pianos%20%26%20Keyboards&cat=Keyboards%20%26%20Synths">keyboards &amp; synths</a> — quality starters from AED 500–1,500.</p>
+                    <h3>76 keys — the gigging compromise</h3>
+                    <p>Stage players who need more range without the weight of a full piano. Often semi-weighted — fine for keys parts, not ideal for classical technique.</p>
+                    <h3>88 keys — for pianists</h3>
+                    <p>If the goal is <em>piano</em> (exams, classical, proper technique), nothing replaces 88 weighted keys with graded hammer action. Browse <a href="shop.html?dept=Pianos%20%26%20Keyboards&cat=Digital%20Pianos">digital pianos</a> — Kawai and Korg models we trust start around AED 2,500.</p>
+                    <h3>The one rule</h3>
+                    <p>Buy weighted keys if piano lessons are involved. Unweighted keys make exam pieces harder to transfer to a real piano — teachers see it every term in our <a href="services.html#classes">music classes</a>.</p>
+                    <div class="cta-section"><div class="cta-buttons">
+                        <a href="shop.html?dept=Pianos%20%26%20Keyboards" class="cta-btn primary">Browse Pianos &amp; Keyboards</a>
+                        <a href="services.html#classes" class="cta-btn secondary">Join Piano Classes</a>
+                    </div></div>
+                </div>
+            `
+        },
+        {
+            id: 'guitar-strings-guide-uae',
+            title: 'Guitar Strings 101: Choosing the Right Set (and When to Change Them)',
+            category: 'tips',
+            date: '2026-05-20',
+            readTime: '5 min',
+            excerpt: "Dead strings make good guitars sound cheap. Gauges, materials, coated vs uncoated, and how often UAE humidity really makes you change strings.",
+            image: 'assets/Blog_images/piano-buying-guide-uae.jpg',
+            tags: ["guitar strings abu dhabi","d'addario UAE","ernie ball UAE","when to change guitar strings","string gauge guide"],
+            content: `
+                <h2>Guitar Strings 101</h2>
+                <div class="post-content">
+                    <p>Strings are the cheapest upgrade your guitar will ever get. Here is what we tell every customer at the counter:</p>
+                    <h3>Gauge in one minute</h3>
+                    <ul>
+                        <li><strong>Light (.009–.010 electric, .011–.012 acoustic)</strong> — easier bends, kinder to beginners.</li>
+                        <li><strong>Medium</strong> — fuller tone, slightly more effort. The default for most players.</li>
+                        <li><strong>Nylon</strong> — classical guitars only; never put steel strings on a classical.</li>
+                    </ul>
+                    <h3>UAE reality: humidity and AC</h3>
+                    <p>Moving between humid air and air-conditioned rooms kills uncoated strings fast. If you play daily, change monthly — or go coated (Elixir-style) and double the life. Hear the difference? Dull tone, rough feel, tuning drift: change them.</p>
+                    <h3>What we stock</h3>
+                    <p>Full ranges of <strong>Ernie Ball</strong>, <strong>D'Addario</strong> and <strong>La Bella</strong> in <a href="shop.html?dept=Strings%20%26%20Accessories&cat=Guitar%20Strings">guitar strings</a>, plus <a href="shop.html?dept=Strings%20%26%20Accessories&cat=Violin%20%26%20Oud%20Strings">violin &amp; oud strings</a>. Free fitting at the showroom with any set.</p>
+                    <div class="cta-section"><div class="cta-buttons">
+                        <a href="shop.html?dept=Strings%20%26%20Accessories&cat=Guitar%20Strings" class="cta-btn primary">Shop Strings</a>
+                        <a href="services.html#repairs" class="cta-btn secondary">Book a Restring &amp; Setup</a>
+                    </div></div>
+                </div>
+            `
+        },
+        {
+            id: 'home-studio-abu-dhabi-budget',
+            title: 'Home Studio in Abu Dhabi on a Budget: The AED 2,000 Starter Setup',
+            category: 'guides',
+            date: '2026-05-12',
+            readTime: '6 min',
+            excerpt: 'Record vocals and instruments at home with gear that actually lasts: interface, mic, headphones and monitoring — a realistic UAE shopping list.',
+            image: 'assets/Blog_images/piano-buying-guide-uae.jpg',
+            tags: ['home studio UAE','audio interface abu dhabi','recording microphone UAE','podcast setup abu dhabi'],
+            content: `
+                <h2>Home Studio in Abu Dhabi on a Budget</h2>
+                <div class="post-content">
+                    <p>You do not need a treated room and AED 20,000 to release music. You need four things that work together:</p>
+                    <h3>The AED ~2,000 list</h3>
+                    <ul>
+                        <li><strong>Audio interface</strong> — 2-in/2-out USB is plenty. See <a href="shop.html?dept=Studio%2C%20PA%20%26%20Audio&cat=Recording%20Gear">recording gear</a>.</li>
+                        <li><strong>Closed-back headphones</strong> — track without bleed: <a href="shop.html?dept=Studio%2C%20PA%20%26%20Audio&cat=Headphones">headphones</a>.</li>
+                        <li><strong>Cables &amp; stands</strong> — the unglamorous 10%: <a href="shop.html?dept=Studio%2C%20PA%20%26%20Audio&cat=Stands%2C%20Cables%20%26%20Wireless">stands &amp; cables</a>.</li>
+                        <li><strong>Free DAW</strong> — GarageBand, Cakewalk or Reaper trial. Spend on hardware, not software, in year one.</li>
+                    </ul>
+                    <h3>The order to upgrade</h3>
+                    <p>Room first (rugs, curtains), then microphone, then monitors. And before buying anything for a band: try a session in <a href="services.html#studio">our studio</a> (AED 100/hr solo) to learn what you actually need.</p>
+                    <div class="cta-section"><div class="cta-buttons">
+                        <a href="shop.html?dept=Studio%2C%20PA%20%26%20Audio" class="cta-btn primary">Browse Studio Gear</a>
+                        <a href="services.html#studio" class="cta-btn secondary">Book Our Studio</a>
+                    </div></div>
+                </div>
+            `
+        },
+        {
+            id: 'uae-school-music-checklist',
+            title: 'UAE School Music Checklist: Instruments & Free Resources for Teachers',
+            category: 'education',
+            date: '2026-04-28',
+            readTime: '5 min',
+            excerpt: 'Recorders, melodicas, ukuleles and percussion — what UAE school music programs actually need each term, plus free printable charts for the classroom.',
+            image: 'assets/Blog_images/piano-buying-guide-uae.jpg',
+            tags: ['school music UAE','recorder abu dhabi','melodica UAE','school band instruments','music teacher resources UAE'],
+            content: `
+                <h2>UAE School Music Checklist</h2>
+                <div class="post-content">
+                    <p>Every term we equip schools across Abu Dhabi. This is the checklist that covers 90% of classroom programs:</p>
+                    <h3>The classroom core</h3>
+                    <ul>
+                        <li><strong>Recorders</strong> — the universal starter: <a href="shop.html?dept=Wind%20Instruments&cat=Melodicas%20%26%20Recorders">melodicas &amp; recorders</a> (Hohner &amp; Suzuki in stock)</li>
+                        <li><strong>Melodicas</strong> — keyboard skills without keyboards</li>
+                        <li><strong>Ukuleles</strong> — four strings, fast chords: <a href="shop.html?dept=Guitars%20%26%20Basses&cat=Ukulele%2C%20Violin%20%26%20Folk">ukuleles &amp; folk</a></li>
+                        <li><strong>Hand percussion</strong> — rhythm for the whole class: <a href="shop.html?dept=Drums%20%26%20Percussion&cat=Hand%20Percussion">hand percussion</a></li>
+                    </ul>
+                    <h3>Free printables for your class</h3>
+                    <p>Our <a href="resources.html">Resources page</a> has A4 print-ready charts teachers use every week: a <strong>recorder fingering chart</strong>, ukulele and guitar chords, manuscript paper, a theory cheat sheet and a weekly practice log. Free for schools — print as many as you need.</p>
+                    <h3>School orders &amp; rentals</h3>
+                    <p>Bulk class sets, instrument <a href="services.html#rentals">rentals for the term</a>, and repairs with school-friendly turnaround. Email <a href="mailto:sales@akm-music.com">sales@akm-music.com</a> for a quote on letterhead.</p>
+                    <div class="cta-section"><div class="cta-buttons">
+                        <a href="resources.html" class="cta-btn primary">Get Free Resources</a>
+                        <a href="https://wa.me/97126219929" class="cta-btn secondary">School Orders on WhatsApp</a>
+                    </div></div>
+                </div>
+            `
+        },
         // GUIDES
         {
             id: 'ultimate-piano-buying-guide-uae',

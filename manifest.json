@@ -42,7 +42,7 @@
       "name": "Music Tools",
       "short_name": "Tools",
       "description": "Tuner, metronome and free learning resources",
-      "url": "/tools.html",
+      "url": "/resources.html",
       "icons": [
         {
           "src": "assets/Logo & Icons/logo.png",

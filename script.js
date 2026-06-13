@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       ['index.html', 'fa-house', 'Home'],
       ['shop.html', 'fa-store', 'Shop'],
       ['services.html', 'fa-music', 'Services'],
-      ['tools.html', 'fa-screwdriver-wrench', 'Tools'],
+      ['resources.html', 'fa-book-open', 'Resources'],
       ['contact.html', 'fa-phone', 'Contact']
     ];
     const bar = document.createElement('nav');
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
           linkText.includes('try tools') ||
           imgAlt.includes('instrument sales') ||
           imgSrc.includes('service cards/tools.jpg') ||
-          href.endsWith('tools.html');
+          href.endsWith('resources.html');
         if (shouldRemove) {
           card.remove();
         }

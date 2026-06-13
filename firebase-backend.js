@@ -49,7 +49,9 @@
         disabledIds: d.disabledIds || {},
         disabledCategories: d.disabledCategories || [],
         disabledBrands: d.disabledBrands || [],
-        featuredIds: d.featuredIds || []
+        featuredIds: d.featuredIds || [],
+        homeBrands: d.homeBrands || [],
+        supplierEnabled: d.supplierEnabled !== false
       };
     } catch (err) {
       console.warn('overrides unavailable:', err.message);
@@ -66,6 +68,30 @@
       return snap.exists() ? (snap.data().products || []) : [];
     } catch (err) {
       console.warn('own products unavailable:', err.message);
+      return [];
+    }
+  }
+
+  // Blog posts written from admin.html — one document, newest first.
+  async function getBlogPosts() {
+    if (!(await ready)) return [];
+    try {
+      const snap = await state.fs.getDoc(state.fs.doc(state.db, 'siteConfig', 'blog'));
+      return snap.exists() ? (snap.data().posts || []) : [];
+    } catch (err) {
+      console.warn('blog posts unavailable:', err.message);
+      return [];
+    }
+  }
+
+  // Home banners managed from admin.html — fallback to the bundled SVGs.
+  async function getBanners() {
+    if (!(await ready)) return [];
+    try {
+      const snap = await state.fs.getDoc(state.fs.doc(state.db, 'siteConfig', 'banners'));
+      return snap.exists() ? (snap.data().banners || []) : [];
+    } catch (err) {
+      console.warn('banners unavailable:', err.message);
       return [];
     }
   }
@@ -118,5 +144,5 @@
     }
   }
 
-  window.AKM = { ready, getCatalogOverrides, getOwnProducts, saveOrder, saveBooking, askGemini };
+  window.AKM = { ready, getCatalogOverrides, getOwnProducts, getBlogPosts, getBanners, saveOrder, saveBooking, askGemini };
 })();
