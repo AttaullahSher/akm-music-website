@@ -686,6 +686,21 @@ function subscribeNewsletter(e){
   try { input.value=''; } catch {}
 }
 
+// Format a YYYY-MM-DD date for blog cards (e.g. "10 Jun 2026")
+function formatBlogDate(dateStr) {
+    try {
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr || '';
+        return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    } catch { return dateStr || ''; }
+}
+
+// Human label for a category slug
+function blogCategoryLabel(cat) {
+    const map = { guides: 'Guides', news: 'News', tips: 'Tips', education: 'Education' };
+    return map[cat] || (cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : 'Article');
+}
+
 // Render Filtered Posts
 function renderFilteredPosts(posts) {
     const postsGrid = document.getElementById('postsGrid');
@@ -706,10 +721,15 @@ function renderFilteredPosts(posts) {
     postsGrid.innerHTML = posts.map(post => `
         <article class="blog-card" data-category="${post.category}" data-date="${post.date}" data-post-id="${post.id}">
           <div class="card-image">
-            <img src="${post.image}" alt="${post.title}" loading="lazy">
+            <img src="${post.image}" alt="${post.title}" loading="lazy" onerror="this.onerror=null;this.src='assets/Banners_images/banner-hero.jpg'">
+            <span class="card-category">${blogCategoryLabel(post.category)}</span>
           </div>
           <div class="card-content">
-            <h3>${post.title}</h3>
+            <div class="card-meta">
+              <span><i class="far fa-calendar"></i> ${formatBlogDate(post.date)}</span>
+              <span><i class="far fa-clock"></i> ${post.readTime || '5 min'}</span>
+            </div>
+            <h3 class="card-title">${post.title}</h3>
             <p class="blog-excerpt">${post.excerpt}</p>
             <div class="blog-full-content" style="display: none;"></div>
             <button class="read-more-btn" onclick="togglePost('${post.id}')">
@@ -778,9 +798,9 @@ function togglePost(postId) {
     const isExpanded = card.classList.contains('expanded');
     
     if (isExpanded) {
-        // Collapse
+        // Collapse — clear inline display so the CSS line-clamp is restored
         card.classList.remove('expanded');
-        excerpt.style.display = 'block';
+        excerpt.style.display = '';
         fullContent.style.display = 'none';
         buttonText.textContent = 'Read More';
         buttonIcon.className = 'fas fa-chevron-down';
