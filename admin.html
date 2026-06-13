@@ -198,6 +198,7 @@
       <div class="admin-panel" id="panel-blog" style="display:none;">
         <div class="listing-toolbar">
           <button class="btn btn-primary btn-sm" id="blogAddBtn"><i class="fas fa-plus"></i> Write Post</button>
+          <button class="btn btn-secondary btn-sm" id="blogSeedBtn" title="Copy the built-in starter articles into your editable list"><i class="fas fa-download"></i> Import starter articles</button>
           <span class="listing-stats" id="blogStats" style="margin:0 0 0 auto;"></span>
         </div>
         <div id="blogForm" style="display:none; border:1px solid var(--border-color); border-radius:var(--border-radius-md); padding:var(--space-md); margin-bottom:var(--space-md);">
@@ -270,7 +271,8 @@
   <div class="toast" id="toast"></div>
 
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script src="firebase-config.js?v=20260613c"></script>
-  <script type="module" src="admin.js?v=20260613c"></script>
+  <script src="firebase-config.js?v=20260613d"></script>
+  <script src="blog-seed.js?v=20260613d"></script>
+  <script type="module" src="admin.js?v=20260613d"></script>
 </body>
 </html>

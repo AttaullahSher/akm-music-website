@@ -611,5 +611,16 @@
     if (params.get('cat')) state.category = params.get('cat');
     renderFilters();
     render();
+
+    // Deep link: shop.html?product=<id> — open that product (used by the
+    // Facebook/Instagram & Google product feeds so each item links to itself).
+    const pid = params.get('product');
+    if (pid) {
+      const prod = state.products.find(p => String(p.id) === String(pid));
+      if (prod) {
+        document.title = prod.name + ' | AKM Music Abu Dhabi';
+        openModal(prod);
+      }
+    }
   });
 })();
