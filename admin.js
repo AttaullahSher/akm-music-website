@@ -497,7 +497,7 @@ function main() {
       `${blogPosts.length} admin posts · storage ${blogKB()} / 900 KB`;
     const el = document.getElementById('blogRows');
     if (!blogPosts.length) {
-      el.innerHTML = '<div class="empty-msg">No posts yet — click "Write Post". Posts appear on the blog instantly, newest first, alongside the built-in articles.</div>';
+      el.innerHTML = '<div class="empty-msg">No posts in the backend yet. Click "Write Post" to publish your own, or "Import starter articles" to pull the built-in articles in so you can edit or delete them. Until then the starter articles show on the public blog automatically.</div>';
       return;
     }
     el.classList.remove('empty-msg');
@@ -530,6 +530,23 @@ function main() {
   }
 
   document.getElementById('blogAddBtn').addEventListener('click', () => openBlogForm(null));
+  const blogSeedBtn = document.getElementById('blogSeedBtn');
+  if (blogSeedBtn) blogSeedBtn.addEventListener('click', async () => {
+    const seed = Array.isArray(window.AKM_BLOG_SEED) ? window.AKM_BLOG_SEED : [];
+    if (!seed.length) { toast('No starter articles found.'); return; }
+    const have = new Set(blogPosts.map(p => p.id));
+    const toAdd = seed.filter(p => !have.has(p.id)).map(p => ({
+      id: p.id, title: p.title, category: p.category || 'news',
+      author: p.author || 'AKM Music', date: p.date || new Date().toISOString().slice(0, 10),
+      cover: p.cover || '', body: p.body || ''
+    }));
+    if (!toAdd.length) { toast('Starter articles are already imported.'); return; }
+    if (!confirm(`Import ${toAdd.length} starter article(s) into your editable list?`)) return;
+    blogPosts = toAdd.concat(blogPosts);
+    if (blogKB() > 900) { blogPosts = blogPosts.slice(toAdd.length); toast('Storage limit reached — import fewer or shorten articles.'); return; }
+    try { await saveBlog(); toast(`Imported ${toAdd.length} article(s) — now editable below`); renderBlog(); }
+    catch (err) { blogPosts = blogPosts.slice(toAdd.length); toast('Import failed: ' + err.message); }
+  });
   document.getElementById('blogCancelBtn').addEventListener('click', () => {
     document.getElementById('blogForm').style.display = 'none';
   });
