@@ -1,9 +1,9 @@
 // AKM Music Service Worker
 // Provides offline functionality and PWA features
 
-const CACHE_NAME = 'akm-music-v4.6.0';
-const STATIC_CACHE = 'akm-static-v4.6.0';
-const DYNAMIC_CACHE = 'akm-dynamic-v4.6.0';
+const CACHE_NAME = 'akm-music-v4.7.0';
+const STATIC_CACHE = 'akm-static-v4.7.0';
+const DYNAMIC_CACHE = 'akm-dynamic-v4.7.0';
 
 // Files to cache for offline functionality (relative paths for GitHub Pages)
 // Updated to only include current CSS files
@@ -87,6 +87,13 @@ self.addEventListener('fetch', (event) => {
   // Debug bypass: allow opting out of SW via ?no-sw=1
   if (url.searchParams && url.searchParams.get('no-sw') === '1') {
     event.respondWith(fetch(request));
+    return;
+  }
+
+  // Never intercept cross-origin requests (Google Fonts, Analytics, CDNs).
+  // Let the browser handle them natively so a third-party network hiccup
+  // can never be turned into a 503 by our fallback handlers.
+  if (url.origin !== self.location.origin) {
     return;
   }
 

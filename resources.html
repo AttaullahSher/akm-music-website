@@ -6,9 +6,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Free Music Resources & Practice Tools | AKM Music Abu Dhabi</title>
-    <meta name="description" content="Free music learning resources for UAE schools, students & players: printable chord charts, fingering charts, theory sheets, manuscript paper — plus a free online tuner and metronome. By AKM Music Abu Dhabi.">
-    <meta name="keywords" content="music tools, guitar tuner, metronome, chord charts, music theory, practice tools, scale finder, abu dhabi">
+    <title>Free Music Resources & Printable Charts | AKM Music Abu Dhabi</title>
+    <meta name="description" content="Free music learning resources for UAE schools, students & players: printable chord charts, fingering charts, theory cheat sheets, manuscript paper, practice logs and scale references. By AKM Music Abu Dhabi.">
+    <meta name="keywords" content="music resources, guitar chord chart, piano note chart, music theory sheet, manuscript paper, practice log, scales reference, abu dhabi">
     <link rel="canonical" href="https://www.akm-music.com/resources.html">
     
     <!-- Fonts & Icons -->
@@ -24,9 +24,9 @@
     </noscript>
     
     <!-- Styles - Simplified & Unified -->
-    <link rel="stylesheet" href="master-design.css?v=20260613c">
-    <link rel="stylesheet" href="tools-master.css?v=20260613c">
-    <link rel="stylesheet" href="fixes.css?v=20260613c">
+    <link rel="stylesheet" href="master-design.css?v=20260613d">
+    <link rel="stylesheet" href="tools-master.css?v=20260613d">
+    <link rel="stylesheet" href="fixes.css?v=20260613d">
     
     <!-- Icons -->
     <link rel="icon" href="assets/Logo & Icons/favicon.ico">
@@ -35,16 +35,16 @@
     <script src="google-analytics.js?v=20251025"></script>
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta name="theme-color" content="#2563eb">
-  <meta property="og:title" content="Free Music Resources & Practice Tools | AKM Music Abu Dhabi">
-  <meta property="og:description" content="Free printable chord charts, fingering charts, theory sheets, manuscript paper, online tuner and metronome for UAE schools, students and players.">
+  <meta property="og:title" content="Free Music Resources & Printable Charts | AKM Music Abu Dhabi">
+  <meta property="og:description" content="Free printable chord charts, fingering charts, theory sheets, manuscript paper, practice logs and scale references for UAE schools, students and players.">
   <meta property="og:image" content="https://www.akm-music.com/assets/Banners_images/3D274.png">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.akm-music.com/resources.html">
   <meta property="og:site_name" content="AKM Music Abu Dhabi">
   <meta property="og:locale" content="en_AE">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Free Music Resources & Practice Tools | AKM Music Abu Dhabi">
-  <meta name="twitter:description" content="Free printable music charts for UAE schools & students, plus an online tuner and metronome.">
+  <meta name="twitter:title" content="Free Music Resources | AKM Music Abu Dhabi">
+  <meta name="twitter:description" content="Free printable music charts and worksheets for UAE schools, students and players.">
   <meta name="twitter:image" content="https://www.akm-music.com/assets/Banners_images/3D274.png">
 </head>
 <body>
@@ -83,7 +83,7 @@
             <div class="tools-hero-text">
                 <h1 class="tools-hero-title">Free Music Resources</h1>
                 <p class="tools-hero-description">
-                    Print-ready charts for schools, students and players — plus free practice tools like our tuner and metronome.
+                    Print-ready chord charts, fingering charts, theory sheets and practice logs — free for UAE schools, students and players.
                 </p>
             </div>
         </div>
@@ -184,254 +184,6 @@
       </div>
     </section>
 
-    <!-- Practice Tools -->
-    <div class="container" style="text-align:center; padding-top:1rem;">
-      <h2 class="section-title">Practice Tools</h2>
-      <p class="section-subtitle">Free in-browser tuner, metronome, chord chart and more</p>
-    </div>
-    <!-- Tools Grid -->
-    <section class="tools-section">
-        <div class="tools-container">
-            <div class="tools-grid">
-                
-                <!-- Guitar Tuner -->
-                <div class="tool-card glass-container" id="tuner-tool">
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-guitar"></i>
-                        </div>
-                        <h3>Guitar Tuner</h3>
-                        <p>Clip-on style chromatic tuner</p>
-                    </div>
-                    <div class="tool-body">
-                        <!-- Compact LCD Tuner -->
-                        <div class="tuner-lcd">
-                            <div class="lcd-screen-sm" id="tunerLCD">
-                                <div class="lcd-header">
-                                    <span class="scale-num">-50</span>
-                                    <div class="lcd-pointer-wrap">
-                                        <div class="lcd-center-mark">0</div>
-                                        <div class="lcd-pointer" id="lcdNeedle"></div>
-                                    </div>
-                                    <span class="scale-num">+50</span>
-                                </div>
-                                <div class="lcd-note-row">
-                                    <div class="lcd-big-note" id="noteDisplay">--</div>
-                                    <div class="lcd-instrument" id="instrumentLabel">Guitar</div>
-                                </div>
-                                <div class="tuner-info">
-                                    <div class="tuner-info-item">
-                                        <div class="tuner-info-label">Frequency</div>
-                                        <div class="tuner-info-value" id="frequencyDisplay">--</div>
-                                    </div>
-                                    <div class="tuner-info-item">
-                                        <div class="tuner-info-label">Cents</div>
-                                        <div class="tuner-info-value" id="centsDisplay">0</div>
-                                    </div>
-                                </div>
-                                <div class="tuner-status ready" id="tunerStatus">
-                                    🎸 Tap Start to begin tuning
-                                </div>
-                            </div>
-                            <button class="tuner-start" id="startTuner" aria-label="Start/Stop Tuner">
-                                <i class="fas fa-microphone"></i>
-                                <span class="tuner-start-label">Start Tuner</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Metronome -->
-                <div class="tool-card glass-container" id="metronome-tool">
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h3>Metronome</h3>
-                        <p>Keep perfect time while practicing</p>
-                    </div>
-                    <div class="tool-body">
-                        <div class="metronome-display">
-                            <div class="bpm-display">
-                                <span id="bpmValue">120</span>
-                                <small>BPM</small>
-                            </div>
-                            <div class="metronome-visual" id="metronomeVisual">
-                                <div class="beat-indicator"></div>
-                            </div>
-                        </div>
-                        <div class="metronome-controls">
-                            <input type="range" id="bpmSlider" min="60" max="200" value="120" class="bpm-slider">
-                            <div class="tempo-labels">
-                                <span>Largo</span>
-                                <span>Andante</span>
-                                <span>Allegro</span>
-                                <span>Presto</span>
-                            </div>
-                        </div>
-                        <div class="metronome-actions">
-                            <button class="btn-3d btn-primary-3d" id="playMetronome">
-                                <i class="fas fa-play"></i> Start
-                            </button>
-                            <button class="btn-3d btn-secondary-3d" id="tapTempo">
-                                <i class="fas fa-hand-pointer"></i> Tap Tempo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chord Chart -->
-                <div class="tool-card glass-container" id="chord-tool">
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-music"></i>
-                        </div>
-                        <h3>Chord Charts</h3>
-                        <p>Interactive guitar and piano chords</p>
-                    </div>
-                    <div class="tool-body">
-                        <div class="chord-selector">
-                            <select id="chordRoot" class="chord-select">
-                                <option value="C">C</option>
-                                <option value="C#">C#/Db</option>
-                                <option value="D">D</option>
-                                <option value="D#">D#/Eb</option>
-                                <option value="E">E</option>
-                                <option value="F">F</option>
-                                <option value="F#">F#/Gb</option>
-                                <option value="G">G</option>
-                                <option value="G#">G#/Ab</option>
-                                <option value="A">A</option>
-                                <option value="A#">A#/Bb</option>
-                                <option value="B">B</option>
-                            </select>
-                            <select id="chordType" class="chord-select">
-                                <option value="major">Major</option>
-                                <option value="minor">Minor</option>
-                                <option value="7">7th</option>
-                                <option value="m7">Minor 7th</option>
-                                <option value="maj7">Major 7th</option>
-                                <option value="dim">Diminished</option>
-                                <option value="aug">Augmented</option>
-                                <option value="sus2">Sus2</option>
-                                <option value="sus4">Sus4</option>
-                            </select>
-                        </div>
-                        <div class="chord-display">
-                            <div class="guitar-fretboard" id="guitarFretboard">
-                                <!-- Generated dynamically -->
-                            </div>
-                            <div class="piano-keyboard" id="pianoKeyboard">
-                                <!-- Generated dynamically -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Scale Finder -->
-                <div class="tool-card glass-container" id="scale-tool">
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-layer-group"></i>
-                        </div>
-                        <h3>Scale Finder</h3>
-                        <p>Explore scales and modes</p>
-                    </div>
-                    <div class="tool-body">
-                        <div class="scale-selector">
-                            <select id="scaleRoot" class="scale-select">
-                                <option value="C">C</option>
-                                <option value="C#">C#/Db</option>
-                                <option value="D">D</option>
-                                <option value="D#">D#/Eb</option>
-                                <option value="E">E</option>
-                                <option value="F">F</option>
-                                <option value="F#">F#/Gb</option>
-                                <option value="G">G</option>
-                                <option value="G#">G#/Ab</option>
-                                <option value="A">A</option>
-                                <option value="A#">A#/Bb</option>
-                                <option value="B">B</option>
-                            </select>
-                            <select id="scaleType" class="scale-select">
-                                <option value="major">Major (Ionian)</option>
-                                <option value="minor">Natural Minor (Aeolian)</option>
-                                <option value="dorian">Dorian</option>
-                                <option value="phrygian">Phrygian</option>
-                                <option value="lydian">Lydian</option>
-                                <option value="mixolydian">Mixolydian</option>
-                                <option value="locrian">Locrian</option>
-                                <option value="harmonic">Harmonic Minor</option>
-                                <option value="melodic">Melodic Minor</option>
-                                <option value="pentatonic">Major Pentatonic</option>
-                                <option value="blues">Blues</option>
-                            </select>
-                        </div>
-                        <div class="scale-display">
-                            <div class="scale-notes" id="scaleNotes">
-                                <!-- Generated dynamically -->
-                            </div>
-                            <div class="scale-pattern" id="scalePattern">
-                                <!-- Generated dynamically -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Circle of Fifths -->
-                <div class="tool-card glass-container" id="circle-tool">
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-circle-notch"></i>
-                        </div>
-                        <h3>Circle of Fifths</h3>
-                        <p>Interactive music theory wheel</p>
-                    </div>
-                    <div class="tool-body">
-                        <div class="circle-container">
-                            <svg class="circle-of-fifths" id="circleOfFifths" width="300" height="300">
-                                <!-- Generated dynamically -->
-                            </svg>
-                        </div>
-                        <div class="circle-info" id="circleInfo">
-                            <h4>Select a key</h4>
-                            <p>Click on the circle to explore key signatures and related keys</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BPM Calculator -->
-                <div class="tool-card glass-container" id="bpm-tool">
-                    <div class="tool-header">
-                        <div class="tool-icon">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <h3>BPM Calculator</h3>
-                        <p>Calculate tempo from song length</p>
-                    </div>
-                    <div class="tool-body">
-                        <div class="bpm-calculator">
-                            <div class="input-group">
-                                <label>Song Length (mm:ss)</label>
-                                <input type="text" id="songLength" placeholder="4:30" class="bpm-input">
-                            </div>
-                            <div class="input-group">
-                                <label>Number of Beats</label>
-                                <input type="number" id="numBeats" placeholder="256" class="bpm-input">
-                            </div>
-                            <button class="btn-3d btn-primary-3d" onclick="calculateBPM()">
-                                Calculate BPM
-                            </button>
-                            <div class="bpm-result" id="bpmResult"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-
     <!-- Footer -->
     <footer class="site-footer compact">
     <div class="container footer-flex">
@@ -467,7 +219,6 @@
     <script src="script.js?v=20260613c"></script>
 
     <script src="analytics.js?v=20260613c"></script>
-    <script src="tools.js?v=20260613c"></script>
     <script src="pwa.js?v=20260613c"></script>
   <script src="firebase-config.js?v=20260613c"></script>
   <script src="firebase-backend.js?v=20260613c"></script>
