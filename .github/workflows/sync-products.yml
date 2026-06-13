@@ -25,11 +25,14 @@ jobs:
       - name: Download new product images
         run: node scripts/download-product-images.js
 
+      - name: Regenerate Meta/Google product feed
+        run: node scripts/generate-product-feed.js
+
       - name: Commit updated catalog
         run: |
           git config user.name "akm-catalog-bot"
           git config user.email "sales@akm-music.com"
-          git add products.json assets/products
+          git add products.json assets/products products-feed.csv
           if git diff --cached --quiet; then
             echo "No catalog changes."
           else
