@@ -259,8 +259,13 @@
     return list;
   }
 
+  // Reused formatters — far cheaper than calling toLocaleString per product
+  // when rendering hundreds of cards. Whole prices show no decimals; prices
+  // with fils show two (matches the previous behaviour exactly).
+  const _fmtWhole = new Intl.NumberFormat('en-AE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  const _fmtFrac = new Intl.NumberFormat('en-AE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   function fmtPrice(n) {
-    return n.toLocaleString('en-AE', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+    return (n % 1 ? _fmtFrac : _fmtWhole).format(n);
   }
 
   // ---------- rendering ----------
@@ -280,11 +285,11 @@
     }
     document.getElementById('shopEmpty').style.display = 'none';
 
-    grid.innerHTML = visible.map(p => `
+    grid.innerHTML = visible.map((p, i) => `
       <div class="product-card" data-id="${p.id}">
         <div class="product-image">
           <span class="stock-badge ${p.inStock ? 'in' : 'out'}">${p.inStock ? 'In Stock' : 'On Order'}</span>
-          <img src="${p.image}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}'">
+          <img src="${p.image}" alt="${escapeHtml(p.name)}" ${i < 6 ? 'fetchpriority="high"' : 'loading="lazy"'} onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}'">
         </div>
         <div class="product-info">
           <span class="product-brand">${escapeHtml(p.brand)}</span>
