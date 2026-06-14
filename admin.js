@@ -99,6 +99,7 @@ function main() {
   async function start() {
     if (started) return;
     started = true;
+    try {
     const [res, snap, ownSnap, blogSnap, bannerSnap] = await Promise.all([
       fetch('products.json?v=' + Date.now(), { cache: 'no-cache' }),
       getDoc(CATALOG),
@@ -130,6 +131,15 @@ function main() {
     document.getElementById('subcatList').innerHTML = SUBCATEGORIES.map(s => `<option>${esc(s)}</option>`).join('');
     renderBulk();
     renderListings();
+    } catch (err) {
+      started = false;
+      console.error('Admin start() failed:', err);
+      if (/permission/i.test(err.message || '')) {
+        toast('Database access denied. Publish the Firestore rules (siteConfig / orders / bookings) in the Firebase console, then reload this page.');
+      } else {
+        toast('Could not load admin data: ' + (err.message || err));
+      }
+    }
   }
 
   function isOff(p) {

@@ -585,6 +585,10 @@
   </footer>
 
   <!-- Scripts -->
+  <!-- Firebase bridge loads first so window.AKM exists before the inline
+       banner and featured-product loaders below run. -->
+  <script src="firebase-config.js?v=20260614a"></script>
+  <script src="firebase-backend.js?v=20260614a"></script>
   <script src="google-analytics.js?v=20260613c"></script>
 
   <script src="script.js?v=20260613c"></script>
@@ -684,8 +688,6 @@
       }
     })();
   </script>
-  <script src="firebase-config.js?v=20260613c"></script>
-  <script src="firebase-backend.js?v=20260613c"></script>
   <script src="services.js?v=20260613c"></script>
   <script src="assistant.js?v=20260613c"></script>
   <script>
